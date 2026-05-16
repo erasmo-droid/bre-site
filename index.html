@@ -2,12 +2,23 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="BrE Consultoria & Engenharia — Licenciamento, Regularização, Acquisition e Infraestrutura. Consultoria técnica multidisciplinar desde 2012.">
 <meta name="keywords" content="licenciamento, regularização, acquisition, engenharia, infraestrutura, telecom, ambiental, urbanístico">
+<meta name="theme-color" content="#07130d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BrE">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
 <title>BrE Consultoria & Engenharia</title>
+<!-- Fonts: display=swap for fast render, preconnect for DNS -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Leaflet CSS: preload for map -->
+<link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"></noscript>
 <style>
 /* =============================================
    BrE DESIGN SYSTEM — CSS CUSTOM PROPERTIES
@@ -647,26 +658,230 @@ footer {
 .scrolltop svg { width: 18px; height: 18px; }
 
 /* =============================================
-   RESPONSIVE
+   MOBILE-FIRST RESPONSIVE SYSTEM
    ============================================= */
+
+/* --- Touch targets: minimum 44px on all interactive elements --- */
+.btn, .stab, .ftab, .nav-cta, .hamburger,
+.scrolltop, .fsoc, .map-search-bar button,
+.mob-menu a { min-height: 44px; }
+.hamburger { min-width: 44px; }
+
+/* --- Remove hover transforms on touch devices (performance) --- */
+@media (hover: none) {
+  .btn:hover, .sc:hover, .diff:hover,
+  .sector:hover, .num-card:hover,
+  .social-card:hover, .client-chip:hover,
+  .scrolltop:hover, .fsoc:hover { transform: none !important; }
+}
+
+/* --- Tablet: 1024px and below --- */
 @media(max-width: 1024px) {
-  .hero { grid-template-columns: 1fr; }
-  .hero-right { display: none; }
-  .about-grid, .tech-grid, .con-grid { grid-template-columns: 1fr; }
-  .diffs-grid { grid-template-columns: 1fr 1fr; }
-  .foot-grid { grid-template-columns: 1fr 1fr; }
-  .nums-grid { grid-template-columns: 1fr 1fr; }
+  /* NAV */
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  .hero-left { padding: 4rem 1.5rem; }
+
+  /* HERO */
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { display: none; }
+  .hero-left { padding: 5rem 1.5rem 3.5rem; }
+  .hero h1 { font-size: clamp(2rem, 7vw, 3rem); }
+  .hero-desc { max-width: 100%; }
+  .hero-btns { gap: .75rem; }
+  .hero-stats { gap: 1.5rem; }
+  .hstat .n { font-size: 1.75rem; }
+
+  /* LAYOUTS */
+  .about-grid,
+  .tech-grid,
+  .con-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+
+  /* ABOUT */
+  .about-float { bottom: 0; right: 0; }
+
+  /* NUMBERS */
+  .nums-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* DIFFS */
+  .diffs-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+  /* FOOTER */
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .foot-brand { grid-column: 1 / -1; }
+
+  /* CONTACT MAP */
+  .con-map { height: 180px; }
 }
+
+/* --- Mobile: 640px and below --- */
 @media(max-width: 640px) {
-  .diffs-grid, .social-grid, .nums-grid { grid-template-columns: 1fr; }
-  .foot-grid { grid-template-columns: 1fr; }
-  .sectors-grid { grid-template-columns: 1fr 1fr; }
-  .fgrid { grid-template-columns: 1fr; }
-  section { padding: 4rem 0; }
-  .cta-inner { padding: 2.5rem 1.5rem; }
+  /* BASE */
+  .container { padding: 0 1.25rem; }
+  section { padding: 3.5rem 0; }
+
+  /* NAV */
+  .nav { height: 60px; padding: 0 1.25rem; }
+  .nav-logo img { height: 30px; }
+  .mob-menu { top: 60px; padding: 1.25rem; gap: .75rem; }
+  .mob-menu a { font-size: 16px; padding: .625rem 0; }
+
+  /* HERO */
+  .hero { padding-top: 60px; }
+  .hero-left { padding: 2.5rem 1.25rem 3rem; }
+  .hero-badge {
+    font-size: 9.5px; padding: 4px 11px;
+    white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; max-width: 100%;
+  }
+  .hero h1 { font-size: clamp(1.85rem, 8.5vw, 2.5rem); letter-spacing: -.5px; margin-bottom: 1rem; }
+  .hero-desc { font-size: .95rem; margin-bottom: 1.75rem; }
+  .hero-btns { flex-direction: column; gap: .625rem; margin-bottom: 2rem; }
+  .hero-btns .btn { width: 100%; justify-content: center; font-size: 15px; }
+  .hero-stats { gap: 1.25rem; }
+  .hstat .n { font-size: 1.6rem; }
+  .hstat .l { font-size: 9px; }
+
+  /* STRIP */
+  .strip { padding: 1.5rem 0; }
+  .strip-track { gap: 1rem; padding: 0 1.25rem; }
+  .client-chip { font-size: 11px; padding: 7px 14px; }
+
+  /* SECTION HEADERS */
+  h2.title { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+  .sub { font-size: .95rem; margin-bottom: 2rem; }
+  .tag { font-size: 10px; }
+
+  /* ABOUT */
+  .about-visual { margin-bottom: 3rem; }
+  .about-float { position: static; margin-top: 1rem; display: inline-flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; }
+  .about-float .n { font-size: 2rem; }
+  .about-pts { grid-template-columns: 1fr; gap: .5rem; }
+  .apt { font-size: 13px; }
+
+  /* SERVICES */
+  .srv-tabs { gap: .4rem; margin-bottom: 1.75rem; }
+  .stab { font-size: 11px; padding: 8px 14px; }
+  .srv-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .sc { padding: 1.375rem; }
+  .sc-icon { width: 42px; height: 42px; margin-bottom: 1rem; }
+  .sc h3 { font-size: .9rem; }
+  .sc p { font-size: 13px; }
+
+  /* TECHNOLOGY */
+  .tech-feats { gap: 1.25rem; }
+  .tf-dot { width: 32px; height: 32px; }
+  .tf-body h4 { font-size: 14px; }
+  .tf-body p { font-size: 12.5px; }
+  .tech-art { display: none; } /* hide complex SVG on small screens for performance */
+
+  /* SECTORS */
+  .sectors-grid { grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .sector { padding: 1.125rem; }
+  .sector-ico { width: 36px; height: 36px; margin-bottom: .75rem; }
+  .sector-ico svg { width: 18px; height: 18px; }
+  .sector h3 { font-size: .85rem; }
+  .sector p { font-size: 12px; }
+
+  /* NUMBERS */
+  .nums-grid { grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .num-card { padding: 1.375rem 1rem; }
+  .num-card .n { font-size: 2.2rem; }
+  .num-card .l { font-size: 11px; }
+
+  /* DIFFS */
+  .diffs-grid { grid-template-columns: 1fr; gap: 0; }
+  .diff { padding: 1.125rem 0; }
+  .diff h3 { font-size: 1rem; }
+  .diff p { font-size: 13px; }
+
+  /* FORMS */
+  .ftabs { gap: .625rem; margin-bottom: 1.75rem; }
+  .ftab { padding: 10px 18px; font-size: 13.5px; flex: 1; text-align: center; justify-content: center; }
+  .form-wrap { padding: 1.5rem 1.25rem; }
+  .form-hd h3 { font-size: 1.25rem; }
+  .fgrid { grid-template-columns: 1fr; gap: 1rem; }
+  .fg label { font-size: 10px; }
+  .fg input, .fg select, .fg textarea { font-size: 16px; } /* prevent iOS zoom */
+  .fsubmit { flex-direction: column; align-items: stretch; }
+  .fsubmit .btn { width: 100%; justify-content: center; }
+  .fnote { font-size: 10px; text-align: center; }
+
+  /* MAP — mobile optimizations */
+  #breMap { height: 300px; }
+  .map-search-bar { flex-direction: column; gap: .5rem; }
+  .map-search-bar button { width: 100%; justify-content: center; font-size: 13px; }
+  .map-search-bar input { font-size: 16px; } /* prevent iOS zoom */
+  .map-tip { font-size: 10px; padding: 6px 10px; }
+  .map-tip span:first-of-type { display: none; } /* hide long hint on mobile */
+  .coords-display { padding: 8px 12px; }
+  .coords-display .coords-val { font-size: 11px; }
+
+  /* SOCIAL */
+  .social-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .social-card { padding: 1.375rem; gap: 1rem; }
+  .social-logo { width: 44px; height: 44px; }
+
+  /* CONTACT */
+  .con-map { height: 160px; }
+  .wa-banner { flex-direction: column; align-items: flex-start; }
+  .wa-banner .btn-wa { width: 100%; justify-content: center; }
+
+  /* CTA */
+  .cta-inner { padding: 2.25rem 1.25rem; border-radius: var(--rl); }
+  .cta-btns { flex-direction: column; }
+  .cta-btns .btn { width: 100%; justify-content: center; }
+
+  /* FOOTER */
+  .foot-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .foot-brand { grid-column: 1; }
+  .foot-bottom { flex-direction: column; align-items: center; text-align: center; gap: .5rem; }
+  .cnpj { font-size: 10px; }
+  footer { padding: 3rem 0 0; }
+
+  /* SCROLL TOP */
+  .scrolltop { bottom: 1.25rem; right: 1.25rem; width: 42px; height: 42px; }
+}
+
+/* --- Small mobile: 390px and below --- */
+@media(max-width: 390px) {
+  .hero h1 { font-size: 1.75rem; }
+  .sectors-grid { grid-template-columns: 1fr; }
+  .nums-grid { grid-template-columns: 1fr 1fr; }
+  .hero-badge { font-size: 8.5px; letter-spacing: .3px; }
+  .client-chip { font-size: 10.5px; padding: 6px 12px; }
+}
+
+/* --- Landscape mobile fix --- */
+@media(max-width: 812px) and (orientation: landscape) {
+  .hero { min-height: auto; }
+  .hero-left { padding: 2rem 2rem 2.5rem; }
+  #breMap { height: 240px; }
+}
+
+/* --- Performance: reduce motion for accessibility --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .hero::before { animation: none; }
+  .pulse { animation: none; }
+}
+
+/* --- High DPI retina: sharper text --- */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .nav { border-bottom-width: 0.5px; }
+  .fg input, .fg select, .fg textarea { border-width: 0.5px; }
+}
+
+/* --- Safe area insets for iPhone notch / Dynamic Island --- */
+@supports (padding: max(0px)) {
+  .nav { padding-left: max(2rem, env(safe-area-inset-left)); padding-right: max(2rem, env(safe-area-inset-right)); }
+  .mob-menu { padding-left: max(1.5rem, env(safe-area-inset-left)); padding-right: max(1.5rem, env(safe-area-inset-right)); }
+  footer .foot-bottom { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+  .scrolltop { bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + .75rem)); right: max(1.25rem, env(safe-area-inset-right)); }
+}
+
+/* --- iOS momentum scroll on overflow containers --- */
+.strip-track, .srv-tabs, .mob-menu {
+  -webkit-overflow-scrolling: touch;
 }
 </style>
 </head>
