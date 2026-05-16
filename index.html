@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BrE Consultoria & Engenharia — Licenciamento, Regularização, Acquisition e Infraestrutura. Consultoria técnica multidisciplinar desde 2012.">
+<meta name="keywords" content="licenciamento, regularização, acquisition, engenharia, infraestrutura, telecom, ambiental, urbanístico">
+<title>BrE Consultoria & Engenharia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   BrE DESIGN SYSTEM — CSS CUSTOM PROPERTIES
+   ============================================= */
+:root {
+  --dark:    #07130d;
+  --dark2:   #0d1f14;
+  --dark3:   #142a1b;
+  --green1:  #1b4d30;
+  --green2:  #2e7d52;
+  --green3:  #48a872;
+  --green4:  #a8d5b8;
+  --gold:    #c9830a;
+  --gold2:   #e8a020;
+  --gold3:   #f5c060;
+  --white:   #f8f9f6;
+  --gray1:   #d0d8cc;
+  --gray2:   #8a9488;
+  --gray3:   #4a5248;
+  --surface: #f2f5f0;
+  --border:  #dde3d8;
+  --text:    #1a2018;
+
+  --ff-disp: 'Syne', sans-serif;
+  --ff-body: 'DM Sans', sans-serif;
+  --ff-mono: 'Roboto Mono', monospace;
+
+  --r:  8px;
+  --rl: 16px;
+  --rx: 24px;
+  --sh: 0 4px 24px rgba(0,0,0,.10);
+  --sh2: 0 12px 48px rgba(0,0,0,.18);
+  --tr: .25s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-body);
+  color: var(--text);
+  background: var(--white);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: var(--ff-body); }
+
+/* =============================================
+   UTILITY
+   ============================================= */
+.container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1440px; margin: 0 auto; padding: 0 2rem; }
+section { padding: 6rem 0; }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--ff-mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--green2); margin-bottom: 1rem;
+}
+.tag::before { content:''; width:20px; height:2px; background: var(--green2); display:block; }
+.tag.gold { color: var(--gold2); }
+.tag.gold::before { background: var(--gold2); }
+.tag.white { color: rgba(255,255,255,.6); }
+.tag.white::before { background: rgba(255,255,255,.4); }
+
+h2.title {
+  font-family: var(--ff-disp); font-weight: 800;
+  font-size: clamp(1.85rem, 3.5vw, 2.9rem);
+  line-height: 1.1; letter-spacing: -0.5px;
+  margin-bottom: 1rem;
+}
+h2.title.white { color: var(--white); }
+.sub {
+  font-size: 1.05rem; color: var(--gray2); max-width: 580px;
+  line-height: 1.75; margin-bottom: 3rem;
+}
+.sub.white { color: rgba(255,255,255,.55); }
+.accent { color: var(--gold2); }
+.green { color: var(--green3); }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 24px; border-radius: var(--r);
+  font-family: var(--ff-body); font-weight: 500; font-size: 15px;
+  border: none; transition: all var(--tr); white-space: nowrap;
+}
+.btn svg { width:16px; height:16px; flex-shrink:0; }
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-gold:hover { background: var(--gold2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,131,10,.35); }
+.btn-green { background: var(--green1); color: #fff; }
+.btn-green:hover { background: var(--green2); transform: translateY(-2px); }
+.btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.25); }
+.btn-outline:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.5); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--surface); border-color: var(--green2); color: var(--green1); }
+.btn-wa { background: #25D366; color:#fff; }
+.btn-wa:hover { background: #128C7E; }
+
+/* =============================================
+   NAV
+   ============================================= */
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  height: 72px; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(7,19,13,.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(72,168,114,.12);
+  transition: box-shadow var(--tr), background var(--tr);
+}
+.nav.scrolled {
+  background: rgba(7,19,13,.98);
+  box-shadow: 0 2px 32px rgba(0,0,0,.4);
+}
+.nav-logo img {
+  height: 38px; width: auto;
+  filter: drop-shadow(0 0 8px rgba(232,160,32,.2));
+}
+.nav-links {
+  display: flex; align-items: center; gap: 1.75rem; list-style: none;
+}
+.nav-links a {
+  font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.65);
+  transition: color var(--tr); letter-spacing: .2px;
+}
+.nav-links a:hover { color: var(--gold3); }
+.nav-cta {
+  background: var(--gold) !important; color: #fff !important;
+  padding: 9px 20px; border-radius: var(--r);
+  font-size: 13.5px !important; font-weight: 600 !important;
+  transition: background var(--tr) !important;
+}
+.nav-cta:hover { background: var(--gold2) !important; }
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; padding: 4px;
+}
+.hamburger span { display:block; width:24px; height:2px; background:#fff; border-radius:2px; transition: var(--tr); }
+.mob-menu {
+  display: none; position: fixed; top: 72px; left:0; right:0; z-index:999;
+  background: var(--dark); border-bottom: 1px solid rgba(72,168,114,.15);
+  padding: 1.5rem 2rem; flex-direction: column; gap: .875rem;
+}
+.mob-menu.open { display: flex; }
+.mob-menu a { font-size:15px; font-weight:500; color: rgba(255,255,255,.75); padding:.5rem 0; border-bottom:1px solid rgba(255,255,255,.06); }
+.mob-menu .nav-cta { text-align:center; padding:12px; margin-top:.5rem; border:none; border-radius:var(--r); }
+
+/* =============================================
+   HERO
+   ============================================= */
+.hero {
+  min-height: 100vh; padding-top: 72px;
+  background: var(--dark);
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; position: relative; overflow: hidden;
+}
+/* animated scanline overlay */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(26,77,46,.018) 3px, rgba(26,77,46,.018) 4px);
+  animation: scan 8s linear infinite;
+}
+@keyframes scan { from { background-position: 0 0; } to { background-position: 0 100vh; } }
+
+.hero-left { padding: 5rem 3.5rem 5rem 4rem; position: relative; z-index: 2; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(232,160,32,.3); background: rgba(232,160,32,.07);
+  color: var(--gold3); padding: 5px 14px; border-radius: 20px;
+  font-family: var(--ff-mono); font-size: 10.5px; letter-spacing:.6px;
+  text-transform: uppercase; margin-bottom: 1.75rem;
+}
+.hero-badge .pulse {
+  width:6px; height:6px; border-radius:50%; background: var(--gold2);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform: scale(1); }
+  50% { opacity:.4; transform: scale(1.5); }
+}
+.hero h1 {
+  font-family: var(--ff-disp); font-weight: 800;
+  font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+  line-height: 1.08; color: var(--white); letter-spacing: -1px;
+  margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: normal; color: var(--gold2); }
+.hero-desc {
+  font-size: 1.05rem; color: rgba(255,255,255,.6);
+  line-height: 1.78; max-width: 460px; margin-bottom: 2.5rem;
+}
+.hero-btns {
+  display: flex; flex-wrap: wrap; gap: .875rem; margin-bottom: 3rem;
+}
+.hero-stats {
+  display: flex; flex-wrap: wrap; gap: 2rem;
+  padding-top: 2rem; border-top: 1px solid rgba(255,255,255,.08);
+}
+.hstat .n {
+  font-family: var(--ff-disp); font-size: 2.1rem; font-weight: 800;
+  color: var(--gold2); line-height: 1;
+}
+.hstat .l {
+  font-family: var(--ff-mono); font-size: 10px; color: rgba(255,255,255,.4);
+  text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;
+}
+.hero-right {
+  height: 100%; min-height: 700px; position: relative; overflow: hidden;
+}
+.hero-right svg { width:100%; height:100%; display:block; }
+.hero-fade {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, var(--dark) 0%, transparent 12%);
+  pointer-events: none;
+}
+
+/* grid animation */
+.grid-anim { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 3s ease forwards; }
+.grid-anim:nth-child(2) { animation-delay: .1s; }
+.grid-anim:nth-child(3) { animation-delay: .2s; }
+.grid-anim:nth-child(4) { animation-delay: .3s; }
+.grid-anim:nth-child(5) { animation-delay: .4s; }
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+.pin-anim { animation: pinPop .6s cubic-bezier(.34,1.56,.64,1) both; }
+.pin-anim:nth-child(1) { animation-delay: 1.2s; }
+.pin-anim:nth-child(2) { animation-delay: 1.5s; }
+.pin-anim:nth-child(3) { animation-delay: 1.8s; }
+@keyframes pinPop { from { opacity:0; transform: scale(0) translateY(8px); } to { opacity:1; transform: scale(1) translateY(0); } }
+
+.ring-anim { animation: ringExpand 3s ease-out infinite; }
+.ring-anim:nth-child(2) { animation-delay: 1s; }
+.ring-anim:nth-child(3) { animation-delay: 2s; }
+@keyframes ringExpand { 0% { r:15; opacity:.7; } 100% { r:90; opacity:0; } }
+
+/* =============================================
+   STRIP — CLIENTS
+   ============================================= */
+.strip {
+  background: var(--dark2);
+  border-top: 1px solid rgba(72,168,114,.12);
+  border-bottom: 1px solid rgba(72,168,114,.12);
+  padding: 2rem 0;
+  overflow: hidden;
+}
+.strip-label {
+  text-align: center; font-family: var(--ff-mono); font-size: 10px;
+  color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 1.25rem;
+}
+.strip-track {
+  display: flex; align-items: center; gap: 2rem;
+  overflow-x: auto; padding: 0 2rem;
+  scrollbar-width: none;
+}
+.strip-track::-webkit-scrollbar { display: none; }
+.client-chip {
+  flex-shrink: 0; background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px; padding: 8px 20px;
+  font-family: var(--ff-disp); font-size: 12.5px; font-weight: 700;
+  color: rgba(255,255,255,.5); letter-spacing: .3px;
+  transition: all var(--tr);
+}
+.client-chip:hover { color: var(--gold3); border-color: rgba(232,160,32,.35); }
+
+/* =============================================
+   SOBRE
+   ============================================= */
+.about { background: var(--white); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.about-visual { position: relative; }
+.about-art {
+  border-radius: var(--rl); overflow: hidden;
+  border: 1px solid rgba(26,77,46,.15);
+}
+.about-float {
+  position: absolute; bottom: -18px; right: -18px;
+  background: var(--gold); color: #fff;
+  border-radius: var(--rl); padding: 1.25rem 1.75rem;
+  box-shadow: var(--sh2);
+}
+.about-float .n { font-family: var(--ff-disp); font-size: 2.5rem; font-weight: 800; line-height: 1; }
+.about-float .l { font-family: var(--ff-mono); font-size: 10px; opacity: .85; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+.about-text p { color: var(--gray2); margin-bottom: 1rem; line-height: 1.8; }
+.about-pts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1.75rem; }
+.apt {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13.5px; font-weight: 500; color: var(--text);
+}
+.apt::before { content:''; width:6px; height:6px; border-radius:50%; background: var(--green2); flex-shrink:0; }
+
+/* =============================================
+   SERVICES
+   ============================================= */
+.services { background: var(--surface); }
+.srv-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.stab {
+  padding: 8px 18px; border-radius: 24px; font-size: 13px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--border); background: #fff;
+  color: var(--gray2); transition: all var(--tr); font-family: var(--ff-mono);
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.stab.active, .stab:hover { background: var(--dark); color: #fff; border-color: var(--dark); }
+.srv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.5rem; }
+.sc {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--rl); padding: 1.75rem;
+  transition: all var(--tr);
+  transform: translateY(0);
+}
+.sc:hover { border-color: var(--green3); box-shadow: var(--sh); transform: translateY(-4px); }
+.sc-icon {
+  width: 48px; height: 48px; border-radius: var(--r);
+  background: #edf5f0; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.sc-icon svg { width:24px; height:24px; stroke: var(--green2); fill:none; stroke-width:1.75; }
+.sc h3 { font-family: var(--ff-disp); font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
+.sc p { font-size: 13.5px; color: var(--gray2); line-height: 1.65; margin-bottom: 1rem; }
+.sc-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.sc-tag {
+  font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 10px;
+  background: #edf5f0; color: var(--green1); font-family: var(--ff-mono);
+  text-transform: uppercase; letter-spacing: .3px;
+}
+
+/* =============================================
+   TECHNOLOGY / GIS
+   ============================================= */
+.tech { background: var(--dark); }
+.tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.tech-feats { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+.tf { display: flex; align-items: flex-start; gap: 1rem; }
+.tf-dot {
+  width: 36px; height: 36px; border-radius: var(--r); flex-shrink: 0;
+  background: rgba(72,168,114,.12); border: 1px solid rgba(72,168,114,.2);
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+.tf-dot svg { width:17px; height:17px; stroke: var(--green3); fill:none; stroke-width:1.75; }
+.tf-body h4 { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+.tf-body p { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.65; }
+.tech-art { border-radius: var(--rl); overflow: hidden; border: 1px solid rgba(72,168,114,.2); }
+
+/* =============================================
+   SETORES
+   ============================================= */
+.sectors { background: var(--dark2); }
+.sectors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px,1fr)); gap: 1rem; }
+.sector {
+  background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--rl); padding: 1.5rem; transition: all var(--tr);
+}
+.sector:hover { background: rgba(255,255,255,.07); border-color: rgba(201,131,10,.35); }
+.sector-ico {
+  width: 42px; height: 42px; border-radius: var(--r);
+  background: rgba(27,77,48,.5); display: flex; align-items: center;
+  justify-content: center; margin-bottom: 1rem;
+}
+.sector-ico svg { width:21px; height:21px; stroke: var(--green3); fill:none; stroke-width:1.75; }
+.sector h3 { font-family: var(--ff-disp); font-size: .9rem; font-weight: 700; color: #fff; margin-bottom: .25rem; }
+.sector p { font-size: 12.5px; color: rgba(255,255,255,.4); line-height: 1.5; }
+
+/* =============================================
+   NUMBERS
+   ============================================= */
+.numbers { background: var(--white); }
+.nums-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; margin-bottom: 4rem; }
+.num-card {
+  text-align: center; padding: 2rem;
+  border: 1px solid var(--border); border-radius: var(--rl);
+  background: var(--surface); transition: all var(--tr);
+}
+.num-card:hover { border-color: var(--green3); box-shadow: var(--sh); transform: translateY(-3px); }
+.num-card .n {
+  font-family: var(--ff-disp); font-weight: 800;
+  font-size: 2.8rem; color: var(--green1); line-height: 1; margin-bottom: .5rem;
+}
+.num-card .l { font-size: 13px; color: var(--gray2); font-family: var(--ff-mono); text-transform: uppercase; letter-spacing: .5px; }
+
+/* =============================================
+   DIFERENCIAIS
+   ============================================= */
+.diffs { background: var(--surface); }
+.diffs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+.diff {
+  padding-top: 1.25rem; border-top: 2px solid var(--border);
+  transition: border-color var(--tr);
+}
+.diff:hover { border-color: var(--gold2); }
+.diff-num { font-family: var(--ff-mono); font-size: 10px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: .75rem; }
+.diff h3 { font-family: var(--ff-disp); font-size: 1.05rem; font-weight: 700; margin-bottom: .5rem; }
+.diff p { font-size: 13.5px; color: var(--gray2); line-height: 1.68; }
+
+/* =============================================
+   FORMULÁRIOS
+   ============================================= */
+.forms-sec { background: var(--surface); }
+.ftabs { display: flex; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.ftab {
+  padding: 12px 26px; border-radius: var(--r); font-size: 14px; font-weight: 500;
+  cursor: pointer; border: 1.5px solid var(--border); background: #fff;
+  color: var(--gray2); transition: all var(--tr);
+}
+.ftab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+.fpanel { display: none; }
+.fpanel.active { display: block; }
+.form-wrap { background: #fff; border: 1px solid var(--border); border-radius: var(--rl); padding: 2.5rem; box-shadow: var(--sh); }
+.form-hd { margin-bottom: 2rem; }
+.form-hd h3 { font-family: var(--ff-disp); font-size: 1.5rem; font-weight: 700; margin-bottom: .5rem; }
+.form-hd p { font-size: 14px; color: var(--gray2); line-height: 1.65; }
+.info-box {
+  background: #edf5f0; border: 1px solid #b8d9c0; border-radius: var(--r);
+  padding: 1rem 1.25rem; font-size: 13.5px; color: var(--green1);
+  margin-bottom: 2rem; line-height: 1.65;
+}
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+.fg.full { grid-column: 1 / -1; }
+.fg label { font-family: var(--ff-mono); font-size: 11px; font-weight: 500; color: var(--text); text-transform: uppercase; letter-spacing: .8px; }
+.fg input, .fg select, .fg textarea {
+  border: 1px solid var(--border); border-radius: var(--r);
+  padding: 11px 14px; font-family: var(--ff-body); font-size: 15px;
+  color: var(--text); background: #fff; outline: none; width: 100%;
+  transition: border-color var(--tr), box-shadow var(--tr);
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus {
+  border-color: var(--green2); box-shadow: 0 0 0 3px rgba(46,125,82,.1);
+}
+.fg textarea { resize: vertical; min-height: 100px; }
+.fg select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a9488' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.crow { display: flex; align-items: center; gap: 10px; }
+.crow input[type="checkbox"] { width:18px; height:18px; cursor:pointer; flex-shrink:0; accent-color: var(--green2); }
+.crow label { font-size: 13.5px; color: var(--gray2); cursor: pointer; font-family: var(--ff-body); }
+.fsubmit {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; margin-top: 2rem;
+  padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+.fnote { font-family: var(--ff-mono); font-size: 11px; color: var(--gray2); }
+.ok-msg {
+  display: none; background: #edf5f0; border: 1px solid #b8d9c0; border-radius: var(--r);
+  padding: 1rem 1.25rem; color: var(--green1); font-size: 13.5px;
+  margin-top: 1rem; align-items: center; gap: 8px;
+}
+.ok-msg.show { display: flex; }
+
+/* MAP INTERACTIVE */
+.map-wrap {
+  border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden; background: var(--surface);
+  position: relative;
+}
+.map-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: .75rem; height: 340px;
+  color: var(--gray2); font-size: 14px; font-family: var(--ff-mono);
+  background: var(--surface);
+}
+.map-placeholder svg { width:40px; height:40px; stroke: var(--gray1); }
+#breMap {
+  width: 100%; height: 380px;
+  display: none; z-index: 1;
+}
+.map-tip {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 500;
+  background: rgba(7,19,13,.88); backdrop-filter: blur(8px);
+  color: rgba(255,255,255,.8); font-family: var(--ff-mono);
+  font-size: 11px; padding: 8px 14px;
+  display: flex; align-items: center; gap: 8px;
+  border-top: 1px solid rgba(72,168,114,.2);
+  pointer-events: none;
+}
+.map-tip svg { width:14px; height:14px; stroke: var(--gold2); fill:none; flex-shrink:0; }
+.map-tip-coords { margin-left: auto; color: var(--gold3); letter-spacing: .5px; }
+.map-search-bar {
+  display: flex; gap: .5rem; margin-bottom: .75rem;
+}
+.map-search-bar input {
+  flex: 1; border: 1px solid var(--border); border-radius: var(--r);
+  padding: 10px 14px; font-family: var(--ff-body); font-size: 14px;
+  color: var(--text); background: #fff; outline: none;
+  transition: border-color var(--tr), box-shadow var(--tr);
+}
+.map-search-bar input:focus {
+  border-color: var(--green2); box-shadow: 0 0 0 3px rgba(46,125,82,.1);
+}
+.map-search-bar button {
+  background: var(--green1); color: #fff; border: none;
+  border-radius: var(--r); padding: 10px 18px;
+  font-family: var(--ff-mono); font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: background var(--tr); white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+}
+.map-search-bar button:hover { background: var(--green2); }
+.map-search-bar button svg { width:15px; height:15px; }
+.coords-display {
+  display: flex; align-items: center; gap: 8px; margin-top: .625rem;
+  background: var(--dark2); border-radius: var(--r);
+  padding: 10px 14px; border: 1px solid rgba(72,168,114,.2);
+}
+.coords-display .coords-ico { width:16px; height:16px; stroke: var(--gold2); fill: none; flex-shrink:0; }
+.coords-display .coords-val {
+  font-family: var(--ff-mono); font-size: 12px; color: var(--gold3);
+  letter-spacing: .5px; flex: 1;
+}
+.coords-display .coords-lbl {
+  font-family: var(--ff-mono); font-size: 10px; color: rgba(255,255,255,.4);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.coords-display.hidden { display: none; }
+
+/* =============================================
+   SOCIAL PROOF
+   ============================================= */
+.social-sec { background: var(--dark); }
+.social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.social-card {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--rl); padding: 2rem; transition: all var(--tr);
+  display: flex; align-items: flex-start; gap: 1.5rem;
+}
+.social-card:hover { background: rgba(255,255,255,.07); border-color: rgba(232,160,32,.3); transform: translateY(-3px); }
+.social-logo {
+  width: 52px; height: 52px; border-radius: var(--r); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.social-logo.ig { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+.social-logo.li { background: #0A66C2; }
+.social-logo svg { width: 26px; height: 26px; fill: #fff; }
+.social-body h3 { font-family: var(--ff-disp); font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: .35rem; }
+.social-body p { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.6; margin-bottom: .875rem; }
+.social-handle { font-family: var(--ff-mono); font-size: 11px; color: var(--gold3); }
+
+/* =============================================
+   CONTATO
+   ============================================= */
+.contact { background: var(--surface); }
+.con-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: start; }
+.con-info { display: flex; flex-direction: column; gap: 1.25rem; }
+.con-card {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--rl); padding: 1.5rem;
+}
+.con-ch { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+.con-ci {
+  width: 38px; height: 38px; border-radius: var(--r);
+  background: #edf5f0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.con-ci svg { width:18px; height:18px; stroke: var(--green2); fill: none; stroke-width:1.75; }
+.con-ct { font-weight: 600; font-size: 14px; }
+.con-cs { font-family: var(--ff-mono); font-size: 10px; color: var(--gray2); text-transform: uppercase; letter-spacing: 1px; }
+.con-body { font-size: 14px; line-height: 1.85; color: var(--text); }
+.con-body a { color: var(--green2); }
+.wa-banner {
+  background: linear-gradient(135deg, var(--dark), var(--green1));
+  border-radius: var(--rl); padding: 1.75rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+.wa-banner h3 { font-family: var(--ff-disp); font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: .25rem; }
+.wa-banner p { font-size: 13px; color: rgba(255,255,255,.6); }
+.con-map { border-radius: var(--r); overflow: hidden; height: 200px; background: var(--surface); border: 1px solid var(--border); margin-top: 1.25rem; }
+.con-map iframe { width:100%; height:100%; border:none; }
+
+/* =============================================
+   CTA SECTION
+   ============================================= */
+.cta-sec { background: var(--dark); }
+.cta-inner {
+  border: 1px solid rgba(72,168,114,.2); border-radius: var(--rx);
+  padding: 4rem; text-align: center; position: relative; overflow: hidden;
+}
+.cta-inner::before {
+  content: '';
+  position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,131,10,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-inner h2 { font-family: var(--ff-disp); font-size: clamp(1.75rem,3.5vw,2.75rem); font-weight: 800; color: #fff; margin-bottom: 1rem; letter-spacing: -.5px; }
+.cta-inner p { font-size: 1rem; color: rgba(255,255,255,.55); max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.75; }
+.cta-btns { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+
+/* =============================================
+   FOOTER
+   ============================================= */
+footer {
+  background: var(--dark); color: rgba(255,255,255,.55);
+  border-top: 1px solid rgba(72,168,114,.1);
+  padding: 4rem 0 0;
+}
+.foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,.06); }
+.foot-logo { margin-bottom: 1.25rem; }
+.foot-logo img { height: 36px; width: auto; }
+.foot-brand p { font-size: 13.5px; line-height: 1.75; margin-bottom: 1.25rem; }
+.foot-ci { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: .625rem; font-family: var(--ff-mono); }
+.foot-ci svg { width:13px; height:13px; flex-shrink:0; margin-top:2px; stroke: var(--gold2); fill:none; stroke-width:2; }
+.foot-col h4 { font-family: var(--ff-mono); font-size: 10px; font-weight: 500; color: #fff; margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 2px; }
+.foot-col ul { list-style: none; }
+.foot-col ul li { margin-bottom: .6rem; }
+.foot-col ul li a { font-size: 13px; color: rgba(255,255,255,.45); transition: color var(--tr); }
+.foot-col ul li a:hover { color: var(--gold3); }
+.foot-bottom {
+  padding: 1.5rem 0; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: .75rem;
+  font-size: 12px; font-family: var(--ff-mono);
+}
+.foot-bottom a { color: rgba(255,255,255,.35); }
+.foot-bottom a:hover { color: var(--gold3); }
+.cnpj { color: rgba(255,255,255,.2); }
+.foot-social { display: flex; gap: .75rem; margin-top: 1.25rem; }
+.fsoc {
+  width: 34px; height: 34px; border-radius: var(--r);
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--tr);
+}
+.fsoc:hover { background: rgba(232,160,32,.15); border-color: rgba(232,160,32,.3); }
+.fsoc svg { width:16px; height:16px; fill: rgba(255,255,255,.6); }
+
+/* =============================================
+   SCROLL TOP
+   ============================================= */
+.scrolltop {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 900;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--green1); color: #fff; border: none;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: all var(--tr); box-shadow: var(--sh);
+}
+.scrolltop.vis { opacity: 1; pointer-events: auto; }
+.scrolltop:hover { background: var(--green2); transform: translateY(-2px); }
+.scrolltop svg { width: 18px; height: 18px; }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media(max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .about-grid, .tech-grid, .con-grid { grid-template-columns: 1fr; }
+  .diffs-grid { grid-template-columns: 1fr 1fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .nums-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero-left { padding: 4rem 1.5rem; }
+}
+@media(max-width: 640px) {
+  .diffs-grid, .social-grid, .nums-grid { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .sectors-grid { grid-template-columns: 1fr 1fr; }
+  .fgrid { grid-template-columns: 1fr; }
+  section { padding: 4rem 0; }
+  .cta-inner { padding: 2.5rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<nav class="nav" id="nav">
+  <a href="#inicio" class="nav-logo">
+    <img src="Logo_Amarelo_Branco.png" alt="BrE Consultoria & Engenharia">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#setores">Setores</a></li>
+    <li><a href="#tecnologia">Tecnologia</a></li>
+    <li><a href="#formularios">Formulários</a></li>
+    <li><a href="#contato">Contato</a></li>
+    <li><a href="#formularios" class="nav-cta">Solicitar Serviço</a></li>
+  </ul>
+  <button class="hamburger" id="hbg" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#sobre" onclick="cM()">Sobre a BrE</a>
+  <a href="#servicos" onclick="cM()">Serviços</a>
+  <a href="#setores" onclick="cM()">Setores</a>
+  <a href="#tecnologia" onclick="cM()">Tecnologia</a>
+  <a href="#formularios" onclick="cM()">Formulários</a>
+  <a href="#contato" onclick="cM()">Contato</a>
+  <a href="#formularios" class="nav-cta btn-gold" onclick="cM()" style="border-radius:8px;padding:12px;text-align:center;display:block;">Solicitar Serviço</a>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="inicio">
+  <div class="hero-left">
+    <div class="hero-badge">
+      <span class="pulse"></span>
+      Sistema Operacional Ativo · NE + SE · Desde 2012
+    </div>
+    <h1>
+      Engenharia,<br>
+      <em>Licenciamento</em><br>
+      e Infraestrutura<br>
+      que movem o Brasil
+    </h1>
+    <p class="hero-desc">
+      A BrE resolve problemas complexos de regularização, licenciamento e infraestrutura com inteligência técnica, experiência prática e atuação em todo o território nacional.
+    </p>
+    <div class="hero-btns">
+      <a href="#formularios" class="btn btn-gold">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        Solicitar Serviço
+      </a>
+      <a href="#formularios" class="btn btn-outline" id="btnTerreno">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Cadastrar Terreno
+      </a>
+      <a href="#servicos" class="btn btn-outline">Ver Soluções</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">+12</div><div class="l">Anos de mercado</div></div>
+      <div class="hstat"><div class="n">+200</div><div class="l">Projetos entregues</div></div>
+      <div class="hstat"><div class="n">NE+SE</div><div class="l">Regiões de atuação</div></div>
+      <div class="hstat"><div class="n">9+</div><div class="l">Grandes clientes</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <!-- ===== HERO GIS ILLUSTRATION ===== -->
+    <svg viewBox="0 0 640 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <rect width="640" height="720" fill="#071310"/>
+      <!-- GRID BASE -->
+      <defs>
+        <pattern id="gp" width="48" height="48" patternUnits="userSpaceOnUse">
+          <line x1="48" y1="0" x2="48" y2="48" stroke="#1b4d30" stroke-width="0.4" opacity="0.3"/>
+          <line x1="0" y1="48" x2="48" y2="48" stroke="#1b4d30" stroke-width="0.4" opacity="0.3"/>
+        </pattern>
+        <!-- pulse animation for rings -->
+        <style>
+          .rp1{animation:rp 3s ease-out infinite}
+          .rp2{animation:rp 3s ease-out 1s infinite}
+          .rp3{animation:rp 3s ease-out 2s infinite}
+          @keyframes rp{0%{r:20;opacity:.6}100%{r:100;opacity:0}}
+          .gfl{stroke-dasharray:800;stroke-dashoffset:800;animation:gfl 2.5s ease forwards}
+          .gfl:nth-child(1){animation-delay:.1s}
+          .gfl:nth-child(2){animation-delay:.3s}
+          .gfl:nth-child(3){animation-delay:.5s}
+          .gfl:nth-child(4){animation-delay:.7s}
+          .gfl:nth-child(5){animation-delay:.9s}
+          @keyframes gfl{to{stroke-dashoffset:0}}
+          .pp{animation:pp .7s cubic-bezier(.34,1.56,.64,1) both}
+          .pp:nth-child(1){animation-delay:1.5s}
+          .pp:nth-child(2){animation-delay:1.8s}
+          .pp:nth-child(3){animation-delay:2.1s}
+          @keyframes pp{from{opacity:0;transform-origin:center;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+          .routeAnim{stroke-dasharray:600;stroke-dashoffset:600;animation:gfl 3s ease 1s forwards}
+          .hud-blink{animation:hblink 2s ease-in-out infinite}
+          @keyframes hblink{0%,100%{opacity:.9}50%{opacity:.4}}
+        </style>
+      </defs>
+      <rect width="640" height="720" fill="url(#gp)"/>
+
+      <!-- TOPO CONTOURS -->
+      <path d="M0,230 Q80,212 170,225 Q260,238 360,210 Q460,182 560,200 Q600,208 640,196" stroke="#2e7d52" stroke-width="0.8" fill="none" opacity="0.28"/>
+      <path d="M0,260 Q90,245 185,256 Q280,267 380,240 Q475,215 575,232 Q610,240 640,228" stroke="#2e7d52" stroke-width="0.6" fill="none" opacity="0.2"/>
+      <path d="M0,290 Q100,278 200,288 Q305,298 405,270 Q495,246 590,262 Q618,270 640,258" stroke="#2e7d52" stroke-width="0.5" fill="none" opacity="0.16"/>
+
+      <!-- URBAN BLOCKS -->
+      <rect x="54" y="54" width="48" height="36" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.13"/>
+      <rect x="108" y="54" width="48" height="36" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.09"/>
+      <rect x="54" y="96" width="48" height="58" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.11"/>
+      <rect x="108" y="96" width="48" height="58" stroke="#2e7d52" stroke-width="0.5" fill="#2e7d52" opacity="0.07"/>
+      <rect x="162" y="54" width="48" height="36" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.07"/>
+      <rect x="162" y="96" width="48" height="58" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.1"/>
+      <rect x="314" y="54" width="48" height="58" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.11"/>
+      <rect x="368" y="54" width="48" height="36" stroke="#2e7d52" stroke-width="0.5" fill="#c9830a" opacity="0.055"/>
+      <rect x="420" y="54" width="48" height="58" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.09"/>
+      <rect x="460" y="490" width="48" height="38" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.1"/>
+      <rect x="514" y="490" width="48" height="58" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.08"/>
+      <rect x="460" y="534" width="102" height="38" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.07"/>
+      <rect x="568" y="490" width="54" height="82" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.09"/>
+
+      <!-- ROADS -->
+      <line x1="54" y1="160" x2="640" y2="160" stroke="#2e7d52" stroke-width="1.4" opacity="0.32"/>
+      <line x1="314" y1="0" x2="314" y2="720" stroke="#2e7d52" stroke-width="1.4" opacity="0.28"/>
+      <path d="M162,54 L162,420 L520,420 L520,720" stroke="#2e7d52" stroke-width="0.8" fill="none" opacity="0.2"/>
+
+      <!-- ANIMATED ROUTE (acquisition path) -->
+      <path class="routeAnim" d="M110,640 L110,540 L240,540 L240,400 L370,400 L370,290 L460,290 L460,200" stroke="#c9830a" stroke-width="1.8" fill="none" stroke-dasharray="5,3" opacity="0.6"/>
+
+      <!-- SIGNAL RINGS — animated -->
+      <circle class="rp1" cx="460" cy="165" r="20" fill="none" stroke="#c9830a" stroke-width="0.8"/>
+      <circle class="rp2" cx="460" cy="165" r="20" fill="none" stroke="#c9830a" stroke-width="0.8"/>
+      <circle class="rp3" cx="460" cy="165" r="20" fill="none" stroke="#c9830a" stroke-width="0.8"/>
+      <!-- static outer rings -->
+      <circle cx="460" cy="165" r="38" fill="none" stroke="#c9830a" stroke-width="0.6" opacity="0.35"/>
+      <circle cx="460" cy="165" r="65" fill="none" stroke="#c9830a" stroke-width="0.4" opacity="0.18"/>
+      <circle cx="460" cy="165" r="98" fill="none" stroke="#c9830a" stroke-width="0.3" opacity="0.1"/>
+
+      <!-- MAIN TOWER -->
+      <g transform="translate(460,42)">
+        <line x1="0" y1="160" x2="-24" y2="192" stroke="#48a872" stroke-width="1.5" opacity="0.85"/>
+        <line x1="0" y1="160" x2="24" y2="192" stroke="#48a872" stroke-width="1.5" opacity="0.85"/>
+        <line x1="-24" y1="192" x2="24" y2="192" stroke="#48a872" stroke-width="1.1" opacity="0.6"/>
+        <line x1="-18" y1="192" x2="-7" y2="120" stroke="#48a872" stroke-width="1.3" opacity="0.85"/>
+        <line x1="18" y1="192" x2="7" y2="120" stroke="#48a872" stroke-width="1.3" opacity="0.85"/>
+        <line x1="-7" y1="120" x2="7" y2="120" stroke="#48a872" stroke-width="0.9" opacity="0.6"/>
+        <line x1="-18" y1="192" x2="7" y2="158" stroke="#48a872" stroke-width="0.7" opacity="0.4"/>
+        <line x1="18" y1="192" x2="-7" y2="158" stroke="#48a872" stroke-width="0.7" opacity="0.4"/>
+        <line x1="-14" y1="158" x2="7" y2="130" stroke="#48a872" stroke-width="0.6" opacity="0.35"/>
+        <line x1="14" y1="158" x2="-7" y2="130" stroke="#48a872" stroke-width="0.6" opacity="0.35"/>
+        <!-- mast -->
+        <line x1="-7" y1="120" x2="-2.5" y2="28" stroke="#c9830a" stroke-width="2.2" opacity="0.9"/>
+        <line x1="7" y1="120" x2="2.5" y2="28" stroke="#c9830a" stroke-width="2.2" opacity="0.9"/>
+        <line x1="-2.5" y1="28" x2="2.5" y2="28" stroke="#c9830a" stroke-width="3"/>
+        <!-- antennas -->
+        <rect x="-16" y="34" width="32" height="9" rx="3" fill="#c9830a" opacity="0.85"/>
+        <rect x="-11" y="48" width="22" height="6" rx="2.5" fill="#c9830a" opacity="0.6"/>
+        <rect x="-16" y="66" width="32" height="7" rx="3" fill="#48a872" opacity="0.65"/>
+        <rect x="-12" y="82" width="24" height="5" rx="2" fill="#2e7d52" opacity="0.5"/>
+        <!-- tip -->
+        <line x1="0" y1="28" x2="0" y2="4" stroke="#c9830a" stroke-width="2.5"/>
+        <circle cx="0" cy="2" r="3.5" fill="#c9830a"/>
+        <circle cx="0" cy="2" r="1.5" fill="#071310"/>
+        <!-- base shadow -->
+        <ellipse cx="0" cy="195" rx="26" ry="5" fill="#48a872" opacity="0.1"/>
+      </g>
+
+      <!-- SECONDARY TOWER -->
+      <g transform="translate(148,408)">
+        <line x1="0" y1="100" x2="-14" y2="122" stroke="#2e7d52" stroke-width="1.1" opacity="0.75"/>
+        <line x1="0" y1="100" x2="14" y2="122" stroke="#2e7d52" stroke-width="1.1" opacity="0.75"/>
+        <line x1="-14" y1="122" x2="14" y2="122" stroke="#2e7d52" stroke-width="0.9"/>
+        <line x1="-11" y1="122" x2="-3" y2="70" stroke="#2e7d52" stroke-width="1" opacity="0.8"/>
+        <line x1="11" y1="122" x2="3" y2="70" stroke="#2e7d52" stroke-width="1" opacity="0.8"/>
+        <line x1="-11" y1="122" x2="3" y2="98" stroke="#2e7d52" stroke-width="0.5" opacity="0.35"/>
+        <line x1="11" y1="122" x2="-3" y2="98" stroke="#2e7d52" stroke-width="0.5" opacity="0.35"/>
+        <line x1="-3" y1="70" x2="3" y2="70" stroke="#c9830a" stroke-width="1.3"/>
+        <line x1="0" y1="70" x2="0" y2="40" stroke="#c9830a" stroke-width="1.6"/>
+        <circle cx="0" cy="38" r="2.8" fill="#c9830a" opacity="0.9"/>
+        <rect x="-10" y="44" width="20" height="5.5" rx="2" fill="#c9830a" opacity="0.65"/>
+        <rect x="-7" y="55" width="14" height="4" rx="1.5" fill="#48a872" opacity="0.55"/>
+        <!-- mini rings -->
+        <circle cx="0" cy="38" r="22" stroke="#c9830a" stroke-width="0.5" fill="none" opacity="0.3"/>
+        <circle cx="0" cy="38" r="42" stroke="#c9830a" stroke-width="0.3" fill="none" opacity="0.14"/>
+      </g>
+
+      <!-- MULTIUSE POLE -->
+      <g transform="translate(370,465)">
+        <line x1="0" y1="0" x2="0" y2="90" stroke="#48a872" stroke-width="4" opacity="0.8"/>
+        <rect x="-17" y="9" width="34" height="12" rx="4" fill="#c9830a" opacity="0.72"/>
+        <rect x="-12" y="24" width="24" height="8" rx="2.5" fill="#48a872" opacity="0.55"/>
+        <circle cx="-20" cy="11" r="4.5" fill="#c9830a" opacity="0.75"/>
+        <circle cx="20" cy="11" r="4.5" fill="#c9830a" opacity="0.75"/>
+        <line x1="-20" y1="11" x2="-32" y2="7" stroke="#c9830a" stroke-width="2" opacity="0.6"/>
+        <line x1="20" y1="11" x2="32" y2="7" stroke="#c9830a" stroke-width="2" opacity="0.6"/>
+        <rect x="-4" y="90" width="8" height="10" rx="2" fill="#2e7d52" opacity="0.6"/>
+      </g>
+
+      <!-- LOCATION PINS — animated -->
+      <g class="pp">
+        <g transform="translate(460,230)">
+          <circle cx="0" cy="0" r="9" fill="#c9830a" opacity="0.9"/>
+          <circle cx="0" cy="0" r="4" fill="#071310"/>
+          <line x1="0" y1="9" x2="0" y2="18" stroke="#c9830a" stroke-width="2" opacity="0.7"/>
+        </g>
+      </g>
+      <g class="pp" style="animation-delay:1.8s">
+        <g transform="translate(240,400)">
+          <circle cx="0" cy="0" r="7" fill="#48a872" opacity="0.85"/>
+          <circle cx="0" cy="0" r="3" fill="#071310"/>
+          <line x1="0" y1="7" x2="0" y2="14" stroke="#48a872" stroke-width="1.5" opacity="0.6"/>
+        </g>
+      </g>
+      <g class="pp" style="animation-delay:2.1s">
+        <g transform="translate(370,400)">
+          <circle cx="0" cy="0" r="7" fill="#48a872" opacity="0.75"/>
+          <circle cx="0" cy="0" r="3" fill="#071310"/>
+          <line x1="0" y1="7" x2="0" y2="14" stroke="#48a872" stroke-width="1.5" opacity="0.6"/>
+        </g>
+      </g>
+      <g transform="translate(110,640)">
+        <circle cx="0" cy="0" r="6" fill="#c9830a" opacity="0.65"/>
+        <circle cx="0" cy="0" r="2.5" fill="#071310"/>
+      </g>
+
+      <!-- COORD LABELS -->
+      <text x="468" y="252" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" opacity="0.8">-8.0543 / -34.8811</text>
+      <text x="246" y="393" font-family="'Roboto Mono',monospace" font-size="9" fill="#48a872" opacity="0.75">CAND-0047</text>
+      <text x="377" y="393" font-family="'Roboto Mono',monospace" font-size="9" fill="#48a872" opacity="0.7">CAND-0112</text>
+
+      <!-- HUD PANEL -->
+      <rect x="22" y="460" width="195" height="162" rx="5" fill="#071310" opacity="0.92"/>
+      <rect x="22" y="460" width="195" height="162" rx="5" stroke="#2e7d52" stroke-width="0.8" fill="none" opacity="0.6"/>
+      <rect x="22" y="460" width="195" height="20" rx="5" fill="#1b4d30" opacity="0.9"/>
+      <line x1="22" y1="480" x2="217" y2="480" stroke="#2e7d52" stroke-width="0.4" opacity="0.5"/>
+      <text x="32" y="474" font-family="'Roboto Mono',monospace" font-size="9.5" fill="#48a872" opacity="0.9">PAINEL OPERACIONAL · BrE</text>
+
+      <text x="32" y="498" font-family="'Roboto Mono',monospace" font-size="9" fill="#48a872" opacity="0.7">STATUS SIG</text>
+      <text class="hud-blink" x="155" y="498" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" font-weight="500">● ATIVO</text>
+      <line x1="32" y1="503" x2="208" y2="503" stroke="#2e7d52" stroke-width="0.3" opacity="0.35"/>
+
+      <text x="32" y="517" font-family="'Roboto Mono',monospace" font-size="9" fill="#48a872" opacity="0.7">CANDIDATOS</text>
+      <text x="170" y="517" font-family="'Roboto Mono',monospace" font-size="10.5" fill="#c9830a" font-weight="500">47</text>
+      <line x1="32" y1="522" x2="208" y2="522" stroke="#2e7d52" stroke-width="0.3" opacity="0.35"/>
+
+      <text x="32" y="536" font-family="'Roboto Mono',monospace" font-size="9" fill="#48a872" opacity="0.7">LICENÇAS</text>
+      <text x="170" y="536" font-family="'Roboto Mono',monospace" font-size="10.5" fill="#c9830a" font-weight="500">12</text>
+      <line x1="32" y1="541" x2="208" y2="541" stroke="#2e7d52" stroke-width="0.3" opacity="0.35"/>
+
+      <text x="32" y="555" font-family="'Roboto Mono',monospace" font-size="9" fill="#48a872" opacity="0.7">MUNICÍPIOS</text>
+      <text x="170" y="555" font-family="'Roboto Mono',monospace" font-size="10.5" fill="#c9830a" font-weight="500">6</text>
+      <line x1="32" y1="560" x2="208" y2="560" stroke="#2e7d52" stroke-width="0.3" opacity="0.35"/>
+
+      <text x="32" y="574" font-family="'Roboto Mono',monospace" font-size="9" fill="#48a872" opacity="0.7">REGIÃO</text>
+      <text x="155" y="574" font-family="'Roboto Mono',monospace" font-size="10.5" fill="#c9830a" font-weight="500">NE + SE</text>
+      <line x1="32" y1="579" x2="208" y2="579" stroke="#2e7d52" stroke-width="0.3" opacity="0.35"/>
+
+      <text x="32" y="593" font-family="'Roboto Mono',monospace" font-size="9" fill="#48a872" opacity="0.7">OBRAS APROV.</text>
+      <text x="170" y="593" font-family="'Roboto Mono',monospace" font-size="10.5" fill="#c9830a" font-weight="500">19</text>
+
+      <line x1="22" y1="600" x2="217" y2="600" stroke="#c9830a" stroke-width="0.5" opacity="0.35"/>
+      <text x="32" y="614" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#c9830a" opacity="0.6">▸ SIG · GEO · LICENC · ACQ</text>
+
+      <!-- COMPASS ROSE -->
+      <g transform="translate(582,78)">
+        <circle cx="0" cy="0" r="26" fill="#071310" opacity="0.88"/>
+        <circle cx="0" cy="0" r="26" stroke="#2e7d52" stroke-width="0.8" fill="none" opacity="0.55"/>
+        <polygon points="0,-20 4.5,-7 0,-12 -4.5,-7" fill="#c9830a" opacity="0.9"/>
+        <polygon points="0,20 4.5,7 0,12 -4.5,7" fill="#48a872" opacity="0.45"/>
+        <polygon points="-20,0 -7,-4.5 -12,0 -7,4.5" fill="#48a872" opacity="0.4"/>
+        <polygon points="20,0 7,-4.5 12,0 7,4.5" fill="#48a872" opacity="0.4"/>
+        <circle cx="0" cy="0" r="3" fill="#c9830a" opacity="0.9"/>
+        <text x="-3" y="-27" font-family="'Roboto Mono',monospace" font-size="9" fill="#c9830a" opacity="0.9">N</text>
+      </g>
+
+      <!-- SCALE BAR -->
+      <rect x="408" y="668" width="172" height="36" rx="4" fill="#071310" opacity="0.88"/>
+      <rect x="408" y="668" width="172" height="36" rx="4" stroke="#2e7d52" stroke-width="0.6" fill="none" opacity="0.5"/>
+      <line x1="420" y1="681" x2="572" y2="681" stroke="#48a872" stroke-width="1.4" opacity="0.7"/>
+      <line x1="420" y1="676" x2="420" y2="686" stroke="#48a872" stroke-width="1.5" opacity="0.7"/>
+      <line x1="496" y1="676" x2="496" y2="686" stroke="#48a872" stroke-width="1" opacity="0.5"/>
+      <line x1="572" y1="676" x2="572" y2="686" stroke="#48a872" stroke-width="1.5" opacity="0.7"/>
+      <text x="422" y="695" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.65">0 · 500m · 1km</text>
+
+      <!-- HEADER LABEL -->
+      <text x="22" y="20" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.4">SIG · BrE CONSULTORIA &amp; ENGENHARIA · GEOPROCESSAMENTO v3.1</text>
+
+      <!-- CROSSHAIRS -->
+      <line x1="0" y1="0" x2="24" y2="0" stroke="#c9830a" stroke-width="1.5" opacity="0.4"/>
+      <line x1="0" y1="0" x2="0" y2="24" stroke="#c9830a" stroke-width="1.5" opacity="0.4"/>
+      <line x1="640" y1="0" x2="616" y2="0" stroke="#c9830a" stroke-width="1.5" opacity="0.4"/>
+      <line x1="640" y1="0" x2="640" y2="24" stroke="#c9830a" stroke-width="1.5" opacity="0.4"/>
+      <line x1="0" y1="720" x2="24" y2="720" stroke="#c9830a" stroke-width="1.5" opacity="0.4"/>
+      <line x1="0" y1="720" x2="0" y2="696" stroke="#c9830a" stroke-width="1.5" opacity="0.4"/>
+      <line x1="640" y1="720" x2="616" y2="720" stroke="#c9830a" stroke-width="1.5" opacity="0.4"/>
+      <line x1="640" y1="720" x2="640" y2="696" stroke="#c9830a" stroke-width="1.5" opacity="0.4"/>
+    </svg>
+    <div class="hero-fade"></div>
+  </div>
+</section>
+
+<!-- ==================== CLIENTS STRIP ==================== -->
+<div class="strip">
+  <div class="container">
+    <p class="strip-label">Empresas que confiam na BrE</p>
+    <div class="strip-track">
+      <div class="client-chip">Highline</div>
+      <div class="client-chip">IHS Towers</div>
+      <div class="client-chip">QMC Telecom</div>
+      <div class="client-chip">SITES Brasil</div>
+      <div class="client-chip">Fibrasil</div>
+      <div class="client-chip">Brazil Tower Company</div>
+      <div class="client-chip">Winity Telecom</div>
+      <div class="client-chip">Global Sites Brasil</div>
+      <div class="client-chip">SBA</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SOBRE ==================== -->
+<section class="about" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-art">
+          <!-- ISOMETRIC ILLUSTRATION -->
+          <svg viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%">
+            <rect width="560" height="360" fill="#091a10"/>
+            <!-- iso grid lines -->
+            <line x1="0" y1="180" x2="280" y2="0" stroke="#1b4d30" stroke-width="0.4" opacity="0.3"/>
+            <line x1="0" y1="240" x2="340" y2="0" stroke="#1b4d30" stroke-width="0.4" opacity="0.25"/>
+            <line x1="0" y1="300" x2="415" y2="0" stroke="#1b4d30" stroke-width="0.4" opacity="0.2"/>
+            <line x1="0" y1="360" x2="490" y2="0" stroke="#1b4d30" stroke-width="0.4" opacity="0.18"/>
+            <line x1="70" y1="360" x2="560" y2="66" stroke="#1b4d30" stroke-width="0.4" opacity="0.18"/>
+            <line x1="200" y1="360" x2="560" y2="178" stroke="#1b4d30" stroke-width="0.4" opacity="0.18"/>
+            <line x1="0" y1="200" x2="280" y2="360" stroke="#1b4d30" stroke-width="0.3" opacity="0.14"/>
+            <line x1="0" y1="120" x2="220" y2="360" stroke="#1b4d30" stroke-width="0.3" opacity="0.14"/>
+            <line x1="60" y1="0" x2="430" y2="360" stroke="#1b4d30" stroke-width="0.3" opacity="0.14"/>
+            <line x1="190" y1="0" x2="560" y2="360" stroke="#1b4d30" stroke-width="0.3" opacity="0.14"/>
+            <line x1="360" y1="0" x2="560" y2="200" stroke="#1b4d30" stroke-width="0.3" opacity="0.12"/>
+            <!-- ISOMETRIC BLOCKS -->
+            <!-- Block A (large) -->
+            <polygon points="155,198 240,158 325,198 240,238" fill="#1b4d30" opacity="0.8"/>
+            <polygon points="155,198 240,238 240,296 155,256" fill="#0d2018" opacity="0.9"/>
+            <polygon points="240,238 325,198 325,256 240,296" fill="#111e16" opacity="0.9"/>
+            <polygon points="155,198 240,158 325,198 240,238" stroke="#48a872" stroke-width="0.6" fill="none" opacity="0.4"/>
+            <polygon points="155,198 240,238 240,296 155,256" stroke="#48a872" stroke-width="0.5" fill="none" opacity="0.3"/>
+            <polygon points="240,238 325,198 325,256 240,296" stroke="#48a872" stroke-width="0.5" fill="none" opacity="0.3"/>
+            <!-- windows left face -->
+            <rect x="165" y="215" width="14" height="11" rx="1.5" fill="#c9830a" opacity="0.45"/>
+            <rect x="185" y="215" width="14" height="11" rx="1.5" fill="#c9830a" opacity="0.28"/>
+            <rect x="165" y="234" width="14" height="11" rx="1.5" fill="#c9830a" opacity="0.35"/>
+            <!-- windows right face -->
+            <polygon points="256,208 268,202 268,214 256,220" fill="#c9830a" opacity="0.42"/>
+            <polygon points="276,198 288,192 288,204 276,210" fill="#c9830a" opacity="0.52"/>
+            <polygon points="256,224 268,218 268,230 256,236" fill="#c9830a" opacity="0.25"/>
+            <!-- Block B (medium) -->
+            <polygon points="325,158 390,128 455,158 390,188" fill="#152a1c" opacity="0.82"/>
+            <polygon points="325,158 390,188 390,232 325,202" fill="#0a1a10" opacity="0.9"/>
+            <polygon points="390,188 455,158 455,202 390,232" fill="#111c15" opacity="0.9"/>
+            <polygon points="325,158 390,128 455,158 390,188" stroke="#48a872" stroke-width="0.5" fill="none" opacity="0.35"/>
+            <polygon points="330,170 342,164 342,176 330,182" fill="#c9830a" opacity="0.5"/>
+            <polygon points="354,160 366,154 366,166 354,172" fill="#c9830a" opacity="0.35"/>
+            <!-- Block C (small right) -->
+            <polygon points="440,218 502,190 564,218 502,246" fill="#152a1c" opacity="0.78"/>
+            <polygon points="440,218 502,246 502,288 440,260" fill="#0a1a10" opacity="0.88"/>
+            <polygon points="502,246 564,218 564,260 502,288" fill="#111c15" opacity="0.88"/>
+            <polygon points="448,228 460,222 460,234 448,240" fill="#c9830a" opacity="0.48"/>
+            <!-- TOWER ON BLOCK A -->
+            <g transform="translate(240,100)">
+              <line x1="-7" y1="58" x2="7" y2="58" stroke="#48a872" stroke-width="1.5"/>
+              <line x1="-7" y1="58" x2="-2" y2="14" stroke="#c9830a" stroke-width="1.3" opacity="0.9"/>
+              <line x1="7" y1="58" x2="2" y2="14" stroke="#c9830a" stroke-width="1.3" opacity="0.9"/>
+              <line x1="-6" y1="46" x2="2" y2="30" stroke="#48a872" stroke-width="0.6" opacity="0.4"/>
+              <line x1="6" y1="46" x2="-2" y2="30" stroke="#48a872" stroke-width="0.6" opacity="0.4"/>
+              <rect x="-11" y="10" width="22" height="6" rx="2.5" fill="#c9830a" opacity="0.82"/>
+              <rect x="-7" y="2" width="14" height="4.5" rx="2" fill="#c9830a" opacity="0.6"/>
+              <line x1="0" y1="10" x2="0" y2="-12" stroke="#c9830a" stroke-width="2.2"/>
+              <circle cx="0" cy="-14" r="2.8" fill="#c9830a"/>
+              <circle cx="0" cy="-14" r="11" stroke="#c9830a" stroke-width="0.6" fill="none" opacity="0.3"/>
+              <circle cx="0" cy="-14" r="22" stroke="#c9830a" stroke-width="0.4" fill="none" opacity="0.15"/>
+            </g>
+            <!-- FIBER CABLES -->
+            <path d="M325,148 Q358,138 390,148" stroke="#c9830a" stroke-width="1" fill="none" stroke-dasharray="3,2" opacity="0.65"/>
+            <path d="M240,118 Q284,106 325,120" stroke="#c9830a" stroke-width="1" fill="none" stroke-dasharray="3,2" opacity="0.5"/>
+            <!-- DATA PANEL -->
+            <rect x="18" y="26" width="162" height="120" rx="4.5" fill="#071310" opacity="0.94"/>
+            <rect x="18" y="26" width="162" height="120" rx="4.5" stroke="#2e7d52" stroke-width="0.7" fill="none" opacity="0.6"/>
+            <rect x="18" y="26" width="162" height="18" rx="4.5" fill="#1b4d30" opacity="0.9"/>
+            <text x="28" y="39" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.9">MÓDULO LICENCIAMENTO</text>
+            <line x1="18" y1="44" x2="180" y2="44" stroke="#2e7d52" stroke-width="0.4" opacity="0.45"/>
+            <text x="28" y="59" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">MUNICÍPIOS</text><text x="150" y="59" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" font-weight="500">6</text>
+            <text x="28" y="75" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">PROCESSOS</text><text x="150" y="75" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" font-weight="500">23</text>
+            <text x="28" y="91" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">ALVARÁS</text><text x="150" y="91" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" font-weight="500">31</text>
+            <text x="28" y="107" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">OBRAS APROV.</text><text x="150" y="107" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" font-weight="500">19</text>
+            <line x1="18" y1="116" x2="180" y2="116" stroke="#c9830a" stroke-width="0.5" opacity="0.35"/>
+            <text x="28" y="136" font-family="'Roboto Mono',monospace" font-size="8" fill="#c9830a" opacity="0.6">▸ NE · SE · BrE v3.1</text>
+            <!-- ACQ PANEL -->
+            <rect x="378" y="26" width="164" height="96" rx="4.5" fill="#071310" opacity="0.92"/>
+            <rect x="378" y="26" width="164" height="96" rx="4.5" stroke="#c9830a" stroke-width="0.6" fill="none" opacity="0.42"/>
+            <rect x="378" y="26" width="164" height="18" rx="4.5" fill="#2d1a00" opacity="0.9"/>
+            <text x="388" y="39" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#c9830a" opacity="0.9">ACQUISITION · CAMPO</text>
+            <line x1="378" y1="44" x2="542" y2="44" stroke="#c9830a" stroke-width="0.4" opacity="0.4"/>
+            <text x="388" y="60" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">CANDIDATOS</text><text x="516" y="60" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" font-weight="500">47</text>
+            <text x="388" y="76" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">ANALISADOS</text><text x="516" y="76" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" font-weight="500">23</text>
+            <text x="388" y="92" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">CONTRATOS</text><text x="516" y="92" font-family="'Roboto Mono',monospace" font-size="10" fill="#c9830a" font-weight="500">12</text>
+            <line x1="378" y1="100" x2="542" y2="100" stroke="#c9830a" stroke-width="0.4" opacity="0.3"/>
+            <text x="388" y="115" font-family="'Roboto Mono',monospace" font-size="7.5" fill="#c9830a" opacity="0.5">▸ ROOFTOP · TERRENO · PÚB.</text>
+            <!-- crosshairs -->
+            <line x1="0" y1="0" x2="16" y2="0" stroke="#c9830a" stroke-width="1.2" opacity="0.35"/>
+            <line x1="0" y1="0" x2="0" y2="16" stroke="#c9830a" stroke-width="1.2" opacity="0.35"/>
+            <line x1="560" y1="0" x2="544" y2="0" stroke="#c9830a" stroke-width="1.2" opacity="0.35"/>
+            <line x1="560" y1="0" x2="560" y2="16" stroke="#c9830a" stroke-width="1.2" opacity="0.35"/>
+            <line x1="0" y1="360" x2="16" y2="360" stroke="#c9830a" stroke-width="1.2" opacity="0.35"/>
+            <line x1="0" y1="360" x2="0" y2="344" stroke="#c9830a" stroke-width="1.2" opacity="0.35"/>
+            <line x1="560" y1="360" x2="544" y2="360" stroke="#c9830a" stroke-width="1.2" opacity="0.35"/>
+            <line x1="560" y1="360" x2="560" y2="344" stroke="#c9830a" stroke-width="1.2" opacity="0.35"/>
+            <text x="18" y="354" font-family="'Roboto Mono',monospace" font-size="7" fill="#2e7d52" opacity="0.3">BrE CONSULTORIA &amp; ENGENHARIA · INFRAESTRUTURA INTELIGENTE · 2025</text>
+          </svg>
+        </div>
+        <div class="about-float">
+          <div class="n">+12</div>
+          <div class="l">Anos Atuando</div>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="tag">Quem somos</div>
+        <h2 class="title">Consultoria técnica completa para projetos de qualquer escala</h2>
+        <p>A BrE Consultoria & Engenharia é uma empresa técnica multidisciplinar fundada em 2012 com forte atuação em telecomunicações — acquisition de sites, licenciamento de torres e postes multiuso — que expandiu seu portfólio estrategicamente para atender empreendimentos industriais, comerciais, imobiliários e de infraestrutura urbana.</p>
+        <p>Somos pioneiros na implantação dos primeiros postes multiuso em áreas públicas no Nordeste, com operações em João Pessoa, Recife, Jaboatão dos Guararapes, Fortaleza, Natal e Maceió. Toda a nossa entrega é sustentada por inteligência documental, rastreabilidade e conformidade técnica.</p>
+        <div class="about-pts">
+          <div class="apt">Licenciamento Urbanístico</div>
+          <div class="apt">Licenciamento Ambiental</div>
+          <div class="apt">Licenciamento Patrimonial</div>
+          <div class="apt">Acquisition de Áreas</div>
+          <div class="apt">Regularização Imobiliária</div>
+          <div class="apt">Auditoria e Diagnóstico</div>
+          <div class="apt">Serviços Patrimoniais</div>
+          <div class="apt">Infraestrutura Inteligente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SERVIÇOS ==================== -->
+<section class="services" id="servicos">
+  <div class="container">
+    <div class="tag">Nossas soluções</div>
+    <h2 class="title">Serviços técnicos para cada etapa do seu projeto</h2>
+    <div class="srv-tabs" id="srvTabs">
+      <div class="stab active" data-f="all">Todos</div>
+      <div class="stab" data-f="lic">Licenciamento</div>
+      <div class="stab" data-f="acq">Acquisition</div>
+      <div class="stab" data-f="eng">Engenharia</div>
+      <div class="stab" data-f="pat">Patrimonial</div>
+      <div class="stab" data-f="inf">Infraestrutura</div>
+    </div>
+    <div class="srv-grid" id="srvGrid">
+
+      <div class="sc" data-c="lic">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4M9 17h2"/><path d="M16 2v4M8 2v4"/></svg></div>
+        <h3>Licenciamento Urbanístico</h3>
+        <p>Aprovação de projetos, alvarás de construção, alvará de localização e funcionamento junto às prefeituras municipais.</p>
+        <div class="sc-tags"><span class="sc-tag">Municipal</span><span class="sc-tag">Alvarás</span><span class="sc-tag">Projetos</span></div>
+      </div>
+
+      <div class="sc" data-c="lic">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M12 8v4l3 3"/><path d="M9 3.5C7 5 5.5 7.5 5 10"/></svg></div>
+        <h3>Licenciamento Ambiental</h3>
+        <p>EIA, RIMA, estudos ambientais, licenças LP/LI/LO junto a órgãos estaduais e IBAMA.</p>
+        <div class="sc-tags"><span class="sc-tag">EIA/RIMA</span><span class="sc-tag">LP/LI/LO</span><span class="sc-tag">IBAMA</span></div>
+      </div>
+
+      <div class="sc" data-c="lic">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+        <h3>Licenciamento Patrimonial</h3>
+        <p>Regularização junto ao patrimônio histórico, IPHAN e órgãos de preservação cultural.</p>
+        <div class="sc-tags"><span class="sc-tag">IPHAN</span><span class="sc-tag">Histórico</span></div>
+      </div>
+
+      <div class="sc" data-c="lic">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22,8.5 12,15.5 2,8.5"/></svg></div>
+        <h3>COMAR, DNIT e DER</h3>
+        <p>Anuências aeronáuticas e licenciamentos em rodovias federais e estaduais.</p>
+        <div class="sc-tags"><span class="sc-tag">COMAR</span><span class="sc-tag">DNIT</span><span class="sc-tag">DER</span></div>
+      </div>
+
+      <div class="sc" data-c="lic">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <h3>Corpo de Bombeiros</h3>
+        <p>AVCB, laudo de vistoria, projetos de prevenção e combate a incêndio.</p>
+        <div class="sc-tags"><span class="sc-tag">AVCB</span><span class="sc-tag">Vistoria</span><span class="sc-tag">CBMPE</span></div>
+      </div>
+
+      <div class="sc" data-c="acq">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <h3>Prospecção de Candidatos</h3>
+        <p>Identificação e análise de áreas candidatas para torres, galpões, infraestrutura ou empreendimentos.</p>
+        <div class="sc-tags"><span class="sc-tag">Torres</span><span class="sc-tag">Galpões</span><span class="sc-tag">Rooftop</span></div>
+      </div>
+
+      <div class="sc" data-c="acq">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>Consulta de Viabilidade</h3>
+        <p>Análise técnica, legal e documental de áreas com consulta prévia a órgãos competentes.</p>
+        <div class="sc-tags"><span class="sc-tag">Técnica</span><span class="sc-tag">Jurídica</span></div>
+      </div>
+
+      <div class="sc" data-c="acq">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+        <h3>Negociação e TPU</h3>
+        <p>Negociação com proprietários e municípios. Termos de Permissão de Uso em áreas públicas.</p>
+        <div class="sc-tags"><span class="sc-tag">TPU</span><span class="sc-tag">Áreas Públicas</span></div>
+      </div>
+
+      <div class="sc" data-c="eng">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <h3>Projetos em CAD e Drone</h3>
+        <p>Elaboração de projetos técnicos em CAD e levantamento aerofotogramétrico com drone ANAC/DECEA.</p>
+        <div class="sc-tags"><span class="sc-tag">CAD</span><span class="sc-tag">Drone</span><span class="sc-tag">ANAC</span></div>
+      </div>
+
+      <div class="sc" data-c="eng">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg></div>
+        <h3>Auditoria e Diagnóstico</h3>
+        <p>Relatórios técnicos de vistoria estrutural com tabela de carregamento, croquis e verificação legal.</p>
+        <div class="sc-tags"><span class="sc-tag">Estrutural</span><span class="sc-tag">Relatório</span></div>
+      </div>
+
+      <div class="sc" data-c="pat">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div>
+        <h3>Averbações e Escrituras</h3>
+        <p>Regularização cartorária: averbações, escriturações, titularidade, retificação e desmembramentos.</p>
+        <div class="sc-tags"><span class="sc-tag">Cartório</span><span class="sc-tag">Averbação</span></div>
+      </div>
+
+      <div class="sc" data-c="inf">
+        <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+        <h3>Regularização Imobiliária</h3>
+        <p>Regularização completa de imóveis urbanos e rurais: documentação, licenciamento e averbação.</p>
+        <div class="sc-tags"><span class="sc-tag">Urbano</span><span class="sc-tag">Rural</span><span class="sc-tag">LGPD</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TECHNOLOGY / GIS ==================== -->
+<section class="tech" id="tecnologia">
+  <div class="container">
+    <div class="tech-grid">
+      <div class="tech-text">
+        <div class="tag gold">Inteligência operacional</div>
+        <h2 class="title white">Operação de campo com tecnologia de ponta</h2>
+        <p class="sub white">Nossa equipe de campo combina drones certificados, geoprocessamento, sistemas GIS e ferramentas digitais de licenciamento para entregar resultados com rastreabilidade total.</p>
+        <div class="tech-feats">
+          <div class="tf">
+            <div class="tf-dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></div>
+            <div class="tf-body"><h4>Sistema GIS proprietário</h4><p>Mapeamento georreferenciado de candidatos, sites ativos e processos de licenciamento.</p></div>
+          </div>
+          <div class="tf">
+            <div class="tf-dot"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11"/><line x1="12" y1="22" x2="12" y2="16"/><path d="M7.5 22H16.5"/></svg></div>
+            <div class="tf-body"><h4>Drone ANAC/DECEA certificado</h4><p>Levantamentos aerofotogramétricos precisos com certificação legal para qualquer área.</p></div>
+          </div>
+          <div class="tf">
+            <div class="tf-dot"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg></div>
+            <div class="tf-body"><h4>CAD e modelagem técnica</h4><p>Projetos e croquis com padrão de engenharia para aprovação em qualquer órgão.</p></div>
+          </div>
+          <div class="tf">
+            <div class="tf-dot"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div class="tf-body"><h4>Banco de legislações municipais</h4><p>Exigências mapeadas por município para acelerar processos com zero retrabalho.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-art">
+        <!-- GIS MAP PANEL ILLUSTRATION -->
+        <svg viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%">
+          <rect width="480" height="420" fill="#071310"/>
+          <defs><pattern id="gp2" width="38" height="38" patternUnits="userSpaceOnUse"><line x1="38" y1="0" x2="38" y2="38" stroke="#1b4d30" stroke-width="0.35" opacity="0.3"/><line x1="0" y1="38" x2="38" y2="38" stroke="#1b4d30" stroke-width="0.35" opacity="0.3"/></pattern></defs>
+          <rect width="480" height="420" fill="url(#gp2)"/>
+          <!-- contours -->
+          <path d="M0,148 Q58,133 125,146 Q195,159 265,136 Q332,113 398,130 Q440,142 480,128" stroke="#2e7d52" stroke-width="0.8" fill="none" opacity="0.3"/>
+          <path d="M0,172 Q66,158 136,170 Q210,182 278,160 Q344,138 410,155 Q450,165 480,152" stroke="#2e7d52" stroke-width="0.6" fill="none" opacity="0.22"/>
+          <!-- roads -->
+          <line x1="0" y1="208" x2="480" y2="208" stroke="#2e7d52" stroke-width="1.3" opacity="0.28"/>
+          <line x1="232" y1="0" x2="232" y2="420" stroke="#2e7d52" stroke-width="1.3" opacity="0.24"/>
+          <!-- blocks -->
+          <rect x="40" y="40" width="36" height="28" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.12"/>
+          <rect x="82" y="40" width="36" height="28" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.08"/>
+          <rect x="40" y="74" width="78" height="42" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.09"/>
+          <rect x="246" y="40" width="36" height="42" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.1"/>
+          <rect x="288" y="40" width="36" height="28" stroke="#2e7d52" stroke-width="0.5" fill="#c9830a" opacity="0.05"/>
+          <rect x="328" y="40" width="36" height="42" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.08"/>
+          <rect x="246" y="222" width="78" height="36" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.08"/>
+          <rect x="330" y="222" width="36" height="36" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.06"/>
+          <rect x="372" y="222" width="72" height="68" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.07"/>
+          <rect x="40" y="222" width="76" height="58" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.08"/>
+          <rect x="40" y="286" width="76" height="42" stroke="#2e7d52" stroke-width="0.5" fill="#1b4d30" opacity="0.06"/>
+          <!-- rings -->
+          <circle cx="356" cy="98" r="26" stroke="#c9830a" stroke-width="0.7" fill="none" opacity="0.42"/>
+          <circle cx="356" cy="98" r="50" stroke="#c9830a" stroke-width="0.5" fill="none" opacity="0.22"/>
+          <circle cx="356" cy="98" r="78" stroke="#c9830a" stroke-width="0.3" fill="none" opacity="0.11"/>
+          <!-- tower -->
+          <g transform="translate(356,46)">
+            <line x1="0" y1="78" x2="-12" y2="96" stroke="#48a872" stroke-width="1" opacity="0.8"/>
+            <line x1="0" y1="78" x2="12" y2="96" stroke="#48a872" stroke-width="1" opacity="0.8"/>
+            <line x1="-12" y1="96" x2="12" y2="96" stroke="#48a872" stroke-width="0.8"/>
+            <line x1="-9" y1="96" x2="-3" y2="54" stroke="#48a872" stroke-width="0.9" opacity="0.8"/>
+            <line x1="9" y1="96" x2="3" y2="54" stroke="#48a872" stroke-width="0.9" opacity="0.8"/>
+            <line x1="-9" y1="96" x2="3" y2="76" stroke="#48a872" stroke-width="0.5" opacity="0.35"/>
+            <line x1="9" y1="96" x2="-3" y2="76" stroke="#48a872" stroke-width="0.5" opacity="0.35"/>
+            <rect x="-10" y="35" width="20" height="6" rx="2" fill="#c9830a" opacity="0.8"/>
+            <rect x="-7" y="26" width="14" height="4" rx="1.5" fill="#c9830a" opacity="0.6"/>
+            <line x1="-3" y1="54" x2="3" y2="54" stroke="#c9830a" stroke-width="1.2"/>
+            <line x1="0" y1="54" x2="0" y2="20" stroke="#c9830a" stroke-width="1.5"/>
+            <circle cx="0" cy="18" r="2.5" fill="#c9830a"/>
+          </g>
+          <!-- small signal -->
+          <circle cx="96" cy="118" r="18" stroke="#48a872" stroke-width="0.6" fill="none" opacity="0.3"/>
+          <circle cx="96" cy="118" r="34" stroke="#48a872" stroke-width="0.4" fill="none" opacity="0.15"/>
+          <g transform="translate(96,94)">
+            <line x1="0" y1="48" x2="-8" y2="60" stroke="#2e7d52" stroke-width="0.9" opacity="0.7"/>
+            <line x1="0" y1="48" x2="8" y2="60" stroke="#2e7d52" stroke-width="0.9" opacity="0.7"/>
+            <line x1="-8" y1="60" x2="8" y2="60" stroke="#2e7d52" stroke-width="0.7"/>
+            <line x1="-6" y1="60" x2="-2" y2="34" stroke="#2e7d52" stroke-width="0.8" opacity="0.75"/>
+            <line x1="6" y1="60" x2="2" y2="34" stroke="#2e7d52" stroke-width="0.8" opacity="0.75"/>
+            <line x1="-2" y1="34" x2="2" y2="34" stroke="#c9830a" stroke-width="1"/>
+            <line x1="0" y1="34" x2="0" y2="18" stroke="#c9830a" stroke-width="1.2"/>
+            <circle cx="0" cy="16" r="2" fill="#c9830a" opacity="0.85"/>
+            <rect x="-7" y="20" width="14" height="4" rx="1.5" fill="#c9830a" opacity="0.6"/>
+          </g>
+          <!-- route -->
+          <path d="M76,376 L76,286 L182,286 L182,218 L290,218 L290,156 L366,156" stroke="#c9830a" stroke-width="1.2" fill="none" stroke-dasharray="4,3" opacity="0.52"/>
+          <!-- pins -->
+          <g transform="translate(356,142)"><circle cx="0" cy="0" r="7" fill="#c9830a" opacity="0.9"/><circle cx="0" cy="0" r="3" fill="#071310"/><line x1="0" y1="7" x2="0" y2="14" stroke="#c9830a" stroke-width="1.5" opacity="0.7"/></g>
+          <g transform="translate(182,218)"><circle cx="0" cy="0" r="5" fill="#48a872" opacity="0.8"/><circle cx="0" cy="0" r="2" fill="#071310"/><line x1="0" y1="5" x2="0" y2="11" stroke="#48a872" stroke-width="1.2" opacity="0.6"/></g>
+          <g transform="translate(76,376)"><circle cx="0" cy="0" r="5" fill="#c9830a" opacity="0.7"/><circle cx="0" cy="0" r="2" fill="#071310"/></g>
+          <!-- coord labels -->
+          <text x="363" y="162" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#c9830a" opacity="0.8">-8.054 / -34.881</text>
+          <text x="188" y="212" font-family="'Roboto Mono',monospace" font-size="8" fill="#48a872" opacity="0.7">CAND-0047</text>
+          <!-- legend panel -->
+          <rect x="18" y="296" width="162" height="100" rx="4" fill="#071310" opacity="0.93"/>
+          <rect x="18" y="296" width="162" height="100" rx="4" stroke="#2e7d52" stroke-width="0.7" fill="none" opacity="0.55"/>
+          <rect x="18" y="296" width="162" height="16" rx="4" fill="#1b4d30" opacity="0.9"/>
+          <text x="28" y="308" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.9">LEGENDA SIG · BrE</text>
+          <line x1="18" y1="312" x2="180" y2="312" stroke="#2e7d52" stroke-width="0.4" opacity="0.4"/>
+          <circle cx="30" cy="327" r="5" fill="#c9830a" opacity="0.85"/><text x="40" y="331" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.8">SITE ATIVO</text>
+          <circle cx="30" cy="345" r="5" fill="#48a872" opacity="0.75"/><text x="40" y="349" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">CANDIDATO</text>
+          <line x1="22" y1="362" x2="38" y2="362" stroke="#c9830a" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.6"/><text x="40" y="366" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.7">ROTA ACQUISITION</text>
+          <line x1="22" y1="379" x2="38" y2="379" stroke="#2e7d52" stroke-width="1.2" opacity="0.5"/><text x="40" y="383" font-family="'Roboto Mono',monospace" font-size="8.5" fill="#48a872" opacity="0.6">VIA PRINCIPAL</text>
+          <!-- compass -->
+          <g transform="translate(440,50)">
+            <circle cx="0" cy="0" r="22" fill="#071310" opacity="0.88"/>
+            <circle cx="0" cy="0" r="22" stroke="#2e7d52" stroke-width="0.7" fill="none" opacity="0.5"/>
+            <polygon points="0,-17 4,-6 0,-10 -4,-6" fill="#c9830a" opacity="0.9"/>
+            <polygon points="0,17 4,6 0,10 -4,6" fill="#48a872" opacity="0.45"/>
+            <polygon points="-17,0 -6,-3 -10,0 -6,3" fill="#48a872" opacity="0.4"/>
+            <polygon points="17,0 6,-3 10,0 6,3" fill="#48a872" opacity="0.4"/>
+            <circle cx="0" cy="0" r="2.5" fill="#c9830a" opacity="0.9"/>
+            <text x="-2.5" y="-22" font-family="'Roboto Mono',monospace" font-size="8" fill="#c9830a" opacity="0.9">N</text>
+          </g>
+          <!-- header + crosshairs -->
+          <text x="18" y="16" font-family="'Roboto Mono',monospace" font-size="8" fill="#48a872" opacity="0.38">SIG · BrE · GEOPROCESSAMENTO · NE/SE</text>
+          <line x1="0" y1="0" x2="14" y2="0" stroke="#c9830a" stroke-width="1" opacity="0.35"/>
+          <line x1="0" y1="0" x2="0" y2="14" stroke="#c9830a" stroke-width="1" opacity="0.35"/>
+          <line x1="480" y1="0" x2="466" y2="0" stroke="#c9830a" stroke-width="1" opacity="0.35"/>
+          <line x1="480" y1="0" x2="480" y2="14" stroke="#c9830a" stroke-width="1" opacity="0.35"/>
+          <line x1="0" y1="420" x2="14" y2="420" stroke="#c9830a" stroke-width="1" opacity="0.35"/>
+          <line x1="0" y1="420" x2="0" y2="406" stroke="#c9830a" stroke-width="1" opacity="0.35"/>
+          <line x1="480" y1="420" x2="466" y2="420" stroke="#c9830a" stroke-width="1" opacity="0.35"/>
+          <line x1="480" y1="420" x2="480" y2="406" stroke="#c9830a" stroke-width="1" opacity="0.35"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SETORES ==================== -->
+<section class="sectors" id="setores">
+  <div class="container">
+    <div class="tag white">Mercados atendidos</div>
+    <h2 class="title white">Atuamos em diferentes setores e segmentos</h2>
+    <p class="sub white">Nossa equipe multidisciplinar atende projetos em qualquer segmento que demande licenciamento, regularização ou engenharia.</p>
+    <div class="sectors-grid">
+      <div class="sector"><div class="sector-ico"><svg viewBox="0 0 24 24"><path d="M6 12Q6 6 12 6Q18 6 18 12" stroke-linecap="round"/><path d="M4 12Q4 4 12 4Q20 4 20 12" stroke-linecap="round" opacity="0.5"/><circle cx="12" cy="12" r="2" fill="#48a872" stroke="none"/></svg></div><h3>Telecomunicações</h3><p>Torres, rooftops, postes multiuso, sites telecom</p></div>
+      <div class="sector"><div class="sector-ico"><svg viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="11" rx="1"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></div><h3>Industrial</h3><p>Galpões, plantas industriais, usinas, depósitos</p></div>
+      <div class="sector"><div class="sector-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div><h3>Comercial</h3><p>Shopping, postos, varejo, centros comerciais</p></div>
+      <div class="sector"><div class="sector-ico"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div><h3>Infraestrutura</h3><p>Rodovias, energia, mobilidade, obras públicas</p></div>
+      <div class="sector"><div class="sector-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8"/><path d="M12 3a12.5 12.5 0 0 1 0 18M12 3a12.5 12.5 0 0 0 0 18"/></svg></div><h3>Ambiental</h3><p>Licenciamentos, EIA/RIMA, órgãos ambientais</p></div>
+      <div class="sector"><div class="sector-ico"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><h3>Imobiliário</h3><p>Loteamentos, condomínios, regularizações</p></div>
+      <div class="sector"><div class="sector-ico"><svg viewBox="0 0 24 24"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg></div><h3>Energia</h3><p>Fotovoltaico, PCHs, subestações, transmissão</p></div>
+      <div class="sector"><div class="sector-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Poder Público</h3><p>Municípios, autarquias, concessões, PPPs</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== NÚMEROS ==================== -->
+<section class="numbers" id="numeros">
+  <div class="container">
+    <div class="tag">Nossos números</div>
+    <h2 class="title">BrE em dados</h2>
+    <div class="nums-grid">
+      <div class="num-card"><div class="n" id="n1">0</div><div class="l">Anos de mercado</div></div>
+      <div class="num-card"><div class="n" id="n2">0</div><div class="l">Projetos entregues</div></div>
+      <div class="num-card"><div class="n" id="n3">0</div><div class="l">Municípios atendidos</div></div>
+      <div class="num-card"><div class="n" id="n4">0</div><div class="l">Grandes clientes</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== DIFERENCIAIS ==================== -->
+<section class="diffs" id="diferenciais">
+  <div class="container">
+    <div class="tag">Por que a BrE</div>
+    <h2 class="title">Diferenciais que fazem a diferença na prática</h2>
+    <p class="sub">Mais de uma década de atuação nos ensinou que licenciamento exige relacionamento institucional, domínio técnico e presença de campo. Nossa entrega é resultado desta combinação.</p>
+    <div class="diffs-grid">
+      <div class="diff"><div class="diff-num">// 01 · EXPERTISE</div><h3>Domínio dos Órgãos Públicos</h3><p>Conhecimento profundo dos fluxos municipais, estaduais e federais. Operamos na burocracia real do Brasil.</p></div>
+      <div class="diff"><div class="diff-num">// 02 · EQUIPE</div><h3>Time Multidisciplinar</h3><p>Engenheiros, especialistas ambientais, analistas documentais e profissionais de campo em sinergia total.</p></div>
+      <div class="diff"><div class="diff-num">// 03 · OPERAÇÃO</div><h3>Agilidade com Segurança</h3><p>Cumprimento rigoroso de prazos sem abrir mão da conformidade técnica e da segurança jurídica.</p></div>
+      <div class="diff"><div class="diff-num">// 04 · COBERTURA</div><h3>Presença Nacional</h3><p>Atuação consolidada no Nordeste e Sudeste, com capacidade de expansão para todo o território nacional.</p></div>
+      <div class="diff"><div class="diff-num">// 05 · SISTEMA</div><h3>Inteligência Documental</h3><p>Rastreabilidade completa, organização rigorosa e gestão eficiente de toda documentação técnica.</p></div>
+      <div class="diff"><div class="diff-num">// 06 · ENTREGA</div><h3>Solução Completa</h3><p>Do acquisition ao licenciamento, da regularização à auditoria: a BrE acompanha o projeto do início ao fim.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FORMULÁRIOS ==================== -->
+<section class="forms-sec" id="formularios">
+  <div class="container">
+    <div class="tag">Formulários</div>
+    <h2 class="title">Inicie seu projeto com a BrE</h2>
+    <p class="sub">Preencha o formulário adequado. Nossa equipe analisará e retornará em até 1 dia útil.</p>
+    <div class="ftabs">
+      <div class="ftab active" data-fm="srv">Solicitar Serviço</div>
+      <div class="ftab" data-fm="ter">Cadastrar Terreno / Área</div>
+    </div>
+
+    <!-- SOLICITAR SERVIÇO -->
+    <div class="fpanel active" id="pSrv">
+      <div class="form-wrap">
+        <div class="form-hd"><h3>Solicitação de Serviço</h3><p>Descreva sua demanda. Nossa equipe técnica elaborará uma proposta personalizada.</p></div>
+        <form id="fSrv" onsubmit="submitForm(event,'fSrv','okSrv')">
+          <div class="fgrid">
+            <div class="fg"><label>Nome completo *</label><input type="text" placeholder="Seu nome" required></div>
+            <div class="fg"><label>Empresa</label><input type="text" placeholder="Nome da empresa"></div>
+            <div class="fg"><label>Telefone / WhatsApp *</label><input type="tel" placeholder="(81) 99249-0774" required></div>
+            <div class="fg"><label>E-mail *</label><input type="email" placeholder="seu@email.com" required></div>
+            <div class="fg"><label>Cidade *</label><input type="text" placeholder="Cidade" required></div>
+            <div class="fg"><label>Estado (UF) *</label>
+              <select required><option value="">Selecione...</option><option>AL</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option></select>
+            </div>
+            <div class="fg"><label>Tipo de serviço *</label>
+              <select required><option value="">Selecione...</option><option>Licenciamento Urbanístico</option><option>Licenciamento Ambiental</option><option>Licenciamento Patrimonial</option><option>Acquisition / Prospecção</option><option>Regularização Imobiliária</option><option>Aprovação de Projeto</option><option>Alvará de Construção</option><option>COMAR / DNIT / DER</option><option>Corpo de Bombeiros</option><option>Auditoria e Diagnóstico</option><option>Serviços Patrimoniais</option><option>Consultoria Estratégica</option><option>Outro</option></select>
+            </div>
+            <div class="fg"><label>Segmento *</label>
+              <select required><option value="">Selecione...</option><option>Telecomunicações</option><option>Industrial</option><option>Comercial</option><option>Imobiliário</option><option>Ambiental</option><option>Energia</option><option>Infraestrutura Urbana</option><option>Órgão Público</option><option>Outro</option></select>
+            </div>
+            <div class="fg full"><label>Descrição da demanda *</label><textarea placeholder="Descreva o projeto, localização, estágio atual e necessidade principal..." rows="4" required></textarea></div>
+            <div class="fg full"><div class="crow"><input type="checkbox" id="lgpd1" required><label for="lgpd1">Autorizo a BrE Consultoria a entrar em contato sobre esta solicitação e concordo com a política de privacidade. *</label></div></div>
+          </div>
+          <div class="fsubmit">
+            <span class="fnote">* Campos obrigatórios · Retorno em até 1 dia útil</span>
+            <button type="submit" class="btn btn-gold">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+              Enviar Solicitação
+            </button>
+          </div>
+          <div class="ok-msg" id="okSrv">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+            Solicitação enviada com sucesso! Nossa equipe entrará em contato em até 1 dia útil.
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- CADASTRAR TERRENO -->
+    <div class="fpanel" id="pTer">
+      <div class="form-wrap">
+        <div class="form-hd"><h3>Cadastro de Terreno / Área</h3><p>Possui uma área com potencial para infraestrutura? Cadastre para avaliação técnica gratuita.</p></div>
+        <div class="info-box">
+          ℹ️ <strong>Como funciona:</strong> A BrE realiza análise técnica e documental de áreas com potencial para implantação de infraestrutura de telecomunicações, projetos industriais, comerciais e soluções de engenharia. O cadastro não garante contratação, mas permite avaliação para futuras oportunidades de parceria.
+        </div>
+        <form id="fTer" onsubmit="submitForm(event,'fTer','okTer')">
+          <div class="fgrid">
+            <div class="fg"><label>Nome do proprietário *</label><input type="text" placeholder="Nome completo" required></div>
+            <div class="fg"><label>Telefone / WhatsApp *</label><input type="tel" placeholder="(81) 99999-9999" required></div>
+            <div class="fg full"><label>E-mail *</label><input type="email" placeholder="seu@email.com" required></div>
+            <div class="fg full"><label>Endereço do terreno *</label><input type="text" placeholder="Rua, número, bairro" required id="endTer"></div>
+            <div class="fg"><label>Cidade *</label><input type="text" placeholder="Cidade" required></div>
+            <div class="fg"><label>Estado (UF) *</label>
+              <select required><option value="">Selecione...</option><option>AL</option><option>BA</option><option>CE</option><option>PB</option><option>PE</option><option>PI</option><option>RN</option><option>SE</option><option>MA</option><option>ES</option><option>MG</option><option>RJ</option><option>SP</option><option>PR</option><option>RS</option><option>SC</option></select>
+            </div>
+            <div class="fg"><label>Área aproximada (m²)</label><input type="text" placeholder="Ex: 500 m²"></div>
+            <div class="fg"><label>Tipo de imóvel *</label>
+              <select required><option value="">Selecione...</option><option>Terreno urbano vazio</option><option>Terreno rural</option><option>Área comercial</option><option>Área industrial</option><option>Rooftop (telhado/cobertura)</option><option>Área pública</option><option>Galpão / Armazém</option><option>Outro</option></select>
+            </div>
+            <div class="fg"><label>Possui documentação?</label>
+              <select><option value="">Selecione...</option><option>Sim, completa</option><option>Parcialmente documentado</option><option>Não possui</option><option>Não sei informar</option></select>
+            </div>
+            <div class="fg"><label>Escritura / Matrícula?</label>
+              <select><option value="">Selecione...</option><option>Sim, escritura e matrícula</option><option>Apenas escritura</option><option>Apenas matrícula</option><option>Não possui</option><option>Não sei informar</option></select>
+            </div>
+            <!-- MAP AREA — INTERACTIVE WITH DRAGGABLE PIN -->
+            <div class="fg full">
+              <label>Localização no mapa <span style="font-family:var(--ff-mono);font-size:10px;color:var(--gray2);font-weight:400;letter-spacing:.5px;">— arraste o PIN para marcar seu terreno</span></label>
+
+              <!-- search bar above map -->
+              <div class="map-search-bar">
+                <input type="text" id="mapSearchInput" placeholder="Buscar endereço no mapa... Ex: Rua das Flores, Recife PE">
+                <button type="button" id="mapSearchBtn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  Buscar
+                </button>
+              </div>
+
+              <!-- map container -->
+              <div class="map-wrap" id="mapWrap">
+                <div class="map-placeholder" id="mapPlaceholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Digite um endereço e clique em Buscar para carregar o mapa</span>
+                </div>
+                <div id="breMap"></div>
+                <div class="map-tip" id="mapTip" style="display:none;">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                  <span>Arraste o PIN dourado para ajustar a localização exata do terreno</span>
+                  <span class="map-tip-coords" id="mapTipCoords">—</span>
+                </div>
+              </div>
+
+              <!-- coordinates display -->
+              <div class="coords-display hidden" id="coordsDisplay">
+                <svg class="coords-ico" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div>
+                  <div class="coords-lbl">Coordenadas capturadas</div>
+                  <div class="coords-val" id="coordsVal">—</div>
+                </div>
+                <span class="coords-lbl" style="color:var(--green3);">● MARCADO</span>
+              </div>
+              <input type="hidden" id="coordsTer" name="coordenadas">
+            </div>
+            <div class="fg full"><label>Observações sobre a área</label><textarea placeholder="Descreva características relevantes: acesso, vizinhança, infraestrutura existente, restrições conhecidas..." rows="4"></textarea></div>
+            <div class="fg full"><div class="crow"><input type="checkbox" id="lgpd2" required><label for="lgpd2">Autorizo a BrE Consultoria a entrar em contato para avaliação desta área e a tratar meus dados conforme a LGPD. *</label></div></div>
+          </div>
+          <div class="fsubmit">
+            <span class="fnote">Cadastro não gera obrigação contratual. * Obrigatórios</span>
+            <button type="submit" class="btn btn-gold">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              Cadastrar Área
+            </button>
+          </div>
+          <div class="ok-msg" id="okTer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+            Área cadastrada com sucesso! Nossa equipe técnica realizará a análise e entrará em contato.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SOCIAL ==================== -->
+<section class="social-sec">
+  <div class="container">
+    <div class="tag gold">Redes sociais</div>
+    <h2 class="title white">Siga a BrE e acompanhe nossa atuação</h2>
+    <p class="sub white">Conteúdo técnico, projetos, novidades e bastidores da operação da BrE no campo e nos processos de licenciamento.</p>
+    <div class="social-grid">
+      <a class="social-card" href="https://www.instagram.com/bre.consultoria/" target="_blank" rel="noopener">
+        <div class="social-logo ig">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="social-body">
+          <h3>Instagram</h3>
+          <p>Projetos em campo, bastidores da operação, licenciamentos e novidades da BrE.</p>
+          <div class="social-handle">@bre.consultoria</div>
+        </div>
+      </a>
+      <a class="social-card" href="https://www.linkedin.com/company/breconsultoria/" target="_blank" rel="noopener">
+        <div class="social-logo li">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div>
+        <div class="social-body">
+          <h3>LinkedIn</h3>
+          <p>Artigos técnicos, cases de licenciamento, oportunidades e conteúdo estratégico sobre infraestrutura.</p>
+          <div class="social-handle">BrE Consultoria</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTATO ==================== -->
+<section class="contact" id="contato">
+  <div class="container">
+    <div class="tag">Fale conosco</div>
+    <h2 class="title">Contato institucional</h2>
+    <div class="con-grid">
+      <div class="con-info">
+        <div class="con-card">
+          <div class="con-ch"><div class="con-ci"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="con-ct">Endereço</div><div class="con-cs">Escritório Principal</div></div></div>
+          <div class="con-body">Rua Paulo de Frontin, 8<br>Imbiribeira, Recife – PE<br>CEP 51190-591</div>
+          <div class="con-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.8!2d-34.920!3d-8.105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOC4xMDUwMDAsLTM0LjkyMDAwMA!5e0!3m2!1spt-BR!2sbr!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Localização BrE Recife"></iframe>
+          </div>
+        </div>
+        <div class="con-card">
+          <div class="con-ch"><div class="con-ci"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.75a16 16 0 0 0 5.35 5.35l1.85-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/></svg></div><div><div class="con-ct">Telefone / WhatsApp</div><div class="con-cs">Contato Institucional</div></div></div>
+          <div class="con-body">(81) 99249-0774<br><a href="tel:+558199249-0774">(81) 3338-7820</a><br><a href="mailto:contato@breconsultoria.com.br">contato@breconsultoria.com.br</a></div>
+        </div>
+        <div class="wa-banner">
+          <div><h3>Prefere pelo WhatsApp?</h3><p>Fale diretamente com nossa equipe</p></div>
+          <a href="https://wa.me/5581992490774?text=Olá%2C%20vim%20pelo%20site%20da%20BrE%20e%20gostaria%20de%20mais%20informações." class="btn btn-wa" target="_blank" rel="noopener">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Abrir WhatsApp
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="form-wrap">
+          <div class="form-hd"><h3>Envie uma mensagem</h3><p>Para dúvidas rápidas ou informações sobre nossos serviços.</p></div>
+          <form id="fCon" onsubmit="submitForm(event,'fCon','okCon')">
+            <div class="fgrid">
+              <div class="fg"><label>Nome *</label><input type="text" placeholder="Seu nome" required></div>
+              <div class="fg"><label>Telefone</label><input type="tel" placeholder="(81) 99249-0774"></div>
+              <div class="fg full"><label>E-mail *</label><input type="email" placeholder="seu@email.com" required></div>
+              <div class="fg full"><label>Assunto</label><input type="text" placeholder="Assunto da mensagem"></div>
+              <div class="fg full"><label>Mensagem *</label><textarea rows="5" placeholder="Sua mensagem..." required></textarea></div>
+            </div>
+            <div class="fsubmit">
+              <span class="fnote">Respondemos em até 1 dia útil</span>
+              <button type="submit" class="btn btn-green">Enviar Mensagem</button>
+            </div>
+            <div class="ok-msg" id="okCon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+              Mensagem enviada! Retornaremos em breve.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta-sec">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="tag gold" style="justify-content:center;">Comece agora</div>
+      <h2>Pronto para resolver o seu licenciamento?</h2>
+      <p>A BrE tem a equipe, a metodologia e a experiência para conduzir seu projeto do início ao fim — com rastreabilidade, conformidade e agilidade.</p>
+      <div class="cta-btns">
+        <a href="#formularios" class="btn btn-gold">Solicitar Serviço</a>
+        <a href="https://wa.me/5581992490774" class="btn btn-wa" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Falar no WhatsApp
+        </a>
+        <a href="#formularios" class="btn btn-outline">Cadastrar Terreno</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="foot-logo"><img src="Logo_Amarelo_Branco.png" alt="BrE Consultoria & Engenharia" style="height:34px;"></div>
+        <p>Consultoria técnica multidisciplinar especializada em licenciamento, regularização, engenharia e soluções de infraestrutura. Atuando desde 2012 no Nordeste e Sudeste do Brasil.</p>
+        <div class="foot-ci"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Rua Paulo de Frontin, 8 — Imbiribeira, Recife/PE</div>
+        <div class="foot-ci"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>(81) 99249-0774 · (81) 3338-7820</div>
+        <div class="foot-ci"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>contato@breconsultoria.com.br</div>
+        <div class="foot-social">
+          <a class="fsoc" href="https://www.instagram.com/bre.consultoria/" target="_blank" rel="noopener" aria-label="Instagram BrE">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a class="fsoc" href="https://www.linkedin.com/company/breconsultoria/" target="_blank" rel="noopener" aria-label="LinkedIn BrE">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a class="fsoc" href="https://wa.me/5581992490774" target="_blank" rel="noopener" aria-label="WhatsApp BrE">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#servicos">Licenciamento Urbanístico</a></li>
+          <li><a href="#servicos">Licenciamento Ambiental</a></li>
+          <li><a href="#servicos">Licenciamento Patrimonial</a></li>
+          <li><a href="#servicos">Acquisition de Áreas</a></li>
+          <li><a href="#servicos">Regularização Imobiliária</a></li>
+          <li><a href="#servicos">Auditoria e Diagnóstico</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Setores</h4>
+        <ul>
+          <li><a href="#setores">Telecomunicações</a></li>
+          <li><a href="#setores">Industrial</a></li>
+          <li><a href="#setores">Comercial</a></li>
+          <li><a href="#setores">Imobiliário</a></li>
+          <li><a href="#setores">Energia</a></li>
+          <li><a href="#setores">Infraestrutura</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#sobre">Sobre a BrE</a></li>
+          <li><a href="#diferenciais">Diferenciais</a></li>
+          <li><a href="#formularios">Solicitar Serviço</a></li>
+          <li><a href="#formularios">Cadastrar Terreno</a></li>
+          <li><a href="#contato">Contato</a></li>
+          <li><a href="http://www.breconsultoria.com.br" target="_blank">breconsultoria.com.br</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="cnpj">CNPJ 15.334.480/0001-02 · BrE Consultoria e Engenharia LTDA</span>
+      <span>© 2025 BrE Consultoria & Engenharia. Todos os direitos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- SCROLL TOP -->
+<button class="scrolltop" id="sTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script>
+/* ---- NAV ---- */
+const nav = document.getElementById('nav');
+const sTop = document.getElementById('sTop');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+  sTop.classList.toggle('vis', window.scrollY > 400);
+});
+sTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ---- HAMBURGER ---- */
+const hbg = document.getElementById('hbg');
+const mob = document.getElementById('mobMenu');
+hbg.addEventListener('click', () => mob.classList.toggle('open'));
+function cM() { mob.classList.remove('open'); }
+
+/* ---- HERO TERRENO BTN ---- */
+document.getElementById('btnTerreno').addEventListener('click', e => {
+  e.preventDefault();
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.fpanel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-fm="ter"]').classList.add('active');
+  document.getElementById('pTer').classList.add('active');
+  setTimeout(() => document.getElementById('formularios').scrollIntoView({ behavior: 'smooth' }), 50);
+});
+
+/* ---- FORM TABS ---- */
+document.querySelectorAll('.ftab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.ftab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.fpanel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('p' + (t.dataset.fm === 'srv' ? 'Srv' : 'Ter')).classList.add('active');
+  });
+});
+
+/* ---- SERVICE FILTER TABS ---- */
+document.querySelectorAll('#srvTabs .stab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('#srvTabs .stab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const f = t.dataset.f;
+    document.querySelectorAll('#srvGrid .sc').forEach(c => {
+      c.style.display = (f === 'all' || c.dataset.c === f) ? '' : 'none';
+    });
+  });
+});
+
+/* ---- COUNTER ANIMATION ---- */
+const counters = [
+  { id: 'n1', target: 12, suffix: '+', label: 'anos' },
+  { id: 'n2', target: 200, suffix: '+', label: 'projetos' },
+  { id: 'n3', target: 6, suffix: '+', label: 'municípios' },
+  { id: 'n4', target: 9, suffix: '+', label: 'clientes' },
+];
+let counted = false;
+const numSection = document.getElementById('numeros');
+const observer = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !counted) {
+    counted = true;
+    counters.forEach(({ id, target, suffix }) => {
+      const el = document.getElementById(id);
+      let current = 0;
+      const step = Math.ceil(target / 40);
+      const interval = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current + suffix;
+        if (current >= target) clearInterval(interval);
+      }, 40);
+    });
+  }
+}, { threshold: 0.3 });
+if (numSection) observer.observe(numSection);
+
+/* ---- SCROLL REVEAL ---- */
+const revealEls = document.querySelectorAll('.sc, .diff, .sector, .num-card, .tf, .social-card');
+const revObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  revObserver.observe(el);
+});
+
+/* ---- INTERACTIVE MAP — LEAFLET + DRAGGABLE PIN ---- */
+(function() {
+  // Leaflet CSS
+  const leafletCSS = document.createElement('link');
+  leafletCSS.rel = 'stylesheet';
+  leafletCSS.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(leafletCSS);
+
+  // Leaflet JS
+  const leafletJS = document.createElement('script');
+  leafletJS.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  leafletJS.onload = initMap;
+  document.head.appendChild(leafletJS);
+
+  let map, marker, mapReady = false;
+  const DEFAULT_LAT = -8.0543, DEFAULT_LNG = -34.8811; // Recife
+
+  function initMap() {
+    mapReady = true;
+    // Wire up search after Leaflet loads
+    document.getElementById('mapSearchBtn').addEventListener('click', doSearch);
+    document.getElementById('mapSearchInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); doSearch(); }
+    });
+    // Also listen on the address field from the form
+    const endTer = document.getElementById('endTer');
+    if (endTer) {
+      let t;
+      endTer.addEventListener('input', () => {
+        clearTimeout(t);
+        t = setTimeout(() => {
+          const v = endTer.value.trim();
+          const mapInput = document.getElementById('mapSearchInput');
+          if (v.length > 6 && mapInput && !mapInput.value) {
+            mapInput.value = v;
+          }
+        }, 800);
+      });
+    }
+  }
+
+  function buildMap(lat, lng) {
+    const placeholder = document.getElementById('mapPlaceholder');
+    const mapEl = document.getElementById('breMap');
+    const mapTip = document.getElementById('mapTip');
+
+    placeholder.style.display = 'none';
+    mapEl.style.display = 'block';
+    mapTip.style.display = 'flex';
+
+    if (map) {
+      map.setView([lat, lng], 16);
+      marker.setLatLng([lat, lng]);
+      updateCoords(lat, lng);
+      return;
+    }
+
+    // Custom BrE pin icon
+    const pinIcon = L.divIcon({
+      className: '',
+      iconAnchor: [18, 44],
+      popupAnchor: [0, -44],
+      html: `
+        <div style="
+          width:36px; height:44px; position:relative; cursor:grab;
+          filter: drop-shadow(0 4px 12px rgba(201,131,10,.55));
+        ">
+          <svg viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+            <defs>
+              <radialGradient id="pinGrad" cx="40%" cy="30%">
+                <stop offset="0%" stop-color="#f5c060"/>
+                <stop offset="100%" stop-color="#c9830a"/>
+              </radialGradient>
+            </defs>
+            <path d="M18 2C10.27 2 4 8.27 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.27 25.73 2 18 2z" fill="url(#pinGrad)"/>
+            <path d="M18 2C10.27 2 4 8.27 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.27 25.73 2 18 2z" fill="none" stroke="#9a5e00" stroke-width="1.2"/>
+            <circle cx="18" cy="16" r="5.5" fill="#07130d" opacity="0.85"/>
+            <circle cx="18" cy="16" r="2.5" fill="#f5c060"/>
+          </svg>
+        </div>
+      `
+    });
+
+    map = L.map('breMap', {
+      zoomControl: true,
+      attributionControl: true,
+    }).setView([lat, lng], 16);
+
+    // Tiles — OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Draggable marker
+    marker = L.marker([lat, lng], {
+      icon: pinIcon,
+      draggable: true,
+      autoPan: true
+    }).addTo(map);
+
+    marker.bindPopup(
+      '<div style="font-family:\'Roboto Mono\',monospace;font-size:11px;color:#1a2018;min-width:180px;">' +
+      '<strong style="color:#1b4d30;">📍 BrE — Terreno Marcado</strong><br>' +
+      '<span id="popupCoords" style="color:#c9830a;font-size:10px;">Carregando endereço...</span>' +
+      '</div>',
+      { closeButton: false }
+    );
+
+    // Update on drag
+    marker.on('dragstart', () => {
+      marker.getElement().style.cursor = 'grabbing';
+    });
+    marker.on('drag', e => {
+      const { lat, lng } = e.latlng;
+      updateCoords(lat, lng);
+    });
+    marker.on('dragend', e => {
+      const { lat, lng } = e.latlng;
+      marker.getElement().style.cursor = 'grab';
+      updateCoords(lat, lng);
+      reverseGeocode(lat, lng);
+      marker.openPopup();
+    });
+
+    // Click on map to move marker
+    map.on('click', e => {
+      const { lat, lng } = e.latlng;
+      marker.setLatLng([lat, lng]);
+      updateCoords(lat, lng);
+      reverseGeocode(lat, lng);
+      marker.openPopup();
+    });
+
+    updateCoords(lat, lng);
+    reverseGeocode(lat, lng);
+    setTimeout(() => map.invalidateSize(), 200);
+  }
+
+  function updateCoords(lat, lng) {
+    const latF = lat.toFixed(6);
+    const lngF = lng.toFixed(6);
+    const val = `${latF}, ${lngF}`;
+
+    // Hidden input
+    const hiddenInput = document.getElementById('coordsTer');
+    if (hiddenInput) hiddenInput.value = val;
+
+    // Display
+    const display = document.getElementById('coordsDisplay');
+    const coordsVal = document.getElementById('coordsVal');
+    const tipCoords = document.getElementById('mapTipCoords');
+    if (display) display.classList.remove('hidden');
+    if (coordsVal) coordsVal.textContent = val;
+    if (tipCoords) tipCoords.textContent = val;
+  }
+
+  function reverseGeocode(lat, lng) {
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=pt-BR`)
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.display_name) {
+          const shortAddr = data.display_name.split(',').slice(0, 4).join(', ');
+          // Update popup
+          const popupEl = document.getElementById('popupCoords');
+          if (popupEl) popupEl.textContent = shortAddr;
+          // Update the address field if empty
+          const endTer = document.getElementById('endTer');
+          if (endTer && !endTer.value) endTer.value = shortAddr;
+          // Update map search input
+          const mapInput = document.getElementById('mapSearchInput');
+          if (mapInput) mapInput.value = shortAddr;
+        }
+      })
+      .catch(() => {});
+  }
+
+  function doSearch() {
+    if (!mapReady) return;
+    const input = document.getElementById('mapSearchInput');
+    const btn = document.getElementById('mapSearchBtn');
+    const q = input.value.trim();
+    if (!q) return;
+
+    const origHTML = btn.innerHTML;
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Buscando...';
+    btn.disabled = true;
+
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q + ', Brasil')}&limit=1&accept-language=pt-BR`)
+      .then(r => r.json())
+      .then(data => {
+        btn.innerHTML = origHTML;
+        btn.disabled = false;
+        if (data && data.length > 0) {
+          const { lat, lon } = data[0];
+          const latN = parseFloat(lat), lngN = parseFloat(lon);
+          buildMap(latN, lngN);
+          // also update the endTer field
+          const endTer = document.getElementById('endTer');
+          if (endTer && !endTer.value) endTer.value = q;
+        } else {
+          // Fallback: show Recife
+          buildMap(DEFAULT_LAT, DEFAULT_LNG);
+          showMapMessage('Endereço não encontrado. Ajuste o PIN manualmente no mapa.');
+        }
+      })
+      .catch(() => {
+        btn.innerHTML = origHTML;
+        btn.disabled = false;
+        buildMap(DEFAULT_LAT, DEFAULT_LNG);
+      });
+  }
+
+  function showMapMessage(msg) {
+    const tip = document.getElementById('mapTip');
+    if (!tip) return;
+    const span = tip.querySelector('span');
+    if (span) { span.textContent = msg; }
+    setTimeout(() => { if (span) span.textContent = 'Arraste o PIN dourado para ajustar a localização exata do terreno'; }, 4000);
+  }
+
+  // Expose for tab switching — rebuild if needed
+  window._breMapInit = function() {
+    if (map) setTimeout(() => map.invalidateSize(), 300);
+  };
+})();
+
+// Trigger map resize when tab is switched to terreno
+document.querySelectorAll('.ftab').forEach(t => {
+  t.addEventListener('click', () => {
+    if (t.dataset.fm === 'ter') {
+      setTimeout(() => { if (window._breMapInit) window._breMapInit(); }, 350);
+    }
+  });
+});
+
+// Spin keyframe for loader
+(function() {
+  const s = document.createElement('style');
+  s.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+  document.head.appendChild(s);
+})();
+
+/* ---- FORM SUBMIT ---- */
+function submitForm(e, formId, okId) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
+  setTimeout(() => {
+    document.getElementById(okId).classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = orig;
+    e.target.reset();
+    setTimeout(() => document.getElementById(okId).classList.remove('show'), 6000);
+  }, 1400);
+}
+</script>
+</body>
+</html>
