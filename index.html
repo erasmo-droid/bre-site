@@ -1667,25 +1667,25 @@ footer {
         <div class="info-box">
           ℹ️ <strong>Como funciona:</strong> A BrE realiza análise técnica e documental de áreas com potencial para implantação de infraestrutura de telecomunicações, projetos industriais, comerciais e soluções de engenharia. O cadastro não garante contratação, mas permite avaliação para futuras oportunidades de parceria.
         </div>
-        <form id="fTer" onsubmit="submitForm(event,'fTer','okTer')">
+        <form id="fTer" onsubmit="submitTerreno(event)">
           <div class="fgrid">
-            <div class="fg"><label>Nome do proprietário *</label><input type="text" placeholder="Nome completo" required></div>
-            <div class="fg"><label>Telefone / WhatsApp *</label><input type="tel" placeholder="(81) 99999-9999" required></div>
-            <div class="fg full"><label>E-mail *</label><input type="email" placeholder="seu@email.com" required></div>
-            <div class="fg full"><label>Endereço do terreno *</label><input type="text" placeholder="Rua, número, bairro" required id="endTer"></div>
-            <div class="fg"><label>Cidade *</label><input type="text" placeholder="Cidade" required></div>
+            <div class="fg"><label>Nome do proprietário *</label><input type="text" id="ter-nome" placeholder="Nome completo" required></div>
+            <div class="fg"><label>Telefone / WhatsApp *</label><input type="tel" id="ter-tel" placeholder="(81) 99999-9999" required></div>
+            <div class="fg full"><label>E-mail *</label><input type="email" id="ter-email" placeholder="seu@email.com" required></div>
+            <div class="fg full"><label>Endereço do terreno *</label><input type="text" id="endTer" placeholder="Rua, número, bairro" required></div>
+            <div class="fg"><label>Cidade *</label><input type="text" id="ter-cidade" placeholder="Cidade" required></div>
             <div class="fg"><label>Estado (UF) *</label>
-              <select required><option value="">Selecione...</option><option>AL</option><option>BA</option><option>CE</option><option>PB</option><option>PE</option><option>PI</option><option>RN</option><option>SE</option><option>MA</option><option>ES</option><option>MG</option><option>RJ</option><option>SP</option><option>PR</option><option>RS</option><option>SC</option></select>
+              <select id="ter-uf" required><option value="">Selecione...</option><option>AL</option><option>BA</option><option>CE</option><option>PB</option><option>PE</option><option>PI</option><option>RN</option><option>SE</option><option>MA</option><option>ES</option><option>MG</option><option>RJ</option><option>SP</option><option>PR</option><option>RS</option><option>SC</option></select>
             </div>
-            <div class="fg"><label>Área aproximada (m²)</label><input type="text" placeholder="Ex: 500 m²"></div>
+            <div class="fg"><label>Área aproximada (m²)</label><input type="text" id="ter-area" placeholder="Ex: 500 m²"></div>
             <div class="fg"><label>Tipo de imóvel *</label>
-              <select required><option value="">Selecione...</option><option>Terreno urbano vazio</option><option>Terreno rural</option><option>Área comercial</option><option>Área industrial</option><option>Rooftop (telhado/cobertura)</option><option>Área pública</option><option>Galpão / Armazém</option><option>Outro</option></select>
+              <select id="ter-tipo" required><option value="">Selecione...</option><option>Terreno urbano vazio</option><option>Terreno rural</option><option>Área comercial</option><option>Área industrial</option><option>Rooftop (telhado/cobertura)</option><option>Área pública</option><option>Galpão / Armazém</option><option>Outro</option></select>
             </div>
             <div class="fg"><label>Possui documentação?</label>
-              <select><option value="">Selecione...</option><option>Sim, completa</option><option>Parcialmente documentado</option><option>Não possui</option><option>Não sei informar</option></select>
+              <select id="ter-doc"><option value="">Selecione...</option><option>Sim, completa</option><option>Parcialmente documentado</option><option>Não possui</option><option>Não sei informar</option></select>
             </div>
             <div class="fg"><label>Escritura / Matrícula?</label>
-              <select><option value="">Selecione...</option><option>Sim, escritura e matrícula</option><option>Apenas escritura</option><option>Apenas matrícula</option><option>Não possui</option><option>Não sei informar</option></select>
+              <select id="ter-mat"><option value="">Selecione...</option><option>Sim, escritura e matrícula</option><option>Apenas escritura</option><option>Apenas matrícula</option><option>Não possui</option><option>Não sei informar</option></select>
             </div>
             <!-- MAP AREA — INTERACTIVE WITH DRAGGABLE PIN -->
             <div class="fg full">
@@ -1725,7 +1725,7 @@ footer {
               </div>
               <input type="hidden" id="coordsTer" name="coordenadas">
             </div>
-            <div class="fg full"><label>Observações sobre a área</label><textarea placeholder="Descreva características relevantes: acesso, vizinhança, infraestrutura existente, restrições conhecidas..." rows="4"></textarea></div>
+            <div class="fg full"><label>Observações sobre a área</label><textarea id="ter-obs" placeholder="Descreva características relevantes: acesso, vizinhança, infraestrutura existente, restrições conhecidas..." rows="4"></textarea></div>
             <div class="fg full"><div class="crow"><input type="checkbox" id="lgpd2" required><label for="lgpd2">Autorizo a BrE Consultoria a entrar em contato para avaliação desta área e a tratar meus dados conforme a LGPD. *</label></div></div>
           </div>
           <div class="fsubmit">
@@ -1916,20 +1916,41 @@ footer {
 </button>
 
 <script>
-/* ---- NAV ---- */
+/* ---- NAV SCROLL + HIDE ON SCROLL DOWN (mobile) ---- */
 const nav = document.getElementById('nav');
 const sTop = document.getElementById('sTop');
+let lastScroll = 0, navHidden = false;
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 80);
-  sTop.classList.toggle('vis', window.scrollY > 400);
-});
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 80);
+  sTop.classList.toggle('vis', y > 400);
+  if (window.innerWidth <= 640) {
+    if (y > lastScroll + 8 && y > 140 && !navHidden) { nav.style.transform = 'translateY(-100%)'; navHidden = true; }
+    else if (y < lastScroll - 4 && navHidden) { nav.style.transform = 'translateY(0)'; navHidden = false; }
+  }
+  lastScroll = y;
+}, { passive: true });
+nav.style.transition = 'transform .3s ease, box-shadow .25s ease, background .25s ease';
 sTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 /* ---- HAMBURGER ---- */
 const hbg = document.getElementById('hbg');
 const mob = document.getElementById('mobMenu');
-hbg.addEventListener('click', () => mob.classList.toggle('open'));
-function cM() { mob.classList.remove('open'); }
+let mobOpen = false;
+hbg.addEventListener('click', () => {
+  mobOpen = !mobOpen;
+  mob.classList.toggle('open', mobOpen);
+  const spans = hbg.querySelectorAll('span');
+  if (mobOpen) {
+    spans[0].style.cssText = 'transform:translateY(7px) rotate(45deg)';
+    spans[1].style.cssText = 'opacity:0;transform:scaleX(0)';
+    spans[2].style.cssText = 'transform:translateY(-7px) rotate(-45deg)';
+    document.body.style.overflow = 'hidden';
+  } else { spans.forEach(s => s.style.cssText = ''); document.body.style.overflow = ''; }
+});
+document.addEventListener('click', e => { if (mobOpen && !mob.contains(e.target) && !hbg.contains(e.target)) cM(); }, { passive: true });
+function cM() { mobOpen = false; mob.classList.remove('open'); hbg.querySelectorAll('span').forEach(s => s.style.cssText = ''); document.body.style.overflow = ''; }
+mob.querySelectorAll('a').forEach(a => a.addEventListener('click', cM));
 
 /* ---- HERO TERRENO BTN ---- */
 document.getElementById('btnTerreno').addEventListener('click', e => {
@@ -1938,7 +1959,7 @@ document.getElementById('btnTerreno').addEventListener('click', e => {
   document.querySelectorAll('.fpanel').forEach(p => p.classList.remove('active'));
   document.querySelector('[data-fm="ter"]').classList.add('active');
   document.getElementById('pTer').classList.add('active');
-  setTimeout(() => document.getElementById('formularios').scrollIntoView({ behavior: 'smooth' }), 50);
+  setTimeout(() => document.getElementById('formularios').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 });
 
 /* ---- FORM TABS ---- */
@@ -1948,6 +1969,7 @@ document.querySelectorAll('.ftab').forEach(t => {
     document.querySelectorAll('.fpanel').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
     document.getElementById('p' + (t.dataset.fm === 'srv' ? 'Srv' : 'Ter')).classList.add('active');
+    if (t.dataset.fm === 'ter') setTimeout(() => { if (window._breMapInit) window._breMapInit(); }, 350);
   });
 });
 
@@ -1957,313 +1979,300 @@ document.querySelectorAll('#srvTabs .stab').forEach(t => {
     document.querySelectorAll('#srvTabs .stab').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
     const f = t.dataset.f;
-    document.querySelectorAll('#srvGrid .sc').forEach(c => {
-      c.style.display = (f === 'all' || c.dataset.c === f) ? '' : 'none';
-    });
+    document.querySelectorAll('#srvGrid .sc').forEach(c => { c.style.display = (f === 'all' || c.dataset.c === f) ? '' : 'none'; });
   });
 });
 
 /* ---- COUNTER ANIMATION ---- */
-const counters = [
-  { id: 'n1', target: 12, suffix: '+', label: 'anos' },
-  { id: 'n2', target: 200, suffix: '+', label: 'projetos' },
-  { id: 'n3', target: 6, suffix: '+', label: 'municípios' },
-  { id: 'n4', target: 9, suffix: '+', label: 'clientes' },
-];
+const counters = [{ id:'n1', target:12, suffix:'+' }, { id:'n2', target:200, suffix:'+' }, { id:'n3', target:6, suffix:'+' }, { id:'n4', target:9, suffix:'+' }];
 let counted = false;
 const numSection = document.getElementById('numeros');
-const observer = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting && !counted) {
-    counted = true;
-    counters.forEach(({ id, target, suffix }) => {
-      const el = document.getElementById(id);
-      let current = 0;
-      const step = Math.ceil(target / 40);
-      const interval = setInterval(() => {
-        current = Math.min(current + step, target);
-        el.textContent = current + suffix;
-        if (current >= target) clearInterval(interval);
-      }, 40);
-    });
-  }
-}, { threshold: 0.3 });
-if (numSection) observer.observe(numSection);
-
-/* ---- SCROLL REVEAL ---- */
-const revealEls = document.querySelectorAll('.sc, .diff, .sector, .num-card, .tf, .social-card');
-const revObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
+if (numSection && 'IntersectionObserver' in window) {
+  new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !counted) {
+      counted = true;
+      counters.forEach(({ id, target, suffix }) => {
+        const el = document.getElementById(id); if (!el) return;
+        let cur = 0; const step = Math.ceil(target / 30);
+        const iv = setInterval(() => { cur = Math.min(cur + step, target); el.textContent = cur + suffix; if (cur >= target) clearInterval(iv); }, 50);
+      });
     }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-revealEls.forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(24px)';
-  el.style.transition = 'opacity .5s ease, transform .5s ease';
-  revObserver.observe(el);
-});
+  }, { threshold: 0.25 }).observe(numSection);
+}
 
-/* ---- INTERACTIVE MAP — LEAFLET + DRAGGABLE PIN ---- */
+/* ---- SCROLL REVEAL (respects prefers-reduced-motion) ---- */
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+  const revEls = document.querySelectorAll('.sc, .diff, .sector, .num-card, .tf, .social-card, .con-card');
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; revObs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  revEls.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity .45s ease, transform .45s ease'; revObs.observe(el); });
+}
+
+/* ---- INTERACTIVE MAP — LEAFLET LAZY LOAD (only on demand) ---- */
 (function() {
-  // Leaflet CSS
-  const leafletCSS = document.createElement('link');
-  leafletCSS.rel = 'stylesheet';
-  leafletCSS.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-  document.head.appendChild(leafletCSS);
+  let mapLoaded = false, map, marker;
+  const DEFAULT_LAT = -8.0543, DEFAULT_LNG = -34.8811;
 
-  // Leaflet JS
-  const leafletJS = document.createElement('script');
-  leafletJS.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-  leafletJS.onload = initMap;
-  document.head.appendChild(leafletJS);
+  function loadLeaflet(cb) {
+    if (mapLoaded) { cb(); return; }
+    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'; document.head.appendChild(css);
+    const js = document.createElement('script'); js.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    js.onload = () => { mapLoaded = true; cb(); }; document.head.appendChild(js);
+  }
 
-  let map, marker, mapReady = false;
-  const DEFAULT_LAT = -8.0543, DEFAULT_LNG = -34.8811; // Recife
-
-  function initMap() {
-    mapReady = true;
-    // Wire up search after Leaflet loads
-    document.getElementById('mapSearchBtn').addEventListener('click', doSearch);
-    document.getElementById('mapSearchInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') { e.preventDefault(); doSearch(); }
-    });
-    // Also listen on the address field from the form
+  function setupSearch() {
+    const btn = document.getElementById('mapSearchBtn');
+    const inp = document.getElementById('mapSearchInput');
+    if (!btn || !inp) return;
+    const doSearch = () => { const q = inp.value.trim(); if (q) loadLeaflet(() => geocodeAndBuild(q)); };
+    btn.addEventListener('click', doSearch);
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doSearch(); } });
     const endTer = document.getElementById('endTer');
     if (endTer) {
       let t;
-      endTer.addEventListener('input', () => {
-        clearTimeout(t);
-        t = setTimeout(() => {
-          const v = endTer.value.trim();
-          const mapInput = document.getElementById('mapSearchInput');
-          if (v.length > 6 && mapInput && !mapInput.value) {
-            mapInput.value = v;
-          }
-        }, 800);
-      });
+      endTer.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { if (endTer.value.trim().length > 6 && !inp.value) inp.value = endTer.value.trim(); }, 700); });
     }
+  }
+  setupSearch();
+
+  function geocodeAndBuild(q) {
+    const btn = document.getElementById('mapSearchBtn');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Buscando...'; }
+    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q + ', Brasil') + '&limit=1&accept-language=pt-BR')
+      .then(r => r.json())
+      .then(data => {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Buscar'; }
+        const lat = data?.[0] ? parseFloat(data[0].lat) : DEFAULT_LAT;
+        const lng = data?.[0] ? parseFloat(data[0].lon) : DEFAULT_LNG;
+        buildMap(lat, lng);
+        if (!data?.[0]) showTip('Endereço não encontrado. Ajuste o PIN no mapa.');
+      })
+      .catch(() => { if (btn) { btn.disabled = false; btn.innerHTML = 'Buscar'; } buildMap(DEFAULT_LAT, DEFAULT_LNG); });
   }
 
   function buildMap(lat, lng) {
     const placeholder = document.getElementById('mapPlaceholder');
     const mapEl = document.getElementById('breMap');
     const mapTip = document.getElementById('mapTip');
+    if (placeholder) placeholder.style.display = 'none';
+    if (mapEl) mapEl.style.display = 'block';
+    if (mapTip) mapTip.style.display = 'flex';
+    if (map) { map.setView([lat, lng], 16); marker.setLatLng([lat, lng]); updateCoords(lat, lng); return; }
 
-    placeholder.style.display = 'none';
-    mapEl.style.display = 'block';
-    mapTip.style.display = 'flex';
-
-    if (map) {
-      map.setView([lat, lng], 16);
-      marker.setLatLng([lat, lng]);
-      updateCoords(lat, lng);
-      return;
-    }
-
-    // Custom BrE pin icon
-    const pinIcon = L.divIcon({
-      className: '',
-      iconAnchor: [18, 44],
-      popupAnchor: [0, -44],
-      html: `
-        <div style="
-          width:36px; height:44px; position:relative; cursor:grab;
-          filter: drop-shadow(0 4px 12px rgba(201,131,10,.55));
-        ">
-          <svg viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-            <defs>
-              <radialGradient id="pinGrad" cx="40%" cy="30%">
-                <stop offset="0%" stop-color="#f5c060"/>
-                <stop offset="100%" stop-color="#c9830a"/>
-              </radialGradient>
-            </defs>
-            <path d="M18 2C10.27 2 4 8.27 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.27 25.73 2 18 2z" fill="url(#pinGrad)"/>
-            <path d="M18 2C10.27 2 4 8.27 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.27 25.73 2 18 2z" fill="none" stroke="#9a5e00" stroke-width="1.2"/>
-            <circle cx="18" cy="16" r="5.5" fill="#07130d" opacity="0.85"/>
-            <circle cx="18" cy="16" r="2.5" fill="#f5c060"/>
-          </svg>
-        </div>
-      `
+    /* Custom gold pin */
+    const pinIcon = window.L.divIcon({
+      className: '', iconAnchor: [18, 44], popupAnchor: [0, -48],
+      html: '<div style="width:36px;height:44px;filter:drop-shadow(0 4px 14px rgba(201,131,10,.6));cursor:grab"><svg viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><radialGradient id="pg" cx="40%" cy="30%"><stop offset="0%" stop-color="#f5c060"/><stop offset="100%" stop-color="#c9830a"/></radialGradient></defs><path d="M18 2C10.27 2 4 8.27 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.27 25.73 2 18 2z" fill="url(#pg)"/><path d="M18 2C10.27 2 4 8.27 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.27 25.73 2 18 2z" fill="none" stroke="#9a5e00" stroke-width="1.2"/><circle cx="18" cy="16" r="5.5" fill="#07130d" opacity=".85"/><circle cx="18" cy="16" r="2.5" fill="#f5c060"/></svg></div>'
     });
 
-    map = L.map('breMap', {
-      zoomControl: true,
-      attributionControl: true,
-    }).setView([lat, lng], 16);
+    map = window.L.map('breMap', { zoomControl: true, tap: true, tapTolerance: 15 }).setView([lat, lng], 16);
+    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19 }).addTo(map);
+    marker = window.L.marker([lat, lng], { icon: pinIcon, draggable: true, autoPan: true, autoPanSpeed: 8 }).addTo(map);
+    marker.bindPopup('<div style="font-family:monospace;font-size:11px;min-width:170px;line-height:1.5"><strong style="color:#1b4d30">📍 Terreno marcado</strong><br><span id="popupAddr" style="color:#c9830a;font-size:10px">Buscando endereço...</span></div>', { closeButton: false, maxWidth: 240 });
 
-    // Tiles — OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19
-    }).addTo(map);
-
-    // Draggable marker
-    marker = L.marker([lat, lng], {
-      icon: pinIcon,
-      draggable: true,
-      autoPan: true
-    }).addTo(map);
-
-    marker.bindPopup(
-      '<div style="font-family:\'Roboto Mono\',monospace;font-size:11px;color:#1a2018;min-width:180px;">' +
-      '<strong style="color:#1b4d30;">📍 BrE — Terreno Marcado</strong><br>' +
-      '<span id="popupCoords" style="color:#c9830a;font-size:10px;">Carregando endereço...</span>' +
-      '</div>',
-      { closeButton: false }
-    );
-
-    // Update on drag
-    marker.on('dragstart', () => {
-      marker.getElement().style.cursor = 'grabbing';
-    });
-    marker.on('drag', e => {
-      const { lat, lng } = e.latlng;
-      updateCoords(lat, lng);
-    });
-    marker.on('dragend', e => {
-      const { lat, lng } = e.latlng;
-      marker.getElement().style.cursor = 'grab';
-      updateCoords(lat, lng);
-      reverseGeocode(lat, lng);
-      marker.openPopup();
-    });
-
-    // Click on map to move marker
-    map.on('click', e => {
-      const { lat, lng } = e.latlng;
-      marker.setLatLng([lat, lng]);
-      updateCoords(lat, lng);
-      reverseGeocode(lat, lng);
-      marker.openPopup();
-    });
+    marker.on('drag', e => { updateCoords(e.latlng.lat, e.latlng.lng); });
+    marker.on('dragend', e => { const { lat, lng } = e.latlng; updateCoords(lat, lng); reverseGeocode(lat, lng); marker.openPopup(); map.panTo([lat, lng], { animate: true }); });
+    marker.on('dragstart', () => { const el = marker.getElement(); if (el) el.style.cursor = 'grabbing'; });
+    map.on('click', e => { marker.setLatLng(e.latlng); updateCoords(e.latlng.lat, e.latlng.lng); reverseGeocode(e.latlng.lat, e.latlng.lng); marker.openPopup(); });
 
     updateCoords(lat, lng);
     reverseGeocode(lat, lng);
-    setTimeout(() => map.invalidateSize(), 200);
+    setTimeout(() => map.invalidateSize(), 300);
   }
 
   function updateCoords(lat, lng) {
-    const latF = lat.toFixed(6);
-    const lngF = lng.toFixed(6);
-    const val = `${latF}, ${lngF}`;
-
-    // Hidden input
-    const hiddenInput = document.getElementById('coordsTer');
-    if (hiddenInput) hiddenInput.value = val;
-
-    // Display
-    const display = document.getElementById('coordsDisplay');
-    const coordsVal = document.getElementById('coordsVal');
-    const tipCoords = document.getElementById('mapTipCoords');
-    if (display) display.classList.remove('hidden');
-    if (coordsVal) coordsVal.textContent = val;
-    if (tipCoords) tipCoords.textContent = val;
+    const val = lat.toFixed(6) + ', ' + lng.toFixed(6);
+    const h = document.getElementById('coordsTer'); if (h) h.value = val;
+    const d = document.getElementById('coordsDisplay'); if (d) d.classList.remove('hidden');
+    const cv = document.getElementById('coordsVal'); if (cv) cv.textContent = val;
+    const tc = document.getElementById('mapTipCoords'); if (tc) tc.textContent = val;
   }
 
   function reverseGeocode(lat, lng) {
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=pt-BR`)
+    fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&accept-language=pt-BR')
       .then(r => r.json())
       .then(data => {
-        if (data && data.display_name) {
-          const shortAddr = data.display_name.split(',').slice(0, 4).join(', ');
-          // Update popup
-          const popupEl = document.getElementById('popupCoords');
-          if (popupEl) popupEl.textContent = shortAddr;
-          // Update the address field if empty
-          const endTer = document.getElementById('endTer');
-          if (endTer && !endTer.value) endTer.value = shortAddr;
-          // Update map search input
-          const mapInput = document.getElementById('mapSearchInput');
-          if (mapInput) mapInput.value = shortAddr;
+        if (data?.display_name) {
+          const short = data.display_name.split(',').slice(0, 4).join(', ');
+          const pa = document.getElementById('popupAddr'); if (pa) pa.textContent = short;
+          const mi = document.getElementById('mapSearchInput'); if (mi) mi.value = short;
+          const et = document.getElementById('endTer'); if (et && !et.value) et.value = short;
         }
-      })
-      .catch(() => {});
+      }).catch(() => {});
   }
 
-  function doSearch() {
-    if (!mapReady) return;
-    const input = document.getElementById('mapSearchInput');
-    const btn = document.getElementById('mapSearchBtn');
-    const q = input.value.trim();
-    if (!q) return;
-
-    const origHTML = btn.innerHTML;
-    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Buscando...';
-    btn.disabled = true;
-
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q + ', Brasil')}&limit=1&accept-language=pt-BR`)
-      .then(r => r.json())
-      .then(data => {
-        btn.innerHTML = origHTML;
-        btn.disabled = false;
-        if (data && data.length > 0) {
-          const { lat, lon } = data[0];
-          const latN = parseFloat(lat), lngN = parseFloat(lon);
-          buildMap(latN, lngN);
-          // also update the endTer field
-          const endTer = document.getElementById('endTer');
-          if (endTer && !endTer.value) endTer.value = q;
-        } else {
-          // Fallback: show Recife
-          buildMap(DEFAULT_LAT, DEFAULT_LNG);
-          showMapMessage('Endereço não encontrado. Ajuste o PIN manualmente no mapa.');
-        }
-      })
-      .catch(() => {
-        btn.innerHTML = origHTML;
-        btn.disabled = false;
-        buildMap(DEFAULT_LAT, DEFAULT_LNG);
-      });
+  function showTip(msg) {
+    const tip = document.getElementById('mapTip'); if (!tip) return;
+    const sp = tip.querySelector('span:first-of-type');
+    if (sp) { sp.textContent = msg; setTimeout(() => { sp.textContent = 'Arraste o PIN dourado para marcar seu terreno'; }, 4000); }
   }
 
-  function showMapMessage(msg) {
-    const tip = document.getElementById('mapTip');
-    if (!tip) return;
-    const span = tip.querySelector('span');
-    if (span) { span.textContent = msg; }
-    setTimeout(() => { if (span) span.textContent = 'Arraste o PIN dourado para ajustar a localização exata do terreno'; }, 4000);
-  }
+  window._breMapInit = () => { if (map) setTimeout(() => map.invalidateSize(), 300); };
+})();
 
-  // Expose for tab switching — rebuild if needed
-  window._breMapInit = function() {
-    if (map) setTimeout(() => map.invalidateSize(), 300);
+/* ================================================================
+   CONFIGURAÇÃO — BrE INTEGRAÇÕES
+   ================================================================ */
+const BRE_CONFIG = {
+  SUPABASE_URL: 'https://ljhekmgmuwafuueaubvp.supabase.co',
+  SUPABASE_KEY: 'sb_publishable_OzkAh6cjU9VWuv8_BVyLPA_EPMXKQsC',
+  APPS_SCRIPT:  'https://script.google.com/macros/s/AKfycbwURbstSnpiXq0RwE9K_pOjzcA8lvzSZepxew8L9rZvTjJApwIXeQcDh0CQYb8iEgM7bw/exec'
+};
+
+/* ----------------------------------------------------------------
+   SUBMIT TERRENO — envia para Supabase + Google Sheets em paralelo
+   ---------------------------------------------------------------- */
+async function submitTerreno(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  const orig = btn.innerHTML;
+
+  /* Coleta todos os campos */
+  const g = id => (document.getElementById(id) || {}).value || '';
+  const coordRaw = g('coordsTer');
+  const parts    = coordRaw.split(',').map(s => s.trim());
+  const lat      = parts[0] ? parseFloat(parts[0]) : null;
+  const lng      = parts[1] ? parseFloat(parts[1]) : null;
+
+  const payload = {
+    nome:         g('ter-nome'),
+    telefone:     g('ter-tel'),
+    email:        g('ter-email'),
+    endereco:     g('endTer'),
+    cidade:       g('ter-cidade'),
+    uf:           g('ter-uf'),
+    area_m2:      g('ter-area'),
+    tipo:         g('ter-tipo'),
+    tipo_imovel:  g('ter-tipo'),
+    documentacao: g('ter-doc'),
+    matricula:    g('ter-mat'),
+    observacoes:  g('ter-obs'),
+    coordenadas:  coordRaw,
+    lat:          lat,
+    lng:          lng
   };
-})();
 
-// Trigger map resize when tab is switched to terreno
-document.querySelectorAll('.ftab').forEach(t => {
-  t.addEventListener('click', () => {
-    if (t.dataset.fm === 'ter') {
-      setTimeout(() => { if (window._breMapInit) window._breMapInit(); }, 350);
-    }
+  /* UI: estado de envio */
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Salvando...';
+
+  /* ── Indicadores de resultado ── */
+  let okSupabase = false, okSheets = false;
+
+  /* ── 1. SUPABASE ─────────────────────────────────────── */
+  const supaPayload = {
+    nome:          payload.nome,
+    telefone:      payload.telefone,
+    email:         payload.email,
+    endereco:      payload.endereco,
+    cidade:        payload.cidade,
+    uf:            payload.uf,
+    area_m2:       payload.area_m2,
+    tipo_imovel:   payload.tipo_imovel,
+    documentacao:  payload.documentacao,
+    matricula:     payload.matricula,
+    observacoes:   payload.observacoes,
+    coordenadas:   payload.coordenadas,
+    lat:           lat,
+    lng:           lng,
+    status:        'novo'
+  };
+
+  /* Remove campos null/vazio para não quebrar o schema */
+  Object.keys(supaPayload).forEach(k => {
+    if (supaPayload[k] === null || supaPayload[k] === '') delete supaPayload[k];
   });
-});
 
-// Spin keyframe for loader
-(function() {
-  const s = document.createElement('style');
-  s.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
-  document.head.appendChild(s);
-})();
+  const supaPromise = fetch(
+    BRE_CONFIG.SUPABASE_URL + '/rest/v1/terrenos',
+    {
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'apikey':         BRE_CONFIG.SUPABASE_KEY,
+        'Authorization': 'Bearer ' + BRE_CONFIG.SUPABASE_KEY,
+        'Prefer':        'return=minimal'
+      },
+      body: JSON.stringify(supaPayload)
+    }
+  ).then(r => { okSupabase = r.ok || r.status === 201; })
+   .catch(() => { okSupabase = false; });
 
-/* ---- FORM SUBMIT ---- */
+  /* ── 2. GOOGLE SHEETS (Apps Script) ─────────────────── */
+  /* Apps Script não aceita CORS com fetch direto — usamos no-cors */
+  const sheetsPromise = fetch(BRE_CONFIG.APPS_SCRIPT, {
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload)
+  }).then(() => { okSheets = true; })
+    .catch(() => { okSheets = false; });
+
+  /* ── Aguarda os dois em paralelo ─────────────────────── */
+  await Promise.allSettled([supaPromise, sheetsPromise]);
+
+  /* ── UI: resultado ───────────────────────────────────── */
+  btn.disabled  = false;
+  btn.innerHTML = orig;
+
+  const okEl = document.getElementById('okTer');
+
+  if (okSupabase || okSheets) {
+    /* Pelo menos um destino recebeu — sucesso */
+    okEl.innerHTML =
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>' +
+      ' Área cadastrada com sucesso! Nossa equipe técnica realizará a análise em breve.' +
+      (okSupabase && okSheets
+        ? ' <small style="opacity:.7;font-size:11px;">(Banco ✓ · Planilha ✓)</small>'
+        : okSupabase
+          ? ' <small style="opacity:.7;font-size:11px;">(Banco ✓)</small>'
+          : ' <small style="opacity:.7;font-size:11px;">(Planilha ✓)</small>');
+    okEl.style.background = '';
+    okEl.classList.add('show');
+    okEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    e.target.reset();
+    /* Limpa coordenadas */
+    const cd = document.getElementById('coordsDisplay');
+    if (cd) cd.classList.add('hidden');
+    const cv = document.getElementById('coordsVal');
+    if (cv) cv.textContent = '—';
+    const ch = document.getElementById('coordsTer');
+    if (ch) ch.value = '';
+  } else {
+    /* Ambos falharam */
+    okEl.innerHTML =
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c9830a" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' +
+      ' Erro ao salvar. Por favor, tente novamente ou entre em contato via WhatsApp.';
+    okEl.style.background = '#fff3cd';
+    okEl.classList.add('show');
+  }
+
+  setTimeout(() => { okEl.classList.remove('show'); okEl.style.background = ''; }, 8000);
+}
+
+/* ----------------------------------------------------------------
+   SUBMIT GENÉRICO — formulários de serviço e contato (simulado)
+   ---------------------------------------------------------------- */
 function submitForm(e, formId, okId) {
   e.preventDefault();
   const btn = e.target.querySelector('button[type="submit"]');
   const orig = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
+  btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
   setTimeout(() => {
-    document.getElementById(okId).classList.add('show');
-    btn.disabled = false;
-    btn.innerHTML = orig;
-    e.target.reset();
-    setTimeout(() => document.getElementById(okId).classList.remove('show'), 6000);
+    const ok = document.getElementById(okId);
+    ok.classList.add('show');
+    ok.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    btn.disabled = false; btn.innerHTML = orig; e.target.reset();
+    setTimeout(() => ok.classList.remove('show'), 6000);
   }, 1400);
 }
+
+/* ---- SPIN KEYFRAME ---- */
+const _ss = document.createElement('style');
+_ss.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+document.head.appendChild(_ss);
 </script>
 </body>
 </html>
