@@ -1632,57 +1632,165 @@ footer {
   </div>
 </section>
 
-<!-- ==================== FORMULÁRIOS ==================== -->
-<section class="forms-sec" id="formularios">
+<!-- ==================== SERVIÇOS DETALHADOS ==================== -->
+<section class="forms-sec" id="formularios" style="background:var(--dark2);">
   <div class="container">
-    <div class="tag">Formulários</div>
-    <h2 class="title">Inicie seu projeto com a BrE</h2>
-    <p class="sub">Preencha o formulário adequado. Nossa equipe analisará sua solicitação e retornará em breve.</p>
-    <div class="ftabs">
-      <div class="ftab active" data-fm="srv">Solicitar Serviço</div>
-      <div class="ftab" data-fm="ter">Cadastrar Terreno / Área</div>
+    <div class="tag">Nossos Serviços</div>
+    <h2 class="title" style="color:var(--white);">Soluções técnicas para cada desafio</h2>
+    <p class="sub" style="color:rgba(255,255,255,.5);">Selecione o serviço que sua empresa ou projeto necessita e solicite um atendimento especializado.</p>
+
+    <!-- BOTÕES DE AÇÃO DESTAQUE -->
+    <div style="display:flex;gap:1rem;justify-content:center;margin:2rem 0;flex-wrap:wrap;">
+      <a href="bre-servicos.html" target="_blank" style="
+        display:flex;align-items:center;gap:8px;
+        background:var(--gold);color:#fff;
+        border-radius:8px;padding:14px 28px;
+        font-family:var(--ff-b);font-weight:600;font-size:16px;
+        text-decoration:none;transition:all .2s;
+        box-shadow:0 8px 24px rgba(201,131,10,.35);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+        Solicitar Serviço
+      </a>
+      <a href="bre-cadastro.html" target="_blank" style="
+        display:flex;align-items:center;gap:8px;
+        background:transparent;color:var(--white);
+        border:1px solid rgba(255,255,255,.25);
+        border-radius:8px;padding:14px 28px;
+        font-family:var(--ff-b);font-weight:500;font-size:16px;
+        text-decoration:none;transition:all .2s;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Cadastrar Terreno / Área
+      </a>
     </div>
 
-    <!-- SOLICITAR SERVIÇO -->
-    <div class="fpanel active" id="pSrv">
-      <div class="form-wrap">
-        <div class="form-hd"><h3>Solicitação de Serviço</h3><p>Descreva sua demanda. Nossa equipe técnica elaborará uma proposta personalizada.</p></div>
-        <form id="fSrv" onsubmit="submitForm(event,'fSrv','okSrv')">
-          <div class="fgrid">
-            <div class="fg"><label>Nome completo *</label><input type="text" placeholder="Seu nome" required></div>
-            <div class="fg"><label>Empresa</label><input type="text" placeholder="Nome da empresa"></div>
-            <div class="fg"><label>Telefone / WhatsApp *</label><input type="tel" placeholder="(81) 99249-0774" required></div>
-            <div class="fg"><label>E-mail *</label><input type="email" placeholder="seu@email.com" required></div>
-            <div class="fg"><label>Cidade *</label><input type="text" placeholder="Cidade" required></div>
-            <div class="fg"><label>Estado (UF) *</label>
-              <select required><option value="">Selecione...</option><option>AL</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option></select>
-            </div>
-            <div class="fg"><label>Tipo de serviço *</label>
-              <select required><option value="">Selecione...</option><option>Licenciamento Urbanístico</option><option>Licenciamento Ambiental</option><option>Licenciamento Patrimonial</option><option>Acquisition / Prospecção</option><option>Regularização Imobiliária</option><option>Aprovação de Projeto</option><option>Alvará de Construção</option><option>COMAR / DNIT / DER</option><option>Corpo de Bombeiros</option><option>Auditoria e Diagnóstico</option><option>Serviços Patrimoniais</option><option>Consultoria Estratégica</option><option>Outro</option></select>
-            </div>
-            <div class="fg"><label>Segmento *</label>
-              <select required><option value="">Selecione...</option><option>Telecomunicações</option><option>Industrial</option><option>Comercial</option><option>Imobiliário</option><option>Ambiental</option><option>Energia</option><option>Infraestrutura Urbana</option><option>Órgão Público</option><option>Outro</option></select>
-            </div>
-            <div class="fg full"><label>Descrição da demanda *</label><textarea placeholder="Descreva o projeto, localização, estágio atual e necessidade principal..." rows="4" required></textarea></div>
-            <div class="fg full"><div class="crow"><input type="checkbox" id="lgpd1" required><label for="lgpd1">Autorizo a BrE Consultoria a entrar em contato sobre esta solicitação e concordo com a política de privacidade. *</label></div></div>
-          </div>
-          <div class="fsubmit">
-            <span class="fnote">* Campos obrigatórios · Retornaremos assim que possível</span>
-            <button type="submit" class="btn btn-gold">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
-              Enviar Solicitação
-            </button>
-          </div>
-          <div class="ok-msg" id="okSrv">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
-            Solicitação enviada com sucesso! Nossa equipe analisará sua demanda e entrará em contato em breve.
-          </div>
-        </form>
+    <!-- CARDS DE SERVIÇOS -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem;margin-top:2.5rem;">
+
+      <!-- LICENCIAMENTO -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;transition:all .25s;cursor:default;"
+           onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(72,168,114,.3)'"
+           onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.08)'">
+        <div style="font-size:2rem;margin-bottom:1rem;">📋</div>
+        <h3 style="font-family:var(--ff-d);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;">Licenciamento</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:1.25rem;">Licenciamento urbanístico, ambiental e patrimonial nos âmbitos municipal, estadual e federal. COMAR, Corpo de Bombeiros, DNIT, DER e órgãos ambientais.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem;">
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Aprovação de projetos e alvarás</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Licenciamento ambiental (LP, LI, LO)</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Processos municipais e estaduais</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Patrimônio histórico e cultural</li>
+        </ul>
+        <a href="bre-servicos.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:var(--green3);font-family:var(--ff-m);font-size:12px;font-weight:500;text-decoration:none;text-transform:uppercase;letter-spacing:.8px;border:1px solid rgba(72,168,114,.3);padding:8px 16px;border-radius:20px;transition:all .2s;"
+           onmouseover="this.style.background='rgba(72,168,114,.1)'" onmouseout="this.style.background='transparent'">
+          Solicitar Licenciamento →
+        </a>
       </div>
+
+      <!-- ACQUISITION -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;transition:all .25s;"
+           onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(72,168,114,.3)'"
+           onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.08)'">
+        <div style="font-size:2rem;margin-bottom:1rem;">🗺️</div>
+        <h3 style="font-family:var(--ff-d);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;">Acquisition</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:1.25rem;">Levantamento de candidatos, negociação, due diligence documental e estratégia de implantação para torres, rooftops, postes multiuso e infraestrutura diversa.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem;">
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Levantamento e prospecção de áreas</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Negociação e renegociação</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Relatórios fotográficos e CAD</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Drone certificado ANAC/DECEA</li>
+        </ul>
+        <a href="bre-servicos.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:var(--green3);font-family:var(--ff-m);font-size:12px;font-weight:500;text-decoration:none;text-transform:uppercase;letter-spacing:.8px;border:1px solid rgba(72,168,114,.3);padding:8px 16px;border-radius:20px;transition:all .2s;"
+           onmouseover="this.style.background='rgba(72,168,114,.1)'" onmouseout="this.style.background='transparent'">
+          Solicitar Acquisition →
+        </a>
+      </div>
+
+      <!-- REGULARIZAÇÃO -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;transition:all .25s;"
+           onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(72,168,114,.3)'"
+           onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.08)'">
+        <div style="font-size:2rem;margin-bottom:1rem;">📜</div>
+        <h3 style="font-family:var(--ff-d);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;">Regularização</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:1.25rem;">Regularização imobiliária e documental, serviços patrimoniais completos — averbações, escrituras, matrículas, retificações e desmembramentos.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem;">
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Averbação e escrituração</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Retificação e desmembramento</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Consulta de titularidade</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Regularização de contratos</li>
+        </ul>
+        <a href="bre-servicos.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:var(--green3);font-family:var(--ff-m);font-size:12px;font-weight:500;text-decoration:none;text-transform:uppercase;letter-spacing:.8px;border:1px solid rgba(72,168,114,.3);padding:8px 16px;border-radius:20px;transition:all .2s;"
+           onmouseover="this.style.background='rgba(72,168,114,.1)'" onmouseout="this.style.background='transparent'">
+          Solicitar Regularização →
+        </a>
+      </div>
+
+      <!-- AUDITORIA -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;transition:all .25s;"
+           onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(72,168,114,.3)'"
+           onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.08)'">
+        <div style="font-size:2rem;margin-bottom:1rem;">🔍</div>
+        <h3 style="font-family:var(--ff-d);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;">Auditoria & Diagnóstico</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:1.25rem;">Auditorias documentais e de campo, diagnóstico técnico urbanístico, ambiental e patrimonial. Relatórios críticos e laudos estruturais.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem;">
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Auditoria documental e de campo</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Vistoria estrutural</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Diagnóstico urbanístico e ambiental</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Relatórios e laudos técnicos</li>
+        </ul>
+        <a href="bre-servicos.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:var(--green3);font-family:var(--ff-m);font-size:12px;font-weight:500;text-decoration:none;text-transform:uppercase;letter-spacing:.8px;border:1px solid rgba(72,168,114,.3);padding:8px 16px;border-radius:20px;transition:all .2s;"
+           onmouseover="this.style.background='rgba(72,168,114,.1)'" onmouseout="this.style.background='transparent'">
+          Solicitar Auditoria →
+        </a>
+      </div>
+
+      <!-- PROJETOS -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;transition:all .25s;"
+           onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(72,168,114,.3)'"
+           onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.08)'">
+        <div style="font-size:2rem;margin-bottom:1rem;">📐</div>
+        <h3 style="font-family:var(--ff-d);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;">Projetos & Engenharia</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:1.25rem;">Projetos de engenharia e infraestrutura, planejamento estratégico, consultoria técnica e soluções completas para obras civis e implantação.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem;">
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Projetos de engenharia</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Planejamento estratégico</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Consultoria técnica especializada</li>
+          <li style="font-size:13px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;"><span style="color:var(--green3);">✓</span> Soluções de infraestrutura</li>
+        </ul>
+        <a href="bre-servicos.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:var(--green3);font-family:var(--ff-m);font-size:12px;font-weight:500;text-decoration:none;text-transform:uppercase;letter-spacing:.8px;border:1px solid rgba(72,168,114,.3);padding:8px 16px;border-radius:20px;transition:all .2s;"
+           onmouseover="this.style.background='rgba(72,168,114,.1)'" onmouseout="this.style.background='transparent'">
+          Solicitar Projeto →
+        </a>
+      </div>
+
+      <!-- CTA CARD -->
+      <div style="background:linear-gradient(135deg,var(--green1),#0f2318);border:1px solid rgba(72,168,114,.2);border-radius:16px;padding:2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:1rem;">🤝</div>
+        <h3 style="font-family:var(--ff-d);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;">Não encontrou?</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:1.5rem;">Descreva sua necessidade. Nossa equipe técnica avaliará e retornará com a melhor solução para seu projeto.</p>
+        <a href="bre-servicos.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#fff;border-radius:8px;padding:12px 24px;font-family:var(--ff-b);font-weight:600;font-size:15px;text-decoration:none;transition:all .2s;box-shadow:0 6px 20px rgba(201,131,10,.3);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+          Falar com a BrE
+        </a>
+      </div>
+
     </div>
 
-    <!-- CADASTRAR TERRENO -->
-    <div class="fpanel" id="pTer">
+    <!-- CADASTRAR TERRENO (mantido) -->
+    <div style="margin-top:3rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+      <div>
+        <div style="font-family:var(--ff-m);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold3);margin-bottom:.5rem;">Banco de Áreas · BrE Acquisition</div>
+        <h3 style="font-family:var(--ff-d);font-size:1.25rem;font-weight:700;color:var(--white);margin-bottom:.5rem;">Possui terreno ou área disponível?</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.6;max-width:500px;">Cadastre gratuitamente no nosso Banco de Áreas. Entraremos em contato quando houver um projeto compatível com a sua região.</p>
+      </div>
+      <a href="bre-cadastro.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:12px 24px;font-family:var(--ff-b);font-weight:500;font-size:15px;text-decoration:none;transition:all .2s;white-space:nowrap;"
+         onmouseover="this.style.background='rgba(255,255,255,.07)'" onmouseout="this.style.background='transparent'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Cadastrar Terreno / Área
+      </a>
+    </div>
+
+  </div>
+</section>
+    <div class="fpanel" id="pTer" style="display:none!important;">
       <div class="form-wrap">
         <div class="form-hd"><h3>Cadastro de Terreno / Área</h3><p>Possui uma área com potencial para infraestrutura? Cadastre para avaliação técnica gratuita.</p></div>
         <div class="info-box">
