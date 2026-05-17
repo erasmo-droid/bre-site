@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#07130d">
+<title>BrE Admin — Banco de Terrenos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark:#07130d;--dark2:#0d1f14;--green1:#1b4d30;--green2:#2e7d52;--green3:#48a872;
+  --gold:#c9830a;--gold2:#e8a020;--gold3:#f5c060;
+  --white:#f8f9f6;--surface:#f2f5f0;--border:#dde3d8;
+  --text:#1a2018;--muted:#6b7570;
+  --ff-d:'Syne',sans-serif;--ff-b:'DM Sans',sans-serif;--ff-m:'Roboto Mono',monospace;
+  --r:8px;--rl:16px;--sh:0 4px 24px rgba(0,0,0,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--ff-b);background:var(--dark);min-height:100vh;color:var(--text);}
+
+/* ── LOGIN ── */
+#loginScreen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--dark) 0%,#0f2318 100%);
+  padding:2rem;
+}
+.login-box{
+  background:#fff;border-radius:var(--rl);padding:2.5rem;
+  width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.login-logo{text-align:center;margin-bottom:2rem;}
+.login-logo img{height:44px;filter:invert(1);opacity:.85;}
+.login-title{
+  font-family:var(--ff-d);font-size:1.3rem;font-weight:800;
+  color:var(--text);text-align:center;margin-bottom:.25rem;
+}
+.login-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:2rem;font-family:var(--ff-m);}
+.login-field{display:flex;flex-direction:column;gap:5px;margin-bottom:1rem;}
+.login-field label{font-family:var(--ff-m);font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--text);}
+.login-field input{
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:12px 14px;font-family:var(--ff-b);font-size:15px;
+  color:var(--text);outline:none;transition:border-color .2s;
+}
+.login-field input:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(46,125,82,.1);}
+.login-btn{
+  width:100%;background:var(--green1);color:#fff;border:none;
+  border-radius:var(--r);padding:13px;font-family:var(--ff-b);
+  font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;margin-top:.5rem;
+}
+.login-btn:hover{background:var(--green2);}
+.login-err{
+  display:none;background:#ffeaea;border:1px solid #ffb3b3;
+  border-radius:var(--r);padding:.75rem 1rem;
+  font-size:13px;color:#c0392b;margin-top:.75rem;text-align:center;
+}
+.login-err.show{display:block;}
+
+/* ── APP ── */
+#appScreen{display:none;}
+#appScreen.show{display:flex;flex-direction:column;min-height:100vh;}
+
+/* NAV */
+.nav{
+  background:rgba(7,19,13,.96);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(72,168,114,.15);
+  height:64px;padding:0 1.75rem;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:1000;flex-shrink:0;
+}
+.nav-left{display:flex;align-items:center;gap:1rem;}
+.nav-logo img{height:30px;width:auto;}
+.nav-tag{
+  font-family:var(--ff-m);font-size:10px;color:rgba(255,255,255,.35);
+  text-transform:uppercase;letter-spacing:1.5px;
+  border-left:1px solid rgba(255,255,255,.1);padding-left:1rem;
+}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-status{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--ff-m);font-size:10px;color:var(--green3);
+}
+.nav-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green3);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.nav-user{
+  font-family:var(--ff-m);font-size:11px;color:rgba(255,255,255,.5);
+  display:flex;align-items:center;gap:6px;
+}
+.btn-logout{
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);
+  border:1px solid rgba(255,255,255,.1);border-radius:var(--r);
+  padding:6px 14px;font-family:var(--ff-m);font-size:11px;
+  cursor:pointer;transition:all .2s;
+}
+.btn-logout:hover{background:rgba(255,255,255,.14);}
+
+/* MAIN */
+.main{flex:1;padding:2rem 1.75rem;max-width:1400px;width:100%;margin:0 auto;}
+
+/* KPI CARDS */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.kpi{
+  background:#fff;border:1px solid var(--border);border-radius:var(--rl);
+  padding:1.25rem 1.5rem;transition:all .2s;
+}
+.kpi:hover{border-color:var(--green3);box-shadow:var(--sh);transform:translateY(-2px);}
+.kpi-label{font-family:var(--ff-m);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.5rem;}
+.kpi-value{font-family:var(--ff-d);font-size:2rem;font-weight:800;color:var(--green1);line-height:1;}
+.kpi-sub{font-size:12px;color:var(--muted);margin-top:.25rem;}
+
+/* TABS */
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--border);padding-bottom:0;}
+.tab{
+  padding:10px 20px;font-family:var(--ff-m);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.8px;cursor:pointer;
+  border:none;background:transparent;color:var(--muted);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:all .2s;
+}
+.tab.active{color:var(--green1);border-color:var(--green1);}
+.tab:hover:not(.active){color:var(--text);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* FILTERS */
+.filters{
+  display:flex;gap:.875rem;flex-wrap:wrap;align-items:center;
+  margin-bottom:1.25rem;
+  background:#fff;border:1px solid var(--border);border-radius:var(--rl);
+  padding:1rem 1.25rem;
+}
+.filter-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px;}
+.filter-label{font-family:var(--ff-m);font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+.filter-group input,.filter-group select{
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:8px 12px;font-family:var(--ff-b);font-size:13px;
+  color:var(--text);background:#fff;outline:none;
+  transition:border-color .2s;
+}
+.filter-group input:focus,.filter-group select:focus{border-color:var(--green2);}
+.filter-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7570' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;}
+.btn-clear{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:8px 16px;font-family:var(--ff-m);font-size:11px;color:var(--muted);
+  cursor:pointer;white-space:nowrap;transition:all .2s;align-self:flex-end;
+}
+.btn-clear:hover{background:var(--border);}
+.filter-count{
+  font-family:var(--ff-m);font-size:11px;color:var(--muted);
+  align-self:flex-end;white-space:nowrap;padding-bottom:2px;
+}
+
+/* TABLE */
+.table-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
+.table-header{
+  padding:1rem 1.25rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.table-title{font-family:var(--ff-m);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--text);}
+.btn-export{
+  background:var(--green1);color:#fff;border:none;border-radius:var(--r);
+  padding:7px 16px;font-family:var(--ff-m);font-size:11px;cursor:pointer;
+  transition:background .2s;display:flex;align-items:center;gap:6px;
+}
+.btn-export:hover{background:var(--green2);}
+.btn-export svg{width:13px;height:13px;}
+.tbl-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--dark);}
+thead th{
+  padding:10px 14px;font-family:var(--ff-m);font-size:10px;
+  font-weight:500;text-transform:uppercase;letter-spacing:1px;
+  color:rgba(255,255,255,.65);text-align:left;white-space:nowrap;
+}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--surface);}
+tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middle;}
+.td-nome{font-weight:500;max-width:180px;}
+.td-end{color:var(--muted);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.td-coords{font-family:var(--ff-m);font-size:11px;color:var(--muted);}
+.badge{
+  display:inline-flex;padding:3px 10px;border-radius:12px;
+  font-family:var(--ff-m);font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;
+}
+.badge-novo{background:#fff3cd;color:#7a4f00;}
+.badge-analise{background:#cfe2ff;color:#084298;}
+.badge-aprovado{background:#d1e7dd;color:#0f5132;}
+.badge-recusado{background:#f8d7da;color:#842029;}
+.btn-map-link{
+  background:none;border:none;cursor:pointer;
+  color:var(--green2);font-size:12px;font-family:var(--ff-m);
+  display:flex;align-items:center;gap:4px;padding:3px 0;
+  transition:color .2s;
+}
+.btn-map-link:hover{color:var(--green1);}
+.btn-map-link svg{width:13px;height:13px;}
+.status-select{
+  border:1px solid var(--border);border-radius:4px;
+  padding:4px 8px;font-family:var(--ff-m);font-size:10px;
+  color:var(--text);background:#fff;cursor:pointer;outline:none;
+}
+.empty-row td{text-align:center;padding:3rem;color:var(--muted);font-family:var(--ff-m);font-size:12px;}
+
+/* MAP TAB */
+#adminMap{width:100%;height:calc(100vh - 280px);min-height:480px;border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);}
+.map-loading{
+  height:480px;background:var(--surface);border-radius:var(--rl);
+  border:1px solid var(--border);display:flex;align-items:center;
+  justify-content:center;font-family:var(--ff-m);font-size:12px;color:var(--muted);
+}
+
+/* POPUP STYLE */
+.popup-content{font-family:'DM Sans',sans-serif;font-size:13px;min-width:220px;line-height:1.6;}
+.popup-content strong{color:#1b4d30;font-size:14px;display:block;margin-bottom:4px;}
+.popup-content .popup-field{color:#6b7570;font-size:12px;}
+.popup-content .popup-val{color:#1a2018;}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:3rem;font-family:var(--ff-m);font-size:12px;color:var(--muted);}
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--green2);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.kpis{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){
+  .kpis{grid-template-columns:1fr 1fr;}
+  .main{padding:1.25rem 1rem;}
+  .nav{padding:0 1rem;height:56px;}
+  .filters{flex-direction:column;}
+  .filter-group{min-width:100%;}
+  thead th:nth-child(n+6){display:none;}
+  tbody td:nth-child(n+6){display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="Logo_Amarelo_Branco.png" alt="BrE">
+    </div>
+    <div class="login-title">Painel Administrativo</div>
+    <div class="login-sub">BrE Consultoria & Engenharia · Banco de Terrenos</div>
+    <div class="login-field">
+      <label>Usuário</label>
+      <input type="text" id="loginUser" placeholder="usuario" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Senha</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="loginBtn">Entrar</button>
+    <div class="login-err" id="loginErr">Usuário ou senha incorretos.</div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="appScreen">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-left">
+      <div class="nav-logo"><img src="Logo_Amarelo_Branco.png" alt="BrE"></div>
+      <span class="nav-tag">Admin · Banco de Terrenos</span>
+    </div>
+    <div class="nav-right">
+      <div class="nav-status">Sistema ativo</div>
+      <div class="nav-user" id="navUser">—</div>
+      <button class="btn-logout" id="logoutBtn">Sair</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- KPIs -->
+    <div class="kpis" id="kpiArea">
+      <div class="kpi"><div class="kpi-label">Total de terrenos</div><div class="kpi-value" id="kTotal">—</div><div class="kpi-sub">cadastrados</div></div>
+      <div class="kpi"><div class="kpi-label">Novos</div><div class="kpi-value" id="kNovos" style="color:var(--gold)">—</div><div class="kpi-sub">aguardando análise</div></div>
+      <div class="kpi"><div class="kpi-label">Com coordenadas</div><div class="kpi-value" id="kCoords">—</div><div class="kpi-sub">localizados no mapa</div></div>
+      <div class="kpi"><div class="kpi-label">Municípios</div><div class="kpi-value" id="kCidades">—</div><div class="kpi-sub">cidades diferentes</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" data-tab="tabela">Tabela</button>
+      <button class="tab" data-tab="mapa">Mapa Interativo</button>
+    </div>
+
+    <!-- TAB TABELA -->
+    <div class="tab-panel active" id="tabela">
+
+      <!-- FILTERS -->
+      <div class="filters">
+        <div class="filter-group">
+          <span class="filter-label">Busca geral</span>
+          <input type="text" id="fBusca" placeholder="Nome, e-mail, bairro...">
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Cidade</span>
+          <input type="text" id="fCidade" placeholder="Ex: Recife">
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">UF</span>
+          <select id="fUF">
+            <option value="">Todos</option>
+            <option>AL</option><option>BA</option><option>CE</option><option>PB</option>
+            <option>PE</option><option>PI</option><option>RN</option><option>SE</option>
+            <option>MA</option><option>ES</option><option>MG</option><option>RJ</option>
+            <option>SP</option><option>PR</option><option>RS</option><option>SC</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Tipo</span>
+          <select id="fTipo">
+            <option value="">Todos</option>
+            <option>Terreno urbano vazio</option>
+            <option>Terreno rural</option>
+            <option>Área comercial</option>
+            <option>Área industrial</option>
+            <option>Rooftop (telhado/cobertura)</option>
+            <option>Área pública</option>
+            <option>Galpão / Armazém</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Status</span>
+          <select id="fStatus">
+            <option value="">Todos</option>
+            <option>novo</option>
+            <option>em análise</option>
+            <option>aprovado</option>
+            <option>recusado</option>
+          </select>
+        </div>
+        <button class="btn-clear" onclick="clearFilters()">Limpar</button>
+        <span class="filter-count" id="filterCount">— registros</span>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <span class="table-title">Terrenos cadastrados</span>
+          <button class="btn-export" onclick="exportCSV()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exportar CSV
+          </button>
+        </div>
+        <div class="tbl-scroll">
+          <table id="mainTable">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Cidade/UF</th>
+                <th>Tipo</th>
+                <th>Área</th>
+                <th>Doc.</th>
+                <th>Coordenadas</th>
+                <th>Mapa</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr><td colspan="10" class="loading"><div class="spinner"></div>Carregando dados...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB MAPA -->
+    <div class="tab-panel" id="mapa">
+      <div class="map-loading" id="mapLoading">
+        <div class="spinner"></div>&nbsp;Carregando mapa...
+      </div>
+      <div id="adminMap" style="display:none;"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════ */
+const SUPA_URL = 'https://ljhekmgmuwafuueaubvp.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaGVrbWdtdXdhZnV1ZWF1YnZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5ODgzMzYsImV4cCI6MjA5NDU2NDMzNn0.KqXldXPo4ZipPivwH50sbTm0q2F6MjkZ1D07ciZuzZc';
+
+/* Credenciais de acesso — altere aqui */
+const USERS = {
+  'erasmo':   'bre@2025',
+  'admin':    'bre@admin',
+  'equipe':   'bre@campo',
+  'tatiana':  'bre@2025'
+};
+
+let allData = [];
+let filteredData = [];
+let adminMap = null;
+let leafletLoaded = false;
+
+/* ═══════════════════════════════════════════
+   LOGIN
+═══════════════════════════════════════════ */
+const loginBtn = document.getElementById('loginBtn');
+const loginErr = document.getElementById('loginErr');
+
+function doLogin() {
+  const user = document.getElementById('loginUser').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value;
+  if (USERS[user] && USERS[user] === pass) {
+    document.getElementById('loginScreen').style.display = 'none';
+    const app = document.getElementById('appScreen');
+    app.style.display = 'flex';
+    app.classList.add('show');
+    document.getElementById('navUser').textContent = user;
+    loginErr.classList.remove('show');
+    loadData();
+  } else {
+    loginErr.classList.add('show');
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginPass').focus();
+  }
+}
+
+loginBtn.addEventListener('click', doLogin);
+document.getElementById('loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginPass').focus(); });
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  allData = []; filteredData = [];
+});
+
+/* ═══════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════ */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+    if (t.dataset.tab === 'mapa') initAdminMap();
+  });
+});
+
+/* ═══════════════════════════════════════════
+   LOAD DATA — SUPABASE
+═══════════════════════════════════════════ */
+async function loadData() {
+  try {
+    const res = await fetch(
+      `${SUPA_URL}/rest/v1/terrenos?select=*&order=criado_em.desc`,
+      { headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY } }
+    );
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    allData = await res.json();
+    updateKPIs();
+    applyFilters();
+  } catch(err) {
+    document.getElementById('tableBody').innerHTML =
+      `<tr><td colspan="10" class="empty-row">⚠️ Erro ao carregar dados: ${err.message}</td></tr>`;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   KPIs
+═══════════════════════════════════════════ */
+function updateKPIs() {
+  document.getElementById('kTotal').textContent = allData.length;
+  document.getElementById('kNovos').textContent = allData.filter(r => r.status === 'novo').length;
+  document.getElementById('kCoords').textContent = allData.filter(r => r.lat && r.lng).length;
+  const cidades = new Set(allData.map(r => r.cidade).filter(Boolean));
+  document.getElementById('kCidades').textContent = cidades.size;
+}
+
+/* ═══════════════════════════════════════════
+   FILTERS
+═══════════════════════════════════════════ */
+['fBusca','fCidade','fUF','fTipo','fStatus'].forEach(id => {
+  document.getElementById(id).addEventListener('input', applyFilters);
+});
+
+function applyFilters() {
+  const busca  = document.getElementById('fBusca').value.toLowerCase();
+  const cidade = document.getElementById('fCidade').value.toLowerCase();
+  const uf     = document.getElementById('fUF').value;
+  const tipo   = document.getElementById('fTipo').value;
+  const status = document.getElementById('fStatus').value;
+
+  filteredData = allData.filter(r => {
+    if (busca && ![r.nome,r.email,r.endereco,r.observacoes,r.cidade].join(' ').toLowerCase().includes(busca)) return false;
+    if (cidade && !(r.cidade||'').toLowerCase().includes(cidade)) return false;
+    if (uf && r.uf !== uf) return false;
+    if (tipo && r.tipo_imovel !== tipo) return false;
+    if (status && r.status !== status) return false;
+    return true;
+  });
+
+  document.getElementById('filterCount').textContent = `${filteredData.length} de ${allData.length} registros`;
+  renderTable();
+}
+
+function clearFilters() {
+  ['fBusca','fCidade','fUF','fTipo','fStatus'].forEach(id => document.getElementById(id).value = '');
+  applyFilters();
+}
+
+/* ═══════════════════════════════════════════
+   TABLE RENDER
+═══════════════════════════════════════════ */
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  if (!filteredData.length) {
+    tbody.innerHTML = '<tr><td colspan="10" class="empty-row">Nenhum registro encontrado com os filtros aplicados.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filteredData.map(r => {
+    const dt = r.criado_em ? new Date(r.criado_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+    const mapLink = r.lat && r.lng
+      ? `<button class="btn-map-link" onclick="focusOnMap('${r.lat}','${r.lng}','${(r.nome||'').replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Ver</button>`
+      : '<span style="color:var(--border);font-family:var(--ff-m);font-size:11px;">—</span>';
+    const badge = getBadge(r.status);
+    const coords = r.coordenadas || (r.lat && r.lng ? `${r.lat}, ${r.lng}` : '—');
+
+    return `<tr>
+      <td style="font-family:var(--ff-m);font-size:11px;color:var(--muted);white-space:nowrap;">${dt}</td>
+      <td class="td-nome">${r.nome||'—'}<br><span style="font-size:11px;color:var(--muted);font-weight:400;">${r.telefone||''}</span></td>
+      <td style="font-size:12px;color:var(--muted);">${r.email||'—'}</td>
+      <td><span style="font-weight:500;">${r.cidade||'—'}</span> <span style="color:var(--muted);font-size:12px;">${r.uf||''}</span></td>
+      <td style="font-size:12px;">${r.tipo_imovel||'—'}</td>
+      <td style="font-family:var(--ff-m);font-size:11px;">${r.area_m2||'—'}</td>
+      <td style="font-size:11px;color:${r.documentacao&&r.documentacao.includes('Sim')?'var(--green2)':'var(--muted)'};">${r.documentacao||'—'}</td>
+      <td class="td-coords">${coords !== '—' ? coords.substring(0,24)+'...' : '—'}</td>
+      <td>${mapLink}</td>
+      <td>
+        <select class="status-select" data-id="${r.id}" onchange="updateStatus('${r.id}',this.value)">
+          <option ${r.status==='novo'?'selected':''}>novo</option>
+          <option ${r.status==='em análise'?'selected':''}>em análise</option>
+          <option ${r.status==='aprovado'?'selected':''}>aprovado</option>
+          <option ${r.status==='recusado'?'selected':''}>recusado</option>
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function getBadge(status) {
+  const map = {
+    'novo':'badge-novo','em análise':'badge-analise',
+    'aprovado':'badge-aprovado','recusado':'badge-recusado'
+  };
+  return `<span class="badge ${map[status]||'badge-novo'}">${status||'novo'}</span>`;
+}
+
+/* ═══════════════════════════════════════════
+   UPDATE STATUS
+═══════════════════════════════════════════ */
+async function updateStatus(id, newStatus) {
+  try {
+    await fetch(`${SUPA_URL}/rest/v1/terrenos?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY,
+        'Content-Type': 'application/json', 'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ status: newStatus })
+    });
+    const rec = allData.find(r => r.id === id);
+    if (rec) rec.status = newStatus;
+    updateKPIs();
+  } catch(e) { console.error('Erro ao atualizar status:', e); }
+}
+
+/* ═══════════════════════════════════════════
+   EXPORT CSV
+═══════════════════════════════════════════ */
+function exportCSV() {
+  const cols = ['criado_em','nome','telefone','email','endereco','cidade','uf','area_m2','tipo_imovel','documentacao','matricula','lat','lng','coordenadas','observacoes','status'];
+  const header = cols.join(';');
+  const rows = filteredData.map(r => cols.map(c => `"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(';'));
+  const csv = '\uFEFF' + [header, ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+  a.download = `BrE_Terrenos_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+/* ═══════════════════════════════════════════
+   ADMIN MAP — LEAFLET
+═══════════════════════════════════════════ */
+function loadLeafletAdmin(cb) {
+  if (leafletLoaded) { cb(); return; }
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(css);
+  const js = document.createElement('script');
+  js.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  js.onload = () => { leafletLoaded = true; cb(); };
+  document.head.appendChild(js);
+}
+
+function initAdminMap() {
+  const mapEl = document.getElementById('adminMap');
+  const loading = document.getElementById('mapLoading');
+
+  loadLeafletAdmin(() => {
+    loading.style.display = 'none';
+    mapEl.style.display = 'block';
+
+    if (adminMap) { adminMap.invalidateSize(); plotMarkers(); return; }
+
+    adminMap = L.map('adminMap', { zoomControl: true }).setView([-8.0543, -34.8811], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(adminMap);
+
+    plotMarkers();
+    setTimeout(() => adminMap.invalidateSize(), 300);
+  });
+}
+
+function plotMarkers() {
+  if (!adminMap) return;
+
+  // Remove existing markers
+  adminMap.eachLayer(l => { if (l instanceof L.Marker || l instanceof L.CircleMarker) adminMap.removeLayer(l); });
+
+  const withCoords = allData.filter(r => r.lat && r.lng);
+  const bounds = [];
+
+  withCoords.forEach(r => {
+    const lat = parseFloat(r.lat);
+    const lng = parseFloat(r.lng);
+    if (isNaN(lat) || isNaN(lng)) return;
+
+    const color = r.status === 'aprovado' ? '#2e7d52'
+                : r.status === 'em análise' ? '#1155cc'
+                : r.status === 'recusado' ? '#c0392b'
+                : '#c9830a';
+
+    const pinIcon = L.divIcon({
+      className: '',
+      iconAnchor: [16, 40],
+      popupAnchor: [0, -42],
+      html: `<div style="position:relative;width:32px;height:40px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.4))">
+        <svg viewBox="0 0 32 40" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <path d="M16 1C8.27 1 2 7.27 2 15c0 10 14 24 14 24S30 25 30 15C30 7.27 23.73 1 16 1z" fill="${color}"/>
+          <path d="M16 1C8.27 1 2 7.27 2 15c0 10 14 24 14 24S30 25 30 15C30 7.27 23.73 1 16 1z" fill="none" stroke="rgba(0,0,0,.2)" stroke-width="1"/>
+          <circle cx="16" cy="15" r="5" fill="rgba(255,255,255,.9)"/>
+          <circle cx="16" cy="15" r="2.5" fill="${color}"/>
+        </svg>
+      </div>`
+    });
+
+    const dt = r.criado_em ? new Date(r.criado_em).toLocaleDateString('pt-BR') : '—';
+    const statusColor = r.status === 'aprovado' ? '#0f5132' : r.status === 'em análise' ? '#084298' : r.status === 'recusado' ? '#842029' : '#7a4f00';
+    const statusBg = r.status === 'aprovado' ? '#d1e7dd' : r.status === 'em análise' ? '#cfe2ff' : r.status === 'recusado' ? '#f8d7da' : '#fff3cd';
+
+    const popup = `<div class="popup-content">
+      <strong>${r.nome||'—'}</strong>
+      <span class="popup-field">📍 </span><span class="popup-val">${r.endereco||'—'}</span><br>
+      <span class="popup-field">🏙️ </span><span class="popup-val">${r.cidade||'—'}/${r.uf||'—'}</span><br>
+      <span class="popup-field">📐 </span><span class="popup-val">${r.tipo_imovel||'—'} · ${r.area_m2||'—'} m²</span><br>
+      <span class="popup-field">📞 </span><span class="popup-val">${r.telefone||'—'}</span><br>
+      <span class="popup-field">📧 </span><span class="popup-val" style="font-size:11px">${r.email||'—'}</span><br>
+      <span class="popup-field">🗓️ </span><span class="popup-val" style="font-size:11px">${dt}</span><br>
+      <div style="margin-top:6px">
+        <span style="background:${statusBg};color:${statusColor};padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;text-transform:uppercase;font-family:monospace">${r.status||'novo'}</span>
+      </div>
+      ${r.observacoes ? `<div style="margin-top:6px;font-size:11px;color:#6b7570;border-top:1px solid #eee;padding-top:6px">${r.observacoes.substring(0,120)}${r.observacoes.length>120?'...':''}</div>` : ''}
+    </div>`;
+
+    L.marker([lat, lng], { icon: pinIcon }).addTo(adminMap).bindPopup(popup, { maxWidth: 280 });
+    bounds.push([lat, lng]);
+  });
+
+  if (bounds.length > 0) {
+    adminMap.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
+  }
+}
+
+function focusOnMap(lat, lng, nome) {
+  // Troca para aba mapa
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x => x.classList.remove('active'));
+  document.querySelector('[data-tab="mapa"]').classList.add('active');
+  document.getElementById('mapa').classList.add('active');
+
+  initAdminMap();
+  setTimeout(() => {
+    if (adminMap) {
+      adminMap.setView([parseFloat(lat), parseFloat(lng)], 17);
+      // Abre popup do marcador mais próximo
+      adminMap.eachLayer(l => {
+        if (l instanceof L.Marker) {
+          const ll = l.getLatLng();
+          if (Math.abs(ll.lat - parseFloat(lat)) < 0.001 && Math.abs(ll.lng - parseFloat(lng)) < 0.001) {
+            l.openPopup();
+          }
+        }
+      });
+    }
+  }, 500);
+}
+
+/* ═══════════════════════════════════════════
+   REFRESH a cada 30s
+═══════════════════════════════════════════ */
+setInterval(() => {
+  if (document.getElementById('appScreen').classList.contains('show')) {
+    loadData().then(() => {
+      if (adminMap) plotMarkers();
+    });
+  }
+}, 30000);
+</script>
+</body>
+</html>

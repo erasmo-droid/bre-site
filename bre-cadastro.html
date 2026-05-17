@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#07130d">
+<title>BrE — Cadastrar Terreno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark:#07130d;--green1:#1b4d30;--green2:#2e7d52;--green3:#48a872;
+  --gold:#c9830a;--gold2:#e8a020;--gold3:#f5c060;
+  --white:#f8f9f6;--surface:#f2f5f0;--border:#dde3d8;
+  --text:#1a2018;--muted:#6b7570;
+  --ff-d:'Syne',sans-serif;--ff-b:'DM Sans',sans-serif;--ff-m:'Roboto Mono',monospace;
+  --r:8px;--rl:16px;--sh:0 4px 24px rgba(0,0,0,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--ff-b);background:var(--dark);min-height:100vh;color:var(--text);}
+a{color:inherit;text-decoration:none;}
+
+/* HEADER */
+.header{
+  background:rgba(7,19,13,.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(72,168,114,.15);
+  padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.header-logo{display:flex;align-items:center;gap:10px;}
+.header-logo img{height:32px;width:auto;}
+.header-title{
+  font-family:var(--ff-m);font-size:11px;color:rgba(255,255,255,.4);
+  text-transform:uppercase;letter-spacing:1.5px;
+}
+.header-badge{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--ff-m);font-size:10px;color:var(--gold3);
+  text-transform:uppercase;letter-spacing:1px;
+}
+.header-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green3);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,var(--dark) 0%,#0f2318 100%);
+  padding:3rem 2rem 2rem;text-align:center;
+  border-bottom:1px solid rgba(72,168,114,.1);
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(201,131,10,.3);background:rgba(201,131,10,.07);
+  color:var(--gold3);padding:5px 14px;border-radius:20px;
+  font-family:var(--ff-m);font-size:10px;letter-spacing:.8px;
+  text-transform:uppercase;margin-bottom:1.25rem;
+}
+.hero h1{
+  font-family:var(--ff-d);font-size:clamp(1.75rem,4vw,2.5rem);
+  font-weight:800;color:var(--white);letter-spacing:-.5px;
+  margin-bottom:.75rem;
+}
+.hero h1 span{color:var(--gold2);}
+.hero p{font-size:.95rem;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto;line-height:1.7;}
+
+/* FORM CONTAINER */
+.form-container{
+  max-width:780px;margin:0 auto;
+  padding:2rem 1.5rem 4rem;
+}
+
+/* SECTION BLOCKS */
+.fsec{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--rl);padding:1.75rem;margin-bottom:1.25rem;
+}
+.fsec-title{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--ff-m);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:1.5px;color:var(--green2);
+  margin-bottom:1.5rem;padding-bottom:.875rem;
+  border-bottom:1px solid var(--border);
+}
+.fsec-title svg{width:16px;height:16px;stroke:var(--green2);fill:none;stroke-width:2;}
+.fsec-num{
+  width:22px;height:22px;border-radius:50%;background:var(--green1);
+  color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;flex-shrink:0;
+}
+
+/* GRID */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.125rem;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+.fg label{
+  font-family:var(--ff-m);font-size:10.5px;font-weight:500;
+  color:var(--text);text-transform:uppercase;letter-spacing:.8px;
+}
+.fg input,.fg select,.fg textarea{
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:11px 14px;font-family:var(--ff-b);font-size:15px;
+  color:var(--text);background:#fff;outline:none;width:100%;
+  transition:border-color .2s,box-shadow .2s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:var(--green2);box-shadow:0 0 0 3px rgba(46,125,82,.1);
+}
+.fg textarea{resize:vertical;min-height:90px;}
+.fg select{
+  cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7570' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.req{color:var(--gold);}
+.fg-hint{font-size:11px;color:var(--muted);font-family:var(--ff-m);}
+
+/* MAP SECTION */
+.map-search-bar{display:flex;gap:.625rem;margin-bottom:.875rem;}
+.map-search-bar input{
+  flex:1;border:1px solid var(--border);border-radius:var(--r);
+  padding:10px 14px;font-family:var(--ff-b);font-size:14px;
+  color:var(--text);background:#fff;outline:none;
+  transition:border-color .2s;
+}
+.map-search-bar input:focus{border-color:var(--green2);}
+.map-search-bar button{
+  background:var(--green1);color:#fff;border:none;
+  border-radius:var(--r);padding:10px 18px;
+  font-family:var(--ff-m);font-size:11px;font-weight:500;
+  cursor:pointer;transition:background .2s;white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
+}
+.map-search-bar button:hover{background:var(--green2);}
+.map-search-bar button svg{width:14px;height:14px;}
+.map-wrap{
+  border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;position:relative;
+}
+.map-placeholder{
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:.75rem;height:320px;
+  color:var(--muted);font-size:13px;font-family:var(--ff-m);
+  background:var(--surface);
+}
+.map-placeholder svg{width:40px;height:40px;stroke:var(--border);}
+#breMap{width:100%;height:360px;display:none;}
+.map-tip{
+  position:absolute;bottom:0;left:0;right:0;z-index:500;
+  background:rgba(7,19,13,.88);backdrop-filter:blur(8px);
+  color:rgba(255,255,255,.8);font-family:var(--ff-m);
+  font-size:10.5px;padding:7px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid rgba(72,168,114,.2);pointer-events:none;
+}
+.map-tip svg{width:13px;height:13px;stroke:var(--gold2);fill:none;flex-shrink:0;}
+.coords-box{
+  display:none;align-items:center;gap:8px;margin-top:.625rem;
+  background:var(--dark);border-radius:var(--r);
+  padding:9px 14px;border:1px solid rgba(72,168,114,.2);
+}
+.coords-box.show{display:flex;}
+.coords-box svg{width:14px;height:14px;stroke:var(--gold2);fill:none;flex-shrink:0;}
+.coords-val{font-family:var(--ff-m);font-size:11.5px;color:var(--gold3);flex:1;}
+.coords-ok{font-family:var(--ff-m);font-size:10px;color:var(--green3);}
+
+/* CHECKBOX */
+.crow{display:flex;align-items:flex-start;gap:10px;}
+.crow input[type="checkbox"]{
+  width:18px;height:18px;cursor:pointer;flex-shrink:0;
+  accent-color:var(--green2);margin-top:2px;
+}
+.crow label{font-size:13.5px;color:var(--muted);cursor:pointer;line-height:1.55;}
+
+/* SUBMIT */
+.fsubmit{
+  background:linear-gradient(135deg,var(--dark),var(--green1));
+  border-radius:var(--rl);padding:2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.fsubmit-text h3{
+  font-family:var(--ff-d);font-size:1.1rem;font-weight:700;
+  color:#fff;margin-bottom:.25rem;
+}
+.fsubmit-text p{font-size:13px;color:rgba(255,255,255,.55);}
+.btn-submit{
+  background:var(--gold);color:#fff;border:none;
+  border-radius:var(--r);padding:14px 28px;
+  font-family:var(--ff-b);font-weight:600;font-size:15px;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:8px;white-space:nowrap;
+}
+.btn-submit:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,131,10,.4);}
+.btn-submit svg{width:16px;height:16px;}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* SUCCESS */
+.success-screen{
+  display:none;text-align:center;
+  background:#fff;border-radius:var(--rl);padding:3rem 2rem;
+  border:1px solid var(--border);
+}
+.success-screen.show{display:block;}
+.success-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:#edf5f0;border:2px solid var(--green3);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.5rem;
+}
+.success-icon svg{width:36px;height:36px;stroke:var(--green2);fill:none;stroke-width:2;}
+.success-screen h2{
+  font-family:var(--ff-d);font-size:1.5rem;font-weight:800;
+  color:var(--text);margin-bottom:.75rem;
+}
+.success-screen p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
+.btn-novo{
+  background:var(--green1);color:#fff;border:none;
+  border-radius:var(--r);padding:12px 24px;
+  font-family:var(--ff-b);font-weight:500;font-size:15px;
+  cursor:pointer;transition:background .2s;
+}
+.btn-novo:hover{background:var(--green2);}
+
+/* ERROR MSG */
+.err-msg{
+  display:none;background:#fff3cd;border:1px solid #ffc107;
+  border-radius:var(--r);padding:1rem 1.25rem;
+  color:#7a4f00;font-size:13.5px;margin-top:1rem;
+  align-items:center;gap:8px;
+}
+.err-msg.show{display:flex;}
+
+/* SPIN */
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .header{padding:.875rem 1.25rem;}
+  .hero{padding:2rem 1.25rem 1.5rem;}
+  .form-container{padding:1.25rem 1rem 3rem;}
+  .fsec{padding:1.375rem;}
+  .fgrid{grid-template-columns:1fr;}
+  .fsubmit{flex-direction:column;align-items:stretch;}
+  .btn-submit{width:100%;justify-content:center;}
+  .map-search-bar{flex-direction:column;}
+  .map-search-bar button{justify-content:center;}
+  .fg input,.fg select,.fg textarea{font-size:16px;}
+  .map-search-bar input{font-size:16px;}
+}
+@supports(padding:max(0px)){
+  .header{padding-left:max(2rem,env(safe-area-inset-left));padding-right:max(2rem,env(safe-area-inset-right));}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-logo">
+    <img src="Logo_Amarelo_Branco.png" alt="BrE">
+    <span class="header-title">Banco de Terrenos</span>
+  </div>
+  <div class="header-badge">
+    <span>Sistema Ativo</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Acquisition · BrE Consultoria & Engenharia</div>
+  <h1>Cadastre seu <span>Terreno</span></h1>
+  <p>A BrE realiza análise técnica e documental de áreas com potencial para infraestrutura, telecomunicações, projetos industriais e comerciais.</p>
+</div>
+
+<!-- FORM -->
+<div class="form-container">
+
+  <form id="mainForm">
+
+    <!-- SEÇÃO 1 — DADOS DO PROPRIETÁRIO -->
+    <div class="fsec">
+      <div class="fsec-title">
+        <span class="fsec-num">1</span>
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Dados do Proprietário
+      </div>
+      <div class="fgrid">
+        <div class="fg full">
+          <label>Nome completo <span class="req">*</span></label>
+          <input type="text" id="f-nome" placeholder="Seu nome completo" required>
+        </div>
+        <div class="fg">
+          <label>Telefone / WhatsApp <span class="req">*</span></label>
+          <input type="tel" id="f-tel" placeholder="(81) 99999-9999" required>
+        </div>
+        <div class="fg">
+          <label>E-mail <span class="req">*</span></label>
+          <input type="email" id="f-email" placeholder="seu@email.com" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 2 — DADOS DO IMÓVEL -->
+    <div class="fsec">
+      <div class="fsec-title">
+        <span class="fsec-num">2</span>
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        Dados do Imóvel
+      </div>
+      <div class="fgrid">
+        <div class="fg full">
+          <label>Endereço <span class="req">*</span></label>
+          <input type="text" id="f-end" placeholder="Rua, número, bairro" required>
+        </div>
+        <div class="fg">
+          <label>Cidade <span class="req">*</span></label>
+          <input type="text" id="f-cidade" placeholder="Cidade" required>
+        </div>
+        <div class="fg">
+          <label>Estado <span class="req">*</span></label>
+          <select id="f-uf" required>
+            <option value="">Selecione...</option>
+            <option>AL</option><option>BA</option><option>CE</option><option>PB</option>
+            <option>PE</option><option>PI</option><option>RN</option><option>SE</option>
+            <option>MA</option><option>ES</option><option>MG</option><option>RJ</option>
+            <option>SP</option><option>PR</option><option>RS</option><option>SC</option>
+            <option>GO</option><option>DF</option><option>MT</option><option>MS</option>
+            <option>PA</option><option>AM</option><option>TO</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Área aproximada (m²)</label>
+          <input type="text" id="f-area" placeholder="Ex: 500 m²">
+        </div>
+        <div class="fg">
+          <label>Tipo de imóvel <span class="req">*</span></label>
+          <select id="f-tipo" required>
+            <option value="">Selecione...</option>
+            <option>Terreno urbano vazio</option>
+            <option>Terreno rural</option>
+            <option>Área comercial</option>
+            <option>Área industrial</option>
+            <option>Rooftop (telhado/cobertura)</option>
+            <option>Área pública</option>
+            <option>Galpão / Armazém</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Possui documentação?</label>
+          <select id="f-doc">
+            <option value="">Selecione...</option>
+            <option>Sim, completa</option>
+            <option>Parcialmente documentado</option>
+            <option>Não possui</option>
+            <option>Não sei informar</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Escritura / Matrícula?</label>
+          <select id="f-mat">
+            <option value="">Selecione...</option>
+            <option>Sim, escritura e matrícula</option>
+            <option>Apenas escritura</option>
+            <option>Apenas matrícula</option>
+            <option>Não possui</option>
+            <option>Não sei informar</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 3 — LOCALIZAÇÃO NO MAPA -->
+    <div class="fsec">
+      <div class="fsec-title">
+        <span class="fsec-num">3</span>
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Localização no Mapa
+        <span style="margin-left:auto;font-size:9px;color:var(--muted);font-weight:400;">Arraste o PIN dourado para marcar o terreno</span>
+      </div>
+      <div class="map-search-bar">
+        <input type="text" id="mapSearch" placeholder="Buscar endereço no mapa...">
+        <button type="button" id="mapBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Buscar
+        </button>
+      </div>
+      <div class="map-wrap">
+        <div class="map-placeholder" id="mapPh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Digite o endereço e clique em Buscar</span>
+        </div>
+        <div id="breMap"></div>
+        <div class="map-tip" id="mapTip" style="display:none;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+            <span>Arraste o PIN dourado para ajustar a posição</span>
+          </div>
+          <span id="coordsTip" style="font-family:var(--ff-m);font-size:10px;color:var(--gold3);">—</span>
+        </div>
+      </div>
+      <div class="coords-box" id="coordsBox">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div>
+          <div style="font-family:var(--ff-m);font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Coordenadas capturadas</div>
+          <div class="coords-val" id="coordsVal">—</div>
+        </div>
+        <span class="coords-ok">● MARCADO</span>
+      </div>
+      <input type="hidden" id="f-coords">
+      <input type="hidden" id="f-lat">
+      <input type="hidden" id="f-lng">
+    </div>
+
+    <!-- SEÇÃO 4 — OBSERVAÇÕES -->
+    <div class="fsec">
+      <div class="fsec-title">
+        <span class="fsec-num">4</span>
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        Observações
+      </div>
+      <div class="fg full">
+        <label>Informações adicionais sobre o imóvel</label>
+        <textarea id="f-obs" placeholder="Descreva características relevantes: acesso, vizinhança, infraestrutura existente, restrições conhecidas, histórico..." rows="4"></textarea>
+      </div>
+    </div>
+
+    <!-- LGPD + SUBMIT -->
+    <div class="fsec" style="margin-bottom:1.5rem;">
+      <div class="crow">
+        <input type="checkbox" id="lgpd" required>
+        <label for="lgpd">Autorizo a BrE Consultoria & Engenharia a entrar em contato para avaliação desta área e a tratar meus dados conforme a LGPD. O cadastro não gera obrigação contratual. <span class="req">*</span></label>
+      </div>
+    </div>
+
+    <!-- SUCCESS / ERROR -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>
+      </div>
+      <h2>Área cadastrada com sucesso!</h2>
+      <p>Nossa equipe técnica realizará a análise documental e entrará em contato em breve. Obrigado pelo interesse em parceria com a BrE.</p>
+      <button class="btn-novo" onclick="resetForm()">Cadastrar outro terreno</button>
+    </div>
+
+    <div class="err-msg" id="errMsg">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a4f00" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Erro ao enviar. Tente novamente ou entre em contato via WhatsApp: (81) 99249-0774
+    </div>
+
+    <div class="fsubmit" id="submitArea">
+      <div class="fsubmit-text">
+        <h3>Pronto para enviar?</h3>
+        <p>Retorno da equipe BrE em até 2 dias úteis</p>
+      </div>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Cadastrar Área
+      </button>
+    </div>
+
+  </form>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:2rem;font-family:var(--ff-m);font-size:11px;color:rgba(255,255,255,.25);border-top:1px solid rgba(255,255,255,.05);">
+  BrE Consultoria & Engenharia LTDA · CNPJ 15.334.480/0001-02 · contato@breconsultoria.com.br
+</div>
+
+<script>
+/* ── CONFIG ── */
+const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwURbstSnpiXq0RwE9K_pOjzcA8lvzSZepxew8L9rZvTjJApwIXeQcDh0CQYb8iEgM7bw/exec';
+
+/* ── LEAFLET MAP ── */
+let map, marker, mapLoaded = false;
+
+function loadLeaflet(cb) {
+  if (mapLoaded) { cb(); return; }
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(css);
+  const js = document.createElement('script');
+  js.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  js.onload = () => { mapLoaded = true; cb(); };
+  document.head.appendChild(js);
+}
+
+function initMap(lat, lng) {
+  const ph = document.getElementById('mapPh');
+  const mapEl = document.getElementById('breMap');
+  const tip = document.getElementById('mapTip');
+  ph.style.display = 'none';
+  mapEl.style.display = 'block';
+  tip.style.display = 'flex';
+
+  if (map) { map.setView([lat, lng], 16); marker.setLatLng([lat, lng]); updateCoords(lat, lng); return; }
+
+  const pinIcon = L.divIcon({
+    className: '', iconAnchor: [18, 44], popupAnchor: [0, -48],
+    html: `<div style="width:36px;height:44px;filter:drop-shadow(0 4px 14px rgba(201,131,10,.65));cursor:grab">
+      <svg viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <defs><radialGradient id="pg2" cx="40%" cy="30%"><stop offset="0%" stop-color="#f5c060"/><stop offset="100%" stop-color="#c9830a"/></radialGradient></defs>
+        <path d="M18 2C10.27 2 4 8.27 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.27 25.73 2 18 2z" fill="url(#pg2)"/>
+        <path d="M18 2C10.27 2 4 8.27 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.27 25.73 2 18 2z" fill="none" stroke="#9a5e00" stroke-width="1.2"/>
+        <circle cx="18" cy="16" r="5.5" fill="#07130d" opacity=".85"/>
+        <circle cx="18" cy="16" r="2.5" fill="#f5c060"/>
+      </svg></div>`
+  });
+
+  map = L.map('breMap', { zoomControl: true, tap: true, tapTolerance: 15 }).setView([lat, lng], 16);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19
+  }).addTo(map);
+
+  marker = L.marker([lat, lng], { icon: pinIcon, draggable: true, autoPan: true }).addTo(map);
+  marker.bindPopup('<div style="font-family:monospace;font-size:11px;min-width:160px"><strong style="color:#1b4d30">📍 Terreno marcado</strong><br><span id="popupAddr" style="color:#c9830a;font-size:10px">Buscando endereço...</span></div>', { closeButton: false });
+
+  marker.on('drag', e => updateCoords(e.latlng.lat, e.latlng.lng));
+  marker.on('dragend', e => { updateCoords(e.latlng.lat, e.latlng.lng); reverseGeocode(e.latlng.lat, e.latlng.lng); marker.openPopup(); map.panTo(e.latlng, { animate: true }); });
+  map.on('click', e => { marker.setLatLng(e.latlng); updateCoords(e.latlng.lat, e.latlng.lng); reverseGeocode(e.latlng.lat, e.latlng.lng); marker.openPopup(); });
+
+  updateCoords(lat, lng);
+  reverseGeocode(lat, lng);
+  setTimeout(() => map.invalidateSize(), 300);
+}
+
+function updateCoords(lat, lng) {
+  const val = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+  document.getElementById('f-coords').value = val;
+  document.getElementById('f-lat').value = lat.toFixed(6);
+  document.getElementById('f-lng').value = lng.toFixed(6);
+  const box = document.getElementById('coordsBox');
+  box.classList.add('show');
+  document.getElementById('coordsVal').textContent = val;
+  document.getElementById('coordsTip').textContent = val;
+}
+
+function reverseGeocode(lat, lng) {
+  fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=pt-BR`)
+    .then(r => r.json())
+    .then(d => {
+      if (d?.display_name) {
+        const short = d.display_name.split(',').slice(0, 4).join(', ');
+        const pa = document.getElementById('popupAddr');
+        if (pa) pa.textContent = short;
+        const mi = document.getElementById('mapSearch');
+        if (mi && !mi.value) mi.value = short;
+      }
+    }).catch(() => {});
+}
+
+document.getElementById('mapBtn').addEventListener('click', doSearch);
+document.getElementById('mapSearch').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doSearch(); } });
+
+const endInput = document.getElementById('f-end');
+let syncTimer;
+endInput.addEventListener('input', () => {
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => {
+    const ms = document.getElementById('mapSearch');
+    if (endInput.value.trim().length > 6 && !ms.value) ms.value = endInput.value.trim();
+  }, 700);
+});
+
+function doSearch() {
+  const inp = document.getElementById('mapSearch');
+  const btn = document.getElementById('mapBtn');
+  const q = inp.value.trim();
+  if (!q) return;
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Buscando...';
+  loadLeaflet(() => {
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q + ', Brasil')}&limit=1&accept-language=pt-BR`)
+      .then(r => r.json())
+      .then(data => {
+        btn.innerHTML = orig; btn.disabled = false;
+        const lat = data?.[0] ? parseFloat(data[0].lat) : -8.0543;
+        const lng = data?.[0] ? parseFloat(data[0].lon) : -34.8811;
+        initMap(lat, lng);
+      })
+      .catch(() => { btn.innerHTML = orig; btn.disabled = false; initMap(-8.0543, -34.8811); });
+  });
+}
+
+/* ── FORM SUBMIT ── */
+document.getElementById('mainForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
+
+  const g = id => (document.getElementById(id) || {}).value || '';
+
+  const payload = {
+    nome:        g('f-nome'),
+    telefone:    g('f-tel'),
+    email:       g('f-email'),
+    endereco:    g('f-end'),
+    cidade:      g('f-cidade'),
+    uf:          g('f-uf'),
+    area_m2:     g('f-area'),
+    tipo:        g('f-tipo'),
+    documentacao:g('f-doc'),
+    matricula:   g('f-mat'),
+    observacoes: g('f-obs'),
+    coordenadas: g('f-coords'),
+    lat:         g('f-lat'),
+    lng:         g('f-lng')
+  };
+
+  try {
+    await fetch(APPS_SCRIPT, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    // Sucesso
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+    document.getElementById('errMsg').classList.remove('show');
+
+  } catch(err) {
+    btn.disabled = false;
+    btn.innerHTML = orig;
+    document.getElementById('errMsg').classList.add('show');
+  }
+});
+
+function resetForm() {
+  document.getElementById('mainForm').reset();
+  document.getElementById('mainForm').style.display = 'block';
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('coordsBox').classList.remove('show');
+  document.getElementById('f-coords').value = '';
+  document.getElementById('f-lat').value = '';
+  document.getElementById('f-lng').value = '';
+  if (map) { document.getElementById('breMap').style.display = 'none'; document.getElementById('mapPh').style.display = 'flex'; document.getElementById('mapTip').style.display = 'none'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const _ss = document.createElement('style');
+_ss.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+document.head.appendChild(_ss);
+</script>
+</body>
+</html>
