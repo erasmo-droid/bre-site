@@ -306,12 +306,34 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
   <!-- MAIN -->
   <div class="main">
 
-    <!-- KPIs -->
-    <div class="kpis" id="kpiArea">
-      <div class="kpi"><div class="kpi-label">Total de terrenos</div><div class="kpi-value" id="kTotal">—</div><div class="kpi-sub">cadastrados</div></div>
-      <div class="kpi"><div class="kpi-label">Novos</div><div class="kpi-value" id="kNovos" style="color:var(--gold)">—</div><div class="kpi-sub">aguardando análise</div></div>
-      <div class="kpi"><div class="kpi-label">Com coordenadas</div><div class="kpi-value" id="kCoords">—</div><div class="kpi-sub">localizados no mapa</div></div>
-      <div class="kpi"><div class="kpi-label">Municípios</div><div class="kpi-value" id="kCidades">—</div><div class="kpi-sub">cidades diferentes</div></div>
+    <!-- KPIs TERRENOS + SOLICITAÇÕES -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+
+      <!-- BLOCO TERRENOS -->
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;">
+        <div style="padding:.75rem 1.25rem;background:var(--green1);border-bottom:1px solid var(--border);">
+          <p style="margin:0;font-family:var(--ff-m);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.7);">🗺️ Banco de Terrenos</p>
+        </div>
+        <div class="kpis" id="kpiArea" style="margin:0;gap:0;border-radius:0;border:none;">
+          <div class="kpi" style="border-radius:0;border:none;border-right:1px solid var(--border);"><div class="kpi-label">Total</div><div class="kpi-value" id="kTotal">—</div><div class="kpi-sub">cadastrados</div></div>
+          <div class="kpi" style="border-radius:0;border:none;border-right:1px solid var(--border);"><div class="kpi-label">Novos</div><div class="kpi-value" id="kNovos" style="color:var(--gold)">—</div><div class="kpi-sub">aguardando</div></div>
+          <div class="kpi" style="border-radius:0;border:none;border-right:1px solid var(--border);"><div class="kpi-label">No mapa</div><div class="kpi-value" id="kCoords">—</div><div class="kpi-sub">com coords</div></div>
+          <div class="kpi" style="border-radius:0;border:none;"><div class="kpi-label">Municípios</div><div class="kpi-value" id="kCidades">—</div><div class="kpi-sub">cidades</div></div>
+        </div>
+      </div>
+
+      <!-- BLOCO SOLICITAÇÕES -->
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;">
+        <div style="padding:.75rem 1.25rem;background:var(--dark);border-bottom:1px solid var(--border);">
+          <p style="margin:0;font-family:var(--ff-m);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:rgba(245,192,96,.7);">🔧 Solicitações de Serviço</p>
+        </div>
+        <div class="kpis" id="kpiSvc" style="margin:0;gap:0;border-radius:0;border:none;">
+          <div class="kpi" style="border-radius:0;border:none;border-right:1px solid var(--border);"><div class="kpi-label">Total</div><div class="kpi-value" id="ksTotal">—</div><div class="kpi-sub">solicitações</div></div>
+          <div class="kpi" style="border-radius:0;border:none;border-right:1px solid var(--border);"><div class="kpi-label">Novas</div><div class="kpi-value" id="ksNovas" style="color:var(--gold)">—</div><div class="kpi-sub">aguardando</div></div>
+          <div class="kpi" style="border-radius:0;border:none;border-right:1px solid var(--border);"><div class="kpi-label">Em andamento</div><div class="kpi-value" id="ksAndamento" style="color:#1155cc">—</div><div class="kpi-sub">em análise</div></div>
+          <div class="kpi" style="border-radius:0;border:none;"><div class="kpi-label">Concluídas</div><div class="kpi-value" id="ksConcluidas" style="color:var(--green2)">—</div><div class="kpi-sub">finalizadas</div></div>
+        </div>
+      </div>
     </div>
 
     <!-- MAPA DASHBOARD — BRASIL -->
@@ -337,7 +359,8 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
 
     <!-- TABS -->
     <div class="tabs">
-      <button class="tab active" data-tab="tabela">Tabela</button>
+      <button class="tab active" data-tab="tabela">🗺️ Terrenos</button>
+      <button class="tab" data-tab="solicitacoes">🔧 Solicitações</button>
       <button class="tab" data-tab="mapa">Mapa Interativo</button>
     </div>
 
@@ -424,6 +447,84 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
 
     </div>
 
+    <!-- TAB SOLICITAÇÕES -->
+    <div class="tab-panel" id="solicitacoes">
+
+      <!-- FILTROS -->
+      <div class="filters">
+        <div class="filter-group">
+          <span class="filter-label">Busca geral</span>
+          <input type="text" id="sfBusca" placeholder="Nome, e-mail, serviço...">
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Serviço</span>
+          <select id="sfServico">
+            <option value="">Todos</option>
+            <option>Licenciamento</option>
+            <option>Acquisition</option>
+            <option>Regularização</option>
+            <option>Auditoria</option>
+            <option>Projetos</option>
+            <option>Consultoria Técnica</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Urgência</span>
+          <select id="sfPrazo">
+            <option value="">Todas</option>
+            <option>Urgente — até 7 dias</option>
+            <option>Normal — até 30 dias</option>
+            <option>Sem urgência — mais de 30 dias</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Status</span>
+          <select id="sfStatus">
+            <option value="">Todos</option>
+            <option>Novo</option>
+            <option>Em análise</option>
+            <option>Em andamento</option>
+            <option>Concluído</option>
+            <option>Cancelado</option>
+          </select>
+        </div>
+        <button class="btn-clear" onclick="clearSvcFilters()">Limpar</button>
+        <span class="filter-count" id="sfCount">— registros</span>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <span class="table-title">🔧 Solicitações de Serviço</span>
+          <button class="btn-export" onclick="exportSvcCSV()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exportar CSV
+          </button>
+        </div>
+        <div class="tbl-scroll">
+          <table id="svcTable">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Protocolo</th>
+                <th>Tipo</th>
+                <th>Nome / Empresa</th>
+                <th>Telefone</th>
+                <th>Serviço</th>
+                <th>Cidade/UF</th>
+                <th>Prazo</th>
+                <th>Analista</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="svcTableBody">
+              <tr><td colspan="10" class="loading"><div class="spinner"></div>Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
     <!-- TAB MAPA -->
     <div class="tab-panel" id="mapa">
       <div class="map-loading" id="mapLoading">
@@ -472,7 +573,7 @@ function doLogin() {
     app.classList.add('show');
     document.getElementById('navUser').textContent = user;
     loginErr.classList.remove('show');
-    loadData().then(() => initDashMap());
+    loadData().then(() => { initDashMap(); loadSolicitations(); });
   } else {
     loginErr.classList.add('show');
     document.getElementById('loginPass').value = '';
@@ -501,6 +602,7 @@ document.querySelectorAll('.tab').forEach(t => {
     t.classList.add('active');
     document.getElementById(t.dataset.tab).classList.add('active');
     if (t.dataset.tab === 'mapa') initAdminMap();
+    if (t.dataset.tab === 'solicitacoes') { loadSolicitations(); }
   });
 });
 
@@ -862,14 +964,150 @@ function focusOnMap(lat, lng, nome) {
 }
 
 /* ═══════════════════════════════════════════
-   REFRESH a cada 30s
+   SOLICITAÇÕES DE SERVIÇO
 ═══════════════════════════════════════════ */
+let allSvc = [];
+let filteredSvc = [];
+
+const ANALISTAS = {
+  'erasmo':  'Erasmo Morais',
+  'admin':   'Equipe BrE',
+  'tatiana': 'Tatiana Drumond',
+  'equipe':  '—'
+};
+
+async function loadSolicitations() {
+  try {
+    /* Lê da aba Solicitações via Supabase — tabela separada */
+    /* Por ora lê da planilha via Apps Script — futuramente migrar para Supabase */
+    /* Temporariamente busca do Supabase tabela solicitacoes se existir */
+    const res = await fetch(
+      `${SUPA_URL}/rest/v1/solicitacoes?select=*&order=criado_em.desc`,
+      { headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY } }
+    );
+    if (res.ok) {
+      allSvc = await res.json();
+    } else {
+      allSvc = [];
+    }
+    updateSvcKPIs();
+    applySvcFilters();
+  } catch(e) {
+    allSvc = [];
+    updateSvcKPIs();
+    document.getElementById('svcTableBody').innerHTML =
+      '<tr><td colspan="10" class="empty-row">Tabela de solicitações ainda não criada no banco. Crie via SQL Editor.</td></tr>';
+  }
+}
+
+function updateSvcKPIs() {
+  document.getElementById('ksTotal').textContent     = allSvc.length;
+  document.getElementById('ksNovas').textContent     = allSvc.filter(r => (r.status||'Novo').toLowerCase() === 'novo').length;
+  document.getElementById('ksAndamento').textContent = allSvc.filter(r => ['em análise','em andamento'].includes((r.status||'').toLowerCase())).length;
+  document.getElementById('ksConcluidas').textContent= allSvc.filter(r => (r.status||'').toLowerCase() === 'concluído').length;
+}
+
+['sfBusca','sfServico','sfPrazo','sfStatus'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', applySvcFilters);
+});
+
+function applySvcFilters() {
+  const busca  = (document.getElementById('sfBusca').value||'').toLowerCase();
+  const servico= document.getElementById('sfServico').value;
+  const prazo  = document.getElementById('sfPrazo').value;
+  const status = document.getElementById('sfStatus').value;
+
+  filteredSvc = allSvc.filter(r => {
+    if (busca && ![r.nome,r.email,r.servico,r.descricao,r.cidade,r.protocolo].join(' ').toLowerCase().includes(busca)) return false;
+    if (servico && !(r.servico||'').includes(servico)) return false;
+    if (prazo && r.prazo !== prazo) return false;
+    if (status && (r.status||'Novo') !== status) return false;
+    return true;
+  });
+
+  document.getElementById('sfCount').textContent = `${filteredSvc.length} de ${allSvc.length} registros`;
+  renderSvcTable();
+}
+
+function clearSvcFilters() {
+  ['sfBusca','sfServico','sfPrazo','sfStatus'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  applySvcFilters();
+}
+
+function renderSvcTable() {
+  const tbody = document.getElementById('svcTableBody');
+  const currentUser = document.getElementById('navUser').textContent;
+  const isAdmin = ['erasmo','admin','tatiana'].includes(currentUser);
+
+  if (!filteredSvc.length) {
+    tbody.innerHTML = '<tr><td colspan="10" class="empty-row">Nenhuma solicitação encontrada.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filteredSvc.map(r => {
+    const dt = r.criado_em ? new Date(r.criado_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+    const prazoColor = (r.prazo||'').includes('Urgente') ? 'color:#c0392b;font-weight:600;' : (r.prazo||'').includes('Normal') ? 'color:#7a4f00;' : 'color:var(--muted);';
+    const statusSel = isAdmin
+      ? `<select class="status-select" onchange="updateSvcStatus('${r.id}',this.value)">
+           <option ${(r.status||'Novo')==='Novo'?'selected':''}>Novo</option>
+           <option ${r.status==='Em análise'?'selected':''}>Em análise</option>
+           <option ${r.status==='Em andamento'?'selected':''}>Em andamento</option>
+           <option ${r.status==='Concluído'?'selected':''}>Concluído</option>
+           <option ${r.status==='Cancelado'?'selected':''}>Cancelado</option>
+         </select>`
+      : `<span class="badge ${getSvcBadgeClass(r.status)}">${r.status||'Novo'}</span>`;
+
+    return `<tr>
+      <td style="font-family:var(--ff-m);font-size:11px;color:var(--muted);white-space:nowrap;">${dt}</td>
+      <td style="font-family:var(--ff-m);font-size:11px;color:var(--green2);font-weight:500;">${r.protocolo||'—'}</td>
+      <td style="font-size:11px;"><span style="background:${r.tipo_solicitante==='Pessoa Jurídica'?'#e8f4fd':'#f0f7f0'};color:${r.tipo_solicitante==='Pessoa Jurídica'?'#084298':'#1b4d30'};padding:2px 8px;border-radius:10px;font-size:10px;font-family:var(--ff-m);font-weight:500;">${r.tipo_solicitante||'PF'}</span></td>
+      <td class="td-nome">${r.nome||'—'}<br><span style="font-size:11px;color:var(--muted);font-weight:400;">${r.telefone||''}</span></td>
+      <td style="font-size:12px;color:var(--muted);">${r.email||'—'}</td>
+      <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.servico||''}">${r.servico||'—'}</td>
+      <td><strong>${r.cidade||'—'}</strong> <span style="color:var(--muted);font-size:12px;">${r.uf||''}</span></td>
+      <td style="font-family:var(--ff-m);font-size:11px;${prazoColor}">${(r.prazo||'—').split('—')[0].trim()}</td>
+      <td style="font-family:var(--ff-m);font-size:11px;color:var(--muted);">${r.analista||ANALISTAS[currentUser]||'—'}</td>
+      <td>${statusSel}</td>
+    </tr>`;
+  }).join('');
+}
+
+function getSvcBadgeClass(status) {
+  const map = { 'Novo':'badge-novo','Em análise':'badge-analise','Em andamento':'badge-analise','Concluído':'badge-aprovado','Cancelado':'badge-recusado' };
+  return map[status] || 'badge-novo';
+}
+
+async function updateSvcStatus(id, newStatus) {
+  try {
+    await fetch(`${SUPA_URL}/rest/v1/solicitacoes?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: newStatus })
+    });
+    const rec = allSvc.find(r => r.id === id);
+    if (rec) rec.status = newStatus;
+    updateSvcKPIs();
+  } catch(e) { console.error('Erro ao atualizar status:', e); }
+}
+
+function exportSvcCSV() {
+  const cols = ['criado_em','protocolo','tipo_solicitante','nome','contato','email','telefone','cidade','uf','servico','setor','estados','prazo','descricao','status'];
+  const header = cols.join(';');
+  const rows = filteredSvc.map(r => cols.map(c => `"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(';'));
+  const csv = '\uFEFF' + [header, ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+  a.download = `BrE_Solicitacoes_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
 setInterval(() => {
   if (document.getElementById('appScreen').classList.contains('show')) {
     loadData().then(() => {
       plotDashMarkers();
       if (adminMap) plotMarkers();
     });
+    loadSolicitations();
   }
 }, 30000);
 </script>
