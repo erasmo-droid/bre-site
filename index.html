@@ -1692,13 +1692,68 @@ footer {
             <div class="fg full">
               <label>Localização no mapa <span style="font-family:var(--ff-mono);font-size:10px;color:var(--gray2);font-weight:400;letter-spacing:.5px;">— arraste o PIN para marcar seu terreno</span></label>
 
-              <!-- search bar above map -->
-              <div class="map-search-bar">
+              <!-- ABAS DE BUSCA -->
+              <div style="display:flex;gap:0;margin-bottom:.75rem;border:1px solid var(--border-c);border-radius:8px;overflow:hidden;">
+                <button type="button" id="siteTabEnd" onclick="siteSwitchTab('endereco')"
+                  style="flex:1;padding:9px 12px;font-family:var(--ff-mono);font-size:10.5px;font-weight:500;
+                         text-transform:uppercase;letter-spacing:.8px;cursor:pointer;transition:all .2s;
+                         background:var(--green1);color:#fff;border:none;
+                         display:flex;align-items:center;justify-content:center;gap:5px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  Buscar por Endereço
+                </button>
+                <button type="button" id="siteTabCoo" onclick="siteSwitchTab('coordenada')"
+                  style="flex:1;padding:9px 12px;font-family:var(--ff-mono);font-size:10.5px;font-weight:500;
+                         text-transform:uppercase;letter-spacing:.8px;cursor:pointer;transition:all .2s;
+                         background:#f2f5f0;color:#6b7570;border:none;border-left:1px solid var(--border-c);
+                         display:flex;align-items:center;justify-content:center;gap:5px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                  Buscar por Coordenadas
+                </button>
+              </div>
+
+              <!-- BUSCA POR ENDEREÇO -->
+              <div class="map-search-bar" id="siteSearchEnd">
                 <input type="text" id="mapSearchInput" placeholder="Buscar endereço no mapa... Ex: Rua das Flores, Recife PE">
                 <button type="button" id="mapSearchBtn">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                   Buscar
                 </button>
+              </div>
+
+              <!-- BUSCA POR COORDENADAS -->
+              <div id="siteSearchCoo" style="display:none;flex-direction:column;gap:8px;margin-bottom:.75rem;">
+                <div style="display:flex;gap:.625rem;flex-wrap:wrap;">
+                  <div style="flex:1;min-width:130px;display:flex;flex-direction:column;gap:4px;">
+                    <label style="font-family:var(--ff-mono);font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--gray2);">Latitude</label>
+                    <input type="text" id="siteInputLat" placeholder="Ex: -8.054300"
+                      style="border:1px solid var(--border-c);border-radius:8px;padding:10px 12px;
+                             font-family:var(--ff-mono);font-size:13px;outline:none;width:100%;
+                             transition:border-color .2s;">
+                  </div>
+                  <div style="flex:1;min-width:130px;display:flex;flex-direction:column;gap:4px;">
+                    <label style="font-family:var(--ff-mono);font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--gray2);">Longitude</label>
+                    <input type="text" id="siteInputLng" placeholder="Ex: -34.881100"
+                      style="border:1px solid var(--border-c);border-radius:8px;padding:10px 12px;
+                             font-family:var(--ff-mono);font-size:13px;outline:none;width:100%;
+                             transition:border-color .2s;">
+                  </div>
+                  <div style="display:flex;flex-direction:column;justify-content:flex-end;gap:4px;">
+                    <label style="font-family:var(--ff-mono);font-size:10px;color:transparent;">.</label>
+                    <button type="button" id="siteCoordBtn" onclick="siteSearchByCoords()"
+                      style="background:var(--green1);color:#fff;border:none;border-radius:8px;
+                             padding:10px 16px;font-family:var(--ff-mono);font-size:10.5px;font-weight:500;
+                             cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                      Ir para local
+                    </button>
+                  </div>
+                </div>
+                <div style="padding:8px 12px;background:#f2f5f0;border-radius:8px;border:1px solid var(--border-c);
+                            font-family:var(--ff-mono);font-size:11px;color:#6b7570;">
+                  💡 Cole as coordenadas: <strong style="color:var(--text-main);">-8.054300, -34.881100</strong>
+                  — ou cole tudo no campo Latitude e clique em <strong style="color:var(--text-main);">Ir para local</strong>
+                </div>
               </div>
 
               <!-- map container -->
@@ -2035,8 +2090,72 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'Intersect
       let t;
       endTer.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { if (endTer.value.trim().length > 6 && !inp.value) inp.value = endTer.value.trim(); }, 700); });
     }
+
+    /* Enter no campo de coordenadas */
+    const iLat = document.getElementById('siteInputLat');
+    const iLng = document.getElementById('siteInputLng');
+    if (iLat) iLat.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); siteSearchByCoords(); } });
+    if (iLng) iLng.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); siteSearchByCoords(); } });
   }
   setupSearch();
+
+  /* ── Troca entre abas de busca ── */
+  window.siteSwitchTab = function(tab) {
+    const tE = document.getElementById('siteTabEnd');
+    const tC = document.getElementById('siteTabCoo');
+    const sE = document.getElementById('siteSearchEnd');
+    const sC = document.getElementById('siteSearchCoo');
+    if (tab === 'endereco') {
+      tE.style.background = 'var(--green1)'; tE.style.color = '#fff';
+      tC.style.background = '#f2f5f0'; tC.style.color = '#6b7570';
+      sE.style.display = 'flex'; sC.style.display = 'none';
+    } else {
+      tC.style.background = 'var(--green1)'; tC.style.color = '#fff';
+      tE.style.background = '#f2f5f0'; tE.style.color = '#6b7570';
+      sC.style.display = 'flex'; sE.style.display = 'none';
+      const il = document.getElementById('siteInputLat');
+      if (il) il.focus();
+    }
+  };
+
+  /* ── Busca por coordenadas (site home) ── */
+  window.siteSearchByCoords = function() {
+    let latRaw = (document.getElementById('siteInputLat') || {}).value || '';
+    let lngRaw = (document.getElementById('siteInputLng') || {}).value || '';
+    latRaw = latRaw.trim(); lngRaw = lngRaw.trim();
+
+    /* Aceita "lat, lng" colado no campo lat */
+    if (latRaw.includes(',') && !lngRaw) {
+      const p = latRaw.split(',');
+      latRaw = p[0].trim(); lngRaw = p[1].trim();
+      const il = document.getElementById('siteInputLng');
+      if (il) il.value = lngRaw;
+    }
+
+    const lat = parseFloat(latRaw.replace(',', '.'));
+    const lng = parseFloat(lngRaw.replace(',', '.'));
+
+    const iLat = document.getElementById('siteInputLat');
+    const iLng = document.getElementById('siteInputLng');
+
+    if (isNaN(lat) || isNaN(lng)) {
+      if (iLat) iLat.style.borderColor = '#e74c3c';
+      if (iLng) iLng.style.borderColor = '#e74c3c';
+      setTimeout(() => {
+        if (iLat) iLat.style.borderColor = '';
+        if (iLng) iLng.style.borderColor = '';
+      }, 2000);
+      return;
+    }
+
+    const btn2 = document.getElementById('siteCoordBtn');
+    if (btn2) { btn2.disabled = true; btn2.innerHTML = '⏳ Carregando...'; }
+
+    loadLeaflet(() => {
+      if (btn2) { btn2.disabled = false; btn2.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg> Ir para local'; }
+      buildMap(lat, lng);
+    });
+  };
 
   function geocodeAndBuild(q) {
     const btn = document.getElementById('mapSearchBtn');
