@@ -224,6 +224,32 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
 .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--green2);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
+/* DASHBOARD MAP */
+.dash-map-section{
+  background:#fff;border:1px solid var(--border);border-radius:var(--rl);
+  margin-bottom:1.5rem;overflow:hidden;
+}
+.dash-map-header{
+  padding:1rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;
+}
+.dash-map-title{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--ff-m);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:1.5px;color:var(--text);
+}
+.dash-map-title svg{width:15px;height:15px;stroke:var(--green2);fill:none;stroke-width:2;}
+.dash-map-legend{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:5px;font-family:var(--ff-m);font-size:10px;color:var(--muted);}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+#dashMap{width:100%;height:440px;}
+.dash-map-footer{
+  padding:.625rem 1.5rem;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--ff-m);font-size:10.5px;color:var(--muted);
+}
+.dash-map-footer svg{width:12px;height:12px;stroke:var(--muted);fill:none;}
+
 /* RESPONSIVE */
 @media(max-width:1024px){.kpis{grid-template-columns:1fr 1fr;}}
 @media(max-width:640px){
@@ -285,6 +311,27 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
       <div class="kpi"><div class="kpi-label">Novos</div><div class="kpi-value" id="kNovos" style="color:var(--gold)">—</div><div class="kpi-sub">aguardando análise</div></div>
       <div class="kpi"><div class="kpi-label">Com coordenadas</div><div class="kpi-value" id="kCoords">—</div><div class="kpi-sub">localizados no mapa</div></div>
       <div class="kpi"><div class="kpi-label">Municípios</div><div class="kpi-value" id="kCidades">—</div><div class="kpi-sub">cidades diferentes</div></div>
+    </div>
+
+    <!-- MAPA DASHBOARD — BRASIL -->
+    <div class="dash-map-section">
+      <div class="dash-map-header">
+        <div class="dash-map-title">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Distribuição Geográfica — Brasil
+        </div>
+        <div class="dash-map-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#c9830a;"></div>Novo</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1155cc;"></div>Em análise</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2e7d52;"></div>Aprovado</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#c0392b;"></div>Recusado</div>
+        </div>
+      </div>
+      <div id="dashMap"></div>
+      <div class="dash-map-footer">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Clique em um PIN para ver os detalhes do terreno · Zoom com scroll do mouse · Arraste para navegar
+      </div>
     </div>
 
     <!-- TABS -->
@@ -405,6 +452,7 @@ const USERS = {
 let allData = [];
 let filteredData = [];
 let adminMap = null;
+let dashMap = null;
 let leafletLoaded = false;
 
 /* ═══════════════════════════════════════════
@@ -423,7 +471,7 @@ function doLogin() {
     app.classList.add('show');
     document.getElementById('navUser').textContent = user;
     loginErr.classList.remove('show');
-    loadData();
+    loadData().then(() => initDashMap());
   } else {
     loginErr.classList.add('show');
     document.getElementById('loginPass').value = '';
@@ -599,6 +647,100 @@ function exportCSV() {
 }
 
 /* ═══════════════════════════════════════════
+   DASHBOARD MAP — BRASIL (carrega ao entrar)
+═══════════════════════════════════════════ */
+function initDashMap() {
+  loadLeafletAdmin(() => {
+    if (dashMap) { plotDashMarkers(); return; }
+
+    dashMap = L.map('dashMap', {
+      zoomControl: true,
+      scrollWheelZoom: true,
+      tap: true
+    }).setView([-14.235, -51.925], 4);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(dashMap);
+
+    plotDashMarkers();
+    setTimeout(() => dashMap.invalidateSize(), 400);
+  });
+}
+
+function plotDashMarkers() {
+  if (!dashMap) return;
+
+  // Remove marcadores antigos
+  dashMap.eachLayer(l => { if (l instanceof L.Marker) dashMap.removeLayer(l); });
+
+  const withCoords = allData.filter(r => r.lat && r.lng);
+
+  if (withCoords.length === 0) return;
+
+  const bounds = [];
+
+  withCoords.forEach(r => {
+    const lat = parseFloat(r.lat);
+    const lng = parseFloat(r.lng);
+    if (isNaN(lat) || isNaN(lng)) return;
+
+    const color = r.status === 'aprovado' ? '#2e7d52'
+                : r.status === 'em análise' ? '#1155cc'
+                : r.status === 'recusado' ? '#c0392b'
+                : '#c9830a';
+
+    const pinIcon = L.divIcon({
+      className: '',
+      iconAnchor: [16, 40],
+      popupAnchor: [0, -44],
+      html: `<div style="width:32px;height:40px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.45))">
+        <svg viewBox="0 0 32 40" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <defs>
+            <radialGradient id="pg_${r.id?.slice(0,8)||Math.random().toString(36).slice(2)}" cx="38%" cy="28%">
+              <stop offset="0%" stop-color="${color}" stop-opacity=".95"/>
+              <stop offset="100%" stop-color="${color}" stop-opacity=".7"/>
+            </radialGradient>
+          </defs>
+          <path d="M16 1C8.27 1 2 7.27 2 15c0 10 14 24 14 24S30 25 30 15C30 7.27 23.73 1 16 1z" fill="url(#pg_${r.id?.slice(0,8)||'x'})"/>
+          <path d="M16 1C8.27 1 2 7.27 2 15c0 10 14 24 14 24S30 25 30 15C30 7.27 23.73 1 16 1z" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1"/>
+          <circle cx="16" cy="15" r="5.5" fill="rgba(255,255,255,.92)"/>
+          <circle cx="16" cy="15" r="2.5" fill="${color}"/>
+        </svg>
+      </div>`
+    });
+
+    const dt = r.criado_em ? new Date(r.criado_em).toLocaleDateString('pt-BR') : '—';
+    const statusColor = r.status==='aprovado'?'#0f5132':r.status==='em análise'?'#084298':r.status==='recusado'?'#842029':'#7a4f00';
+    const statusBg = r.status==='aprovado'?'#d1e7dd':r.status==='em análise'?'#cfe2ff':r.status==='recusado'?'#f8d7da':'#fff3cd';
+
+    const popup = `<div class="popup-content">
+      <strong>${r.nome||'—'}</strong>
+      <span class="popup-field">📍 </span><span class="popup-val">${r.endereco||'—'}</span><br>
+      <span class="popup-field">🏙️ </span><span class="popup-val">${r.cidade||'—'}/${r.uf||'—'}</span><br>
+      <span class="popup-field">📐 </span><span class="popup-val">${r.tipo_imovel||'—'} · ${r.area_m2||'—'} m²</span><br>
+      <span class="popup-field">📞 </span><span class="popup-val">${r.telefone||'—'}</span><br>
+      <span class="popup-field">🗓️ </span><span class="popup-val" style="font-size:11px">${dt}</span><br>
+      <div style="margin-top:6px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="background:${statusBg};color:${statusColor};padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;text-transform:uppercase;font-family:monospace">${r.status||'novo'}</span>
+        <button onclick="focusOnMap('${lat}','${lng}','${(r.nome||'').replace(/'/g,"\\'")}');this.closest('.leaflet-popup').querySelector('.leaflet-popup-close-button').click();" style="background:var(--green1);color:#fff;border:none;border-radius:4px;padding:3px 10px;font-size:10px;font-family:monospace;cursor:pointer;margin-left:8px;">Ver no mapa ↗</button>
+      </div>
+      ${r.observacoes?`<div style="margin-top:6px;font-size:11px;color:#6b7570;border-top:1px solid #eee;padding-top:6px">${r.observacoes.substring(0,100)}${r.observacoes.length>100?'...':''}</div>`:''}
+    </div>`;
+
+    L.marker([lat, lng], { icon: pinIcon }).addTo(dashMap).bindPopup(popup, { maxWidth: 280, closeButton: true });
+    bounds.push([lat, lng]);
+  });
+
+  // Se tiver terrenos com coordenadas, ajusta o zoom para mostrar todos
+  // Caso contrário, mantém visão do Brasil
+  if (bounds.length > 0 && bounds.length < 50) {
+    dashMap.fitBounds(bounds, { padding: [60, 60], maxZoom: 12, animate: true });
+  }
+}
+
+/* ═══════════════════════════════════════════
    ADMIN MAP — LEAFLET
 ═══════════════════════════════════════════ */
 function loadLeafletAdmin(cb) {
@@ -724,6 +866,7 @@ function focusOnMap(lat, lng, nome) {
 setInterval(() => {
   if (document.getElementById('appScreen').classList.contains('show')) {
     loadData().then(() => {
+      plotDashMarkers();
       if (adminMap) plotMarkers();
     });
   }
